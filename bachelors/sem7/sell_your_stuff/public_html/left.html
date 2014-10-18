@@ -1,0 +1,97 @@
+<!DOCTYPE public "-//w3c//dtd html 4.01 transitional//en"
+		"http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<head>
+<link href="images/main.css" rel=stylesheet>
+<style>
+.menu {
+	text-indent:0.1in;
+	background:#ebffe6;
+	background-image:url('images/menubg.gif');
+	height:38;
+	color:white;
+	text-align:center;
+	border-color:#ebffe6;
+	border-style:solid;
+	border-width:1px;
+	cursor:hand;
+}
+</style>
+
+<script>
+function menu_over( m){
+	m.style.background = "#c5f4b9";
+	m.style.borderColor = "#333333";
+	m.style.backgroundImage='url(images/menubg.gif)';
+}
+
+function menu_out( m ){
+	m.style.background = '#ebffe6';
+	m.style.borderColor = "#ebffe6";
+	m.style.backgroundImage='url(images/menubg.gif)';
+}
+
+function menu_clicked( url ){
+	window.top.main_frame.document.location = url;
+}
+
+function beginMenu(){
+	document.writeln("<TABLE STYLE='background:#ebffe6;border:groove;' CELLPADDING=0 CELLSPACING=0"
+		+ " ALIGN='CENTER' width='120'> ");
+	document.writeln( "  <tr><td align=center><img  src='images/menutop.gif' > ");
+}
+
+function addMenu( name, url){
+	document.writeln("<tr><td class='menu'" +
+		" onmouseover='menu_over(this)'" +
+		" onmouseout='menu_out(this)'" +
+		" onclick='menu_clicked(\"" + url + "\")'" +
+		">" + name );
+}
+
+function endMenu(){
+	document.writeln( "  <tr><td align=center><img  src='images/menubottom.gif' > ");
+	document.writeln("</table>");
+}
+</script>
+
+</head>
+<body background="images/bg.gif" bgcolor="#FFFFFF" text="#000000" leftmargin="10" topmargin="10" >
+  <table width="100%" border="0" cellpadding="1" cellspacing="0"
+   >
+  <tr><td align=center>
+
+<script>
+	beginMenu();
+	addMenu("Home", "main.html");
+	addMenu("About Us", "about.html");
+	addMenu("Policy","policy.html");
+	addMenu("Feedback","feedback.html");
+	addMenu("Catalog","cat.cgi?catid=_all");
+	addMenu("Item Search","search.html");
+	endMenu();
+</script>
+	<br> <hr width='100%'> <br>
+	<table bordercolor=black cellpadding="1" cellspacing="5" bgcolor="#F5F5F5" width='100'>
+		<tr><th> Users
+		<tr><td align=center><font color=blue><a href="reg.html" target="main_frame" >New Users Click here</a></font>
+		<tr><td><hr width="100%" color="#75757F">
+		<tr><td align=center>
+			<font color=blue >Registered Users login</font>
+			<form action="login.cgi" method=POST target="main_frame">
+			<table width="100%" cellpadding=0 cellspacing=1 border=0>
+				<tr>
+				 <td>Name
+				 <td><input size=10 name='name' />
+				<tr>
+				 <td>Password
+				 <td><input size=10 type=password name='password' />
+				<tr>
+				 <td>
+				 <td><input type=submit value="&nbsp;&nbsp;Go&nbsp;&nbsp;" onsubmit="check(name)"/>
+			</table>
+			</form>
+	</table>
+  </table>
+</BODY>
+</HTML>

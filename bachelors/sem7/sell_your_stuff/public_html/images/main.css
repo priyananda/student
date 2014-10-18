@@ -1,0 +1,38 @@
+FONT	{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 11px}
+TD		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px}
+BODY	{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px}
+P		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px;}
+DIV		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px}
+A{
+	FONT-FAMILY: Verdana,Helvetica;
+	FONT-SIZE: 12px;
+	border-width : 0;	
+}
+TH{
+	background-image:url("th-bg.gif");
+	FONT-FAMILY: "Verdana,Arial,Helvetica";
+	FONT-SIZE: 11px;
+	text-align:center;
+}
+input,textarea, select { color : #000000; font: normal 12px Verdana, Arial, Helvetica, sans-serif;  }
+
+input.post, textarea.post, select { background-color : #fefefe; }
+
+input { text-indent : 2px; }
+
+input.button { 
+	background-color : #bbd2ee; color : #000000; font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif; border:  1px solid #202020; 
+}
+input.radio {background-color: #fefefe; border-style:"none";}
+
+input.mainoption { background-color : #c9e1f3; 	font-weight : bold; }
+
+input.liteoption { background-color : #c9e1f3; font-weight : normal; }
+
+input { border-style:"groove"; }
+
+
+.p_nice{
+	 text-indent:30px;
+	 font-size:13px;
+}

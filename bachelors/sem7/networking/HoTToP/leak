@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$1" == "c" ]
+then
+	rm -f leak.txt
+else
+	valgrind --skin=memcheck --leak-check=yes "$@" 2>leak.txt server
+fi

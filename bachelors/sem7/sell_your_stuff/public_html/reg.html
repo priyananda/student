@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<TITLE>Sell Your Stuff 1.0</TITLE>
+	<META NAME="Author" CONTENT="harish,shenoy">
+	<META NAME="Keywords" CONTENT="harish,baba,bargain">
+	<link href="images/main.css" rel=stylesheet >
+	<script src="images/validate.js">
+	</script>
+</HEAD>
+
+<body background="images/bg.gif" bgcolor="#FFFFFF" text="#000000" leftmargin="10" topmargin="10" onload=checkAll()>
+<form name="reg_form" action="register.cgi" >
+<table  width="100%" border="1" cellspacing="5" cellpadding="5" align="center" bordercolor=#F5F5FF>
+ <tr>
+	<th colspan=2> Registration for membership </th>
+ <tr>
+	<td width="50%"> Login Name 
+	<td><input name="lname" id="lname" size=20>
+	<td><img id="lname_image" >
+ <tr>
+	<td> Password
+	<td><input type="password" name="pass" id="pass" size=20 onfocus="checkAll()" onblur="checkAll()" >
+	<td><img id="pass_image"  >
+ <tr>
+	<td> Confirm Password
+	<td><input name="vpass" type="password" id="vpass" size=20 onfocus="checkAll()" onblur="checkAll()" >
+<td><img id="vpass_image" >
+ <tr>
+	<th colspan=2>&nbsp; </th>
+ <tr>
+	<td> First name
+	<td><input name="fname" id="fname" size=20 onfocus="checkAll()" onblur="checkAll()" >
+<td><img id="fname_image" >
+ <tr>
+	<td> Surname
+	<td><input name="sname" id="sname" size=20 onfocus="checkAll()" onblur="checkAll()" >
+	<td><img id="sname_image" >
+ <tr>
+	<td> Address
+	<td><input name="address" id="address" size=20 onfocus="checkAll()" onblur="checkAll()" >
+	<td><img id="address_image" >
+ <tr>
+	<td> City 
+	<td><input name="city" id="city" size=20 onfocus="checkAll()" onblur="checkAll()" >
+	<td><img id="city_image" >
+ <tr>
+	<td> PIN Code
+	<td><input type="text" name="pincode" id="pincode" size=20 onfocus="checkAll()" onblur="checkAll()" >
+	<td><img id="pincode_image" >
+ <tr>
+	<td> EMail ID
+	<td><input name="email" id="email" size=20 onfocus="checkAll()" onblur="checkAll()" >
+	<td><img id="email_image" >
+ <tr>
+	<th colspan="2"> &nbsp; </th>
+ <tr>
+	<td> Occupation
+	<td><input name="occupation" id="occupation" size=20 >
+	<td><img id="occupation_image" >
+ <tr>
+	<td> Yearly Income Range
+	<td><select name="income" >
+		<option name="poor" >Below 1 lakh</option>
+		<option name="middle" >Between 1 and 2 Lakhs</option>
+		<option name="upper" >Between 2 and 3 Lakhs</option>
+		<option name="rich" >Above 3 Lakhs</option>
+		</select>
+ <tr>
+	<td> Credit Card Number
+	<td><input type="text" name="ccno" id="ccno" size=20 onfocus="checkAll()" onblur="checkAll()" >
+	<td><img id="ccno_image" >
+ <tr>
+	<td> Credit Card Expiry date
+	<td><input type="text" name="ccdate" id="ccdate" size=20 onfocus="checkAll()" onblur="checkAll()" >
+	<td><img id="ccdate_image" >
+ <tr>
+	<th colspan="2"> &nbsp; </th></tr>
+ <tr>
+	<td colspan=2> Please read the policy document
+ <tr>
+	<td colspan=2><center><iframe src="policy.html" scrolling="vertical" width="60%"></iframe></center>
+ <tr>
+	<td colspan=2 align="center"> <input type="submit" value="Register" onsubmit="return checkAll();">
+</table>
+</BODY>
+</HTML>

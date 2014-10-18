@@ -1,0 +1,55 @@
+<?xml version='1.0' ?>
+<config>
+<!--
+	Predefined variables that can be used here:
+		http.exec.dir = directory where the http server prog is present.
+		http.conf.dir = directory where this file was found.
+-->
+	<variable name="http.base" value="${http.exec.dir}" />
+	<variable name="http.port" value="3000" />
+	<variable name="plugin.dir" value="${http.base}/plugins" />
+	<variable name="conf.dir" value="${http.conf.dir}" />
+
+	<ServerRoot value="${http.base}" />
+	<port value="${http.port}" />
+
+	<!-- The plugin installed -->
+	<plugin name="Default" type="read" >
+		<description>Provides default page handler.</description>
+		<file path="${plugin.dir}/default.so" />
+		<conf-file path="${conf.dir}/plugin_default.xml" />
+	</plugin>
+
+	<plugin name="DefaultCGI" type="exec">
+		<description>Provides default CGI Handler.</description>
+		<file path="${plugin.dir}/cgi.so" />
+		<conf-file path="${conf.dir}/plugin_defcgi.xml" />
+	</plugin>
+
+	<!-- The realms avaliable and their authentication. -->
+	<Realm name="Config">
+		<user name="admin" password="admin" />
+	</Realm>
+
+	<!-- Default required to serve all pages. -->
+	<handler match="^.*$$" plugin="Default" />
+	<handler match="^.*[.]cgi$$" plugin="DefaultCGI"/>
+
+	<VirtualDir vpath="/" rpath="${http.base}/docs/" type="read" />
+
+	<VirtualDir vpath="/cgi-bin/" rpath="${http.base}/cgi-bin/" type="exec" />
+
+	<VirtualDir vpath="/site1/" rpath="${http.base}/site1/" type="any">
+		<handler match="^.*[.]pl$$" plugin="DefaultCGI" />
+	</VirtualDir>
+
+	<VirtualDir vpath="/config/" rpath="${http.base}/config/" type="exec" realm="Config" />
+
+	<!-- The error files to be used.-->
+	<error no="404" file="${http.base}/config/error404.html" />
+
+	<!-- The index files to be used if only directory is specified -->
+	<index file="index.html" />
+	<index file="index.pl" />
+
+</config>

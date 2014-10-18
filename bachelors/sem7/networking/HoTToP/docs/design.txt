@@ -1,0 +1,77 @@
+> Directory structure.
+include/
+	config.h
+	net/
+		StreamBase.h
+		InputStream.h
+		OutputStream.h
+		StringReader.h
+		StringWriter.h
+		InetAddress.h
+		Socket.h
+		ServerSocket.h
+		SocketInputStream.h
+		SocketOutputStream.h
+	server/
+		Server.h
+		Realm.h
+		Handler.h
+		PluginInfo.h
+		HeaderParser.h
+		RequestDispatcher.h
+		VirtualDirectory.h
+	utils/
+		ConfigManager.h
+		ConfigExtractor.h
+		StreamEncoder.h
+		Base64Encoder.h
+		HashTable.h
+		DynamicLoader.h
+		Exception.h
+		MimeMapper.h
+	plugin/
+		PluginOutputStream.h
+		Plugin.h
+src/
+	net/
+		StringReader.cpp
+		StringWriter.cpp
+		InetAddress.cpp
+		Socket.cpp
+		ServerSocket.cpp
+		SocketInputStream.cpp
+		SocketOutputStream.cpp
+	server/
+		Server.cpp
+		Realm.cpp
+		Handler.cpp
+		HeaderParser.cpp
+		RequestDispatcher.cpp
+	utils/
+		ConfigManager.cpp
+		ConfigExtractor.cpp
+		StreamEncoding.cpp
+		Base64Encoding.cpp
+		HashTable.cpp
+		DynamicLoader.cpp
+		MimeMapper.cpp
+	plugin/
+		Plugin.cpp
+		PluginOutputStream.cpp
+doc/
+	design.txt
+	usage.txt
+plugins/
+	default.so
+	default-cgi.so
+bin/
+	HoTTop
+lib/
+	all.a
+	xerces-c.so
+conf/
+	server.xml
+	default-plugin.xml
+	default-cgi-plugin.xml
+
+> Classes and members.
