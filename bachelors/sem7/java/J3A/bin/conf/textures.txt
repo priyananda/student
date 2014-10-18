@@ -1,0 +1,13 @@
+# Format is
+# AddTexture NAME TYPE IMAGEPATH [WIDTH] [HEIGHT]
+# RemoveTexture NAME
+# CopyTexture NAME NEW_NAME
+# AddSprite NAME TYPE IMAGEPATH [WIDTH] [HEIGHT]
+# RemoveSprite	NAME TYPE IMAGEPATH [WIDTH] [HEIGHT]
+# Image paths are relative to J3A main directory
+
+AddTexture normal_grass GRASS 	images/textures/grass.gif
+AddTexture muddy 		GROUND  images/textures/ground.gif
+AddTexture cave_grass	GRASS	images/textures/cave_grass.gif
+AddTexture normal_lava	LAVA	images/textures/lava.gif
+AddTexture normal_water WATER	images/textures/water.gif

@@ -1,0 +1,27 @@
+Dynamic Object
+- Monster
+- Spell
+- PowerUp
+- Human
+
+Monsters
+	Attack points are deducted every 5 seconds
+			HP		Attack	Attack Range
+- Orc 		( 5 )	( 5  )		(1x1)
+- Wolf 		( 5 )	( 5  )		(1x1)
+- Nazgul 	( 10 )	( 5  )		(1x1)
+- Shelob 	( 10 )	( 10 )		(1x1)
+- Sauron 	( * )	( 10 )		(1x1)
+
+Spells
+					Range / Damage    Count	Time(s)
+- Mithril Mist 		( +1,1 	-5  )		inf		10  // Swirling mist
+- Fire Of Fangorn 	( +1,1 	-5  )		inf 	10  // fire bomb
+- Turin's Thunder 	( +1,1 	-5  )		inf 	10  // Lightning
+- Baldur's Bane 	( +1,2 	-10 )		inf		30  // earthquake
+- Ethel Morgithica 	( +1,2 	*   )		1		inf // meteora!!
+
+Human 
+- Default/Max HP 10
+- Attack (0)
+- 

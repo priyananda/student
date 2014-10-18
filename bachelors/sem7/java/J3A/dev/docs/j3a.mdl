@@ -1,0 +1,1590 @@
+
+(object Petal
+    version    	42
+    _written   	"Microsoft Visual Modeler 2.0.8139"
+    charSet    	0)
+
+(object Design "Logical View"
+    is_unit    	TRUE
+    is_loaded  	TRUE
+    defaults   	(object defaults
+	rightMargin 	0.250000
+	leftMargin 	0.250000
+	topMargin  	0.250000
+	bottomMargin 	0.500000
+	pageOverlap 	0.250000
+	clipIconLabels 	TRUE
+	autoResize 	TRUE
+	snapToGrid 	TRUE
+	gridX      	16
+	gridY      	16
+	defaultFont 	(object Font
+	    size       	9
+	    face       	"Tahoma"
+	    bold       	FALSE
+	    italics    	FALSE
+	    underline  	FALSE
+	    strike     	FALSE
+	    color      	0
+	    default_color 	TRUE)
+	showMessageNum 	3
+	showClassOfObject 	TRUE
+	notation   	"Unified")
+    root_usecase_package 	(object Class_Category "Use Case View"
+	quid       	"3FC36DA203E0"
+	exportControl 	"Public"
+	global     	TRUE
+	logical_models 	(list unit_reference_list)
+	logical_presentations 	(list unit_reference_list
+	    (object UseCaseDiagram "Main"
+		quid       	"3FC36DA30033"
+		title      	"Main"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	0
+		items      	(list diagram_item_list))))
+    root_category 	(object Class_Category "Logical View"
+	quid       	"3FC36DA203DF"
+	exportControl 	"Public"
+	global     	TRUE
+	subsystem  	"Component View"
+	quidu      	"3FC36DA203E1"
+	logical_models 	(list unit_reference_list
+	    (object Class "MithrilMist"
+		quid       	"3FED07380366"
+		superclasses 	(list inheritance_relationship_list
+		    (object Inheritance_Relationship
+			quid       	"3FED07DF00F0"
+			supplier   	"Logical View::User Services::Spell"
+			quidu      	"3FC3729E02B2")))
+	    (object Class "FireOfFangorn"
+		quid       	"3FED074E0316"
+		superclasses 	(list inheritance_relationship_list
+		    (object Inheritance_Relationship
+			quid       	"3FED07EA0186"
+			supplier   	"Logical View::User Services::Spell"
+			quidu      	"3FC3729E02B2")))
+	    (object Class "BaldurBane"
+		quid       	"3FED07730136"
+		superclasses 	(list inheritance_relationship_list
+		    (object Inheritance_Relationship
+			quid       	"3FED07F200BE"
+			supplier   	"Logical View::User Services::Spell"
+			quidu      	"3FC3729E02B2")))
+	    (object Class_Utility "TurinThunder"
+		quid       	"3FED07890186")
+	    (object Class "Ethel"
+		quid       	"3FED0796019A"
+		superclasses 	(list inheritance_relationship_list
+		    (object Inheritance_Relationship
+			quid       	"3FED084F0190"
+			supplier   	"Logical View::User Services::Spell"
+			quidu      	"3FC3729E02B2")))
+	    (object Class "TurinThunder2"
+		quid       	"3FED08190208"
+		superclasses 	(list inheritance_relationship_list
+		    (object Inheritance_Relationship
+			quid       	"3FED084303CA"
+			supplier   	"Logical View::User Services::Spell"
+			quidu      	"3FC3729E02B2")))
+	    (object Class_Category "User Services"
+		attributes 	(list Attribute_Set
+		    (object Attribute
+			tool       	"VisualBasic"
+			name       	"TierPackage"
+			value      	"User Services"))
+		quid       	"3FC36DA203E5"
+		documentation 	"User services provide the visual interface for presenting information and gathering data in an application. The user services connect the user with the application and request the business and/or data services needed by the user to execute business tasks."
+		visible_categories 	(list visibility_relationship_list
+		    (object Visibility_Relationship
+			attributes 	(list Attribute_Set
+			    (object Attribute
+				tool       	"VisualBasic"
+				name       	"TierPackage"
+				value      	"Business Services"))
+			quid       	"3FC36DA203EB"
+			supplier   	"Logical View::Business Services"
+			quidu      	"3FC36DA203E7")
+		    (object Visibility_Relationship
+			attributes 	(list Attribute_Set
+			    (object Attribute
+				tool       	"VisualBasic"
+				name       	"TierPackage"
+				value      	"Data Services"))
+			quid       	"3FC36DA203EC"
+			supplier   	"Logical View::Data Services"
+			quidu      	"3FC36DA203E9"))
+		exportControl 	"Public"
+		logical_models 	(list unit_reference_list
+		    (object Class "GameObject"
+			quid       	"3FC36E530208"
+			documentation 	"GameObject is the Base of all interactions. It defines any object which can occupy a tile and can influence or is influenced by Human . It forms the abstract base of the game element hierarchy"
+			operations 	(list Operations
+			    (object Operation "interactWith"
+				quid       	"3FC36E530244"
+				documentation 	"Defines the base abstract function for Human-Object interaction"
+				parameters 	(list Parameters
+				    (object Parameter "Human"
+					type       	"Human"))
+				result     	"void"
+				concurrency 	"Sequential"
+				opExportControl 	"Public"
+				uid        	0))
+			class_attributes 	(list class_attribute_list
+			    (object ClassAttribute "tileX"
+				quid       	"3FC3722503CA"
+				type       	"Integer")
+			    (object ClassAttribute "tileY"
+				quid       	"3FC372310262"
+				type       	"Integer"))
+			module     	
+|Component View::
+|View 1 (task spec)
+			
+			quidu      	"3FC3744600AA"
+			language   	"VC++")
+		    (object Class "DynamicObject"
+			quid       	"3FC36F5E00F0"
+			documentation 	"DynamicObject is the main class for all GameObjects that are rendered in runtime. These are not necessarily constant and may periodically or aperiodically change state  and hence affect the Game rendering."
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC36F5E012C"
+				supplier   	"Logical View::User Services::GameObject"
+				quidu      	"3FC36E530208"))
+			operations 	(list Operations
+			    (object Operation "render"
+				quid       	"3FC373D502A8"
+				parameters 	(list Parameters
+				    (object Parameter "g"
+					type       	"Graphics")
+				    (object Parameter "pnt"
+					type       	"Point"))
+				result     	"void"
+				concurrency 	"Sequential"
+				opExportControl 	"Public"
+				uid        	0)))
+		    (object Class "StaticObject"
+			quid       	"3FC36FD202A8"
+			documentation 	"These are prerendered and hence are not affecting rendering ate runtime. But they affect the interaction with humans and hence must be modelled"
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC36FD202A9"
+				supplier   	"Logical View::User Services::GameObject"
+				quidu      	"3FC36E530208")))
+		    (object Class "Wall"
+			quid       	"3FC37077026C"
+			documentation 	"An impenetratable wall"
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC37077026D"
+				supplier   	"Logical View::User Services::StaticObject"
+				quidu      	"3FC36FD202A8")))
+		    (object Class "House"
+			quid       	"3FC370A4003C"
+			documentation 	
+|A structure that ocuupies 2x2 tiles
+|
+|
+			
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC370A4006E"
+				supplier   	"Logical View::User Services::StaticObject"
+				quidu      	"3FC36FD202A8")))
+		    (object Class "WaterTile"
+			quid       	"3FC370F0023A"
+			documentation 	"A WaterTile causes -1 HP when the Human comes inside it"
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC370F0023B"
+				supplier   	"Logical View::User Services::StaticObject"
+				quidu      	"3FC36FD202A8")))
+		    (object Class "DynamicTile"
+			quid       	"3FC371860352"
+			documentation 	"A Lava Tile Causes instant death to a HUman who enters it"
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC371860353"
+				supplier   	"Logical View::User Services::StaticObject"
+				quidu      	"3FC36FD202A8")))
+		    (object Class "Monster"
+			quid       	"3FC371D20280"
+			documentation 	"A Monster is a bad guy who tries to kill you"
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC371D202BC"
+				supplier   	"Logical View::User Services::DynamicObject"
+				quidu      	"3FC36F5E00F0")))
+		    (object Class "Spell"
+			quid       	"3FC3729E02B2"
+			documentation 	"A Spell is a Human-generated event which has a predefined interaction with other ojects"
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC3729E02B3"
+				supplier   	"Logical View::User Services::DynamicObject"
+				quidu      	"3FC36F5E00F0")))
+		    (object Class "Human"
+			quid       	"3FC373020294"
+			documentation 	"A Person who interacts with other objects of the system . He can cast spells , die and do other interesting stuff"
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC373020295"
+				supplier   	"Logical View::User Services::DynamicObject"
+				quidu      	"3FC36F5E00F0")))
+		    (object Class "PowerUp"
+			quid       	"3FC37377028A"
+			documentation 	"A PowerUp is a regeneratable object which gives health points to the Human"
+			superclasses 	(list inheritance_relationship_list
+			    (object Inheritance_Relationship
+				quid       	"3FC37377028B"
+				supplier   	"Logical View::User Services::DynamicObject"
+				quidu      	"3FC36F5E00F0"))))
+		logical_presentations 	(list unit_reference_list
+		    (object ClassDiagram "Package Overview"
+			quid       	"3FC36DA203E6"
+			title      	"Package Overview"
+			zoom       	100
+			max_height 	28350
+			max_width  	21600
+			origin_x   	0
+			origin_y   	0
+			items      	(list diagram_item_list
+			    (object ClassView "Class" "Logical View::User Services::GameObject" @1
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(896, 144)
+				label      	(object ItemLabel
+				    Parent_View 	@1
+				    location   	(775, 99)
+				    nlines     	1
+				    max_width  	242
+				    justify    	0
+				    label      	"GameObject")
+				icon_style 	"Icon"
+				quidu      	"3FC36E530208"
+				width      	260
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object ClassView "Class" "Logical View::User Services::DynamicObject" @2
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(1168, 480)
+				label      	(object ItemLabel
+				    Parent_View 	@2
+				    location   	(1026, 409)
+				    nlines     	1
+				    max_width  	284
+				    justify    	0
+				    label      	"DynamicObject")
+				icon_style 	"Icon"
+				quidu      	"3FC36F5E00F0"
+				width      	302
+				height     	164
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @3
+				stereotype 	TRUE
+				quidu      	"3FC36F5E012C"
+				client     	@2
+				supplier   	@1
+				line_style 	0)
+			    (object ClassView "Class" "Logical View::User Services::StaticObject" @4
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(288, 496)
+				label      	(object ItemLabel
+				    Parent_View 	@4
+				    location   	(162, 451)
+				    nlines     	1
+				    max_width  	252
+				    justify    	0
+				    label      	"StaticObject")
+				icon_style 	"Icon"
+				quidu      	"3FC36FD202A8"
+				width      	270
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @5
+				stereotype 	TRUE
+				quidu      	"3FC36FD202A9"
+				client     	@4
+				supplier   	@1
+				line_style 	0)
+			    (object ClassView "Class" "Logical View::User Services::Wall" @6
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(304, 880)
+				label      	(object ItemLabel
+				    Parent_View 	@6
+				    location   	(223, 835)
+				    nlines     	1
+				    max_width  	162
+				    justify    	0
+				    label      	"Wall")
+				icon_style 	"Icon"
+				quidu      	"3FC37077026C"
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @7
+				stereotype 	TRUE
+				quidu      	"3FC37077026D"
+				client     	@6
+				supplier   	@4
+				line_style 	0)
+			    (object ClassView "Class" "Logical View::User Services::House" @8
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(128, 1120)
+				label      	(object ItemLabel
+				    Parent_View 	@8
+				    location   	(47, 1075)
+				    nlines     	1
+				    max_width  	162
+				    justify    	0
+				    label      	"House")
+				icon_style 	"Icon"
+				quidu      	"3FC370A4003C"
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @9
+				stereotype 	TRUE
+				quidu      	"3FC370A4006E"
+				client     	@8
+				supplier   	@4
+				line_style 	0)
+			    (object ClassView "Class" "Logical View::User Services::WaterTile" @10
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(512, 1072)
+				label      	(object ItemLabel
+				    Parent_View 	@10
+				    location   	(412, 1027)
+				    nlines     	1
+				    max_width  	200
+				    justify    	0
+				    label      	"WaterTile")
+				icon_style 	"Icon"
+				quidu      	"3FC370F0023A"
+				width      	218
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @11
+				stereotype 	TRUE
+				quidu      	"3FC370F0023B"
+				client     	@10
+				supplier   	@4
+				line_style 	0)
+			    (object ClassView "Class" "Logical View::User Services::DynamicTile" @12
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(576, 864)
+				label      	(object ItemLabel
+				    Parent_View 	@12
+				    location   	(461, 819)
+				    nlines     	1
+				    max_width  	230
+				    justify    	0
+				    label      	"DynamicTile")
+				icon_style 	"Icon"
+				quidu      	"3FC371860352"
+				width      	248
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @13
+				stereotype 	TRUE
+				quidu      	"3FC371860353"
+				client     	@12
+				supplier   	@4
+				line_style 	0)
+			    (object ClassView "Class" "Logical View::User Services::Monster" @14
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(784, 1136)
+				label      	(object ItemLabel
+				    Parent_View 	@14
+				    location   	(701, 1091)
+				    nlines     	1
+				    max_width  	166
+				    justify    	0
+				    label      	"Monster")
+				icon_style 	"Icon"
+				quidu      	"3FC371D20280"
+				width      	184
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @15
+				stereotype 	TRUE
+				quidu      	"3FC371D202BC"
+				client     	@14
+				supplier   	@2
+				line_style 	0)
+			    (object ClassView "Class" "Logical View::User Services::Spell" @16
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(1232, 1120)
+				label      	(object ItemLabel
+				    Parent_View 	@16
+				    location   	(1151, 1075)
+				    nlines     	1
+				    max_width  	162
+				    justify    	0
+				    label      	"Spell")
+				icon_style 	"Icon"
+				quidu      	"3FC3729E02B2"
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @17
+				stereotype 	TRUE
+				quidu      	"3FC3729E02B3"
+				client     	@16
+				supplier   	@2
+				line_style 	0)
+			    (object ClassView "Class" "Logical View::User Services::Human" @18
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(1072, 976)
+				label      	(object ItemLabel
+				    Parent_View 	@18
+				    location   	(991, 931)
+				    nlines     	1
+				    max_width  	162
+				    justify    	0
+				    label      	"Human")
+				icon_style 	"Icon"
+				quidu      	"3FC373020294"
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @19
+				stereotype 	TRUE
+				quidu      	"3FC373020295"
+				client     	@18
+				supplier   	@2
+				line_style 	0)
+			    (object ClassView "Class" "Logical View::User Services::PowerUp" @20
+				ShowCompartmentStereotypes 	TRUE
+				IncludeAttribute 	TRUE
+				IncludeOperation 	TRUE
+				location   	(1424, 976)
+				label      	(object ItemLabel
+				    Parent_View 	@20
+				    location   	(1332, 931)
+				    nlines     	1
+				    max_width  	184
+				    justify    	0
+				    label      	"PowerUp")
+				icon_style 	"Icon"
+				quidu      	"3FC37377028A"
+				width      	202
+				height     	112
+				annotation 	8
+				autoResize 	TRUE)
+			    (object InheritView "" @21
+				stereotype 	TRUE
+				quidu      	"3FC37377028B"
+				client     	@20
+				supplier   	@2
+				line_style 	0)))))
+	    (object Class_Category "Business Services"
+		attributes 	(list Attribute_Set
+		    (object Attribute
+			tool       	"VisualBasic"
+			name       	"TierPackage"
+			value      	"Business Services"))
+		quid       	"3FC36DA203E7"
+		documentation 	"Business services respond to requests from the user (or other business services) in order to execute a business task. They accomplish this by requesting the data services needed and applying formal procedures and business rules to the relevant data. This protocol insulates the user from direct interaction with the database. Because business rules tend to change more frequently than the specific business tasks they support, they are ideal candidates for encapsulating in components that are physically separate from the application logic itself."
+		visible_categories 	(list visibility_relationship_list
+		    (object Visibility_Relationship
+			attributes 	(list Attribute_Set
+			    (object Attribute
+				tool       	"VisualBasic"
+				name       	"TierPackage"
+				value      	"User Services"))
+			quid       	"3FC36DA203ED"
+			supplier   	"Logical View::User Services"
+			quidu      	"3FC36DA203E5")
+		    (object Visibility_Relationship
+			attributes 	(list Attribute_Set
+			    (object Attribute
+				tool       	"VisualBasic"
+				name       	"TierPackage"
+				value      	"Data Services"))
+			quid       	"3FC36DA203EE"
+			supplier   	"Logical View::Data Services"
+			quidu      	"3FC36DA203E9"))
+		exportControl 	"Public"
+		logical_models 	(list unit_reference_list)
+		logical_presentations 	(list unit_reference_list
+		    (object ClassDiagram "Package Overview"
+			quid       	"3FC36DA203E8"
+			title      	"Package Overview"
+			zoom       	100
+			max_height 	28350
+			max_width  	21600
+			origin_x   	0
+			origin_y   	0
+			items      	(list diagram_item_list))))
+	    (object Class_Category "Data Services"
+		attributes 	(list Attribute_Set
+		    (object Attribute
+			tool       	"VisualBasic"
+			name       	"TierPackage"
+			value      	"Data Services"))
+		quid       	"3FC36DA203E9"
+		documentation 	"Data services maintain, access, and update data. They also manage and satisfy requests to manipulate data that are initiated by business services. Separating data services allows the data structure and access mechanisms to be maintained, modified, or, if necessary, even re-architected without affecting business or user services."
+		visible_categories 	(list visibility_relationship_list
+		    (object Visibility_Relationship
+			attributes 	(list Attribute_Set
+			    (object Attribute
+				tool       	"VisualBasic"
+				name       	"TierPackage"
+				value      	"User Services"))
+			quid       	"3FC36DA203EF"
+			supplier   	"Logical View::User Services"
+			quidu      	"3FC36DA203E5")
+		    (object Visibility_Relationship
+			attributes 	(list Attribute_Set
+			    (object Attribute
+				tool       	"VisualBasic"
+				name       	"TierPackage"
+				value      	"Data Services"))
+			quid       	"3FC36DA203F0"
+			supplier   	"Logical View::Business Services"
+			quidu      	"3FC36DA203E7"))
+		exportControl 	"Public"
+		logical_models 	(list unit_reference_list)
+		logical_presentations 	(list unit_reference_list
+		    (object ClassDiagram "Package Overview"
+			quid       	"3FC36DA203EA"
+			title      	"Package Overview"
+			zoom       	100
+			max_height 	28350
+			max_width  	21600
+			origin_x   	0
+			origin_y   	0
+			items      	(list diagram_item_list)))))
+	logical_presentations 	(list unit_reference_list
+	    (object ClassDiagram "Main"
+		quid       	"3FED06AD016F"
+		title      	"Main"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	43
+		items      	(list diagram_item_list
+		    (object ClassView "Class" "Logical View::User Services::GameObject" @22
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1712, 224)
+			label      	(object ItemLabel
+			    Parent_View 	@22
+			    location   	(1563, 87)
+			    nlines     	1
+			    max_width  	298
+			    justify    	0
+			    label      	"GameObject")
+			icon_style 	"Icon"
+			quidu      	"3FC36E530208"
+			compartment 	(object Compartment
+			    Parent_View 	@22
+			    location   	(1563, 185)
+			    icon_style 	"Icon"
+			    anchor     	2
+			    nlines     	4
+			    max_width  	294)
+			width      	316
+			height     	296
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::User Services::DynamicObject" @23
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1264, 768)
+			label      	(object ItemLabel
+			    Parent_View 	@23
+			    location   	(1119, 675)
+			    nlines     	1
+			    max_width  	290
+			    justify    	0
+			    label      	"DynamicObject")
+			icon_style 	"Icon"
+			quidu      	"3FC36F5E00F0"
+			compartment 	(object Compartment
+			    Parent_View 	@23
+			    location   	(1119, 773)
+			    icon_style 	"Icon"
+			    anchor     	2
+			    nlines     	2
+			    max_width  	163)
+			width      	308
+			height     	208
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::User Services::StaticObject" @24
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1712, 752)
+			label      	(object ItemLabel
+			    Parent_View 	@24
+			    location   	(1567, 686)
+			    nlines     	1
+			    max_width  	290
+			    justify    	0
+			    label      	"StaticObject")
+			icon_style 	"Icon"
+			quidu      	"3FC36FD202A8"
+			width      	308
+			height     	154
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::User Services::Wall" @25
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1968, 1264)
+			label      	(object ItemLabel
+			    Parent_View 	@25
+			    location   	(1823, 1198)
+			    nlines     	1
+			    max_width  	290
+			    justify    	0
+			    label      	"Wall")
+			icon_style 	"Icon"
+			quidu      	"3FC37077026C"
+			width      	308
+			height     	154
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::User Services::DynamicTile" @26
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1616, 1264)
+			label      	(object ItemLabel
+			    Parent_View 	@26
+			    location   	(1471, 1198)
+			    nlines     	1
+			    max_width  	290
+			    justify    	0
+			    label      	"DynamicTile")
+			icon_style 	"Icon"
+			quidu      	"3FC371860352"
+			width      	308
+			height     	154
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::User Services::Monster" @27
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(592, 1264)
+			label      	(object ItemLabel
+			    Parent_View 	@27
+			    location   	(447, 1198)
+			    nlines     	1
+			    max_width  	290
+			    justify    	0
+			    label      	"Monster")
+			icon_style 	"Icon"
+			quidu      	"3FC371D20280"
+			width      	308
+			height     	154
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::User Services::Human" @28
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(224, 1264)
+			label      	(object ItemLabel
+			    Parent_View 	@28
+			    location   	(79, 1198)
+			    nlines     	1
+			    max_width  	290
+			    justify    	0
+			    label      	"Human")
+			icon_style 	"Icon"
+			quidu      	"3FC373020294"
+			width      	308
+			height     	154
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::User Services::PowerUp" @29
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(944, 1264)
+			label      	(object ItemLabel
+			    Parent_View 	@29
+			    location   	(799, 1198)
+			    nlines     	1
+			    max_width  	290
+			    justify    	0
+			    label      	"PowerUp")
+			icon_style 	"Icon"
+			quidu      	"3FC37377028A"
+			width      	308
+			height     	154
+			annotation 	8
+			autoResize 	TRUE)
+		    (object InheritView "" @30
+			stereotype 	TRUE
+			quidu      	"3FC36F5E012C"
+			client     	@23
+			supplier   	@22
+			line_style 	0)
+		    (object InheritView "" @31
+			stereotype 	TRUE
+			quidu      	"3FC36FD202A9"
+			client     	@24
+			supplier   	@22
+			line_style 	0)
+		    (object InheritView "" @32
+			stereotype 	TRUE
+			quidu      	"3FC37077026D"
+			client     	@25
+			supplier   	@24
+			line_style 	0)
+		    (object InheritView "" @33
+			stereotype 	TRUE
+			quidu      	"3FC371860353"
+			client     	@26
+			supplier   	@24
+			line_style 	0)
+		    (object InheritView "" @34
+			stereotype 	TRUE
+			quidu      	"3FC371D202BC"
+			client     	@27
+			supplier   	@23
+			line_style 	0)
+		    (object InheritView "" @35
+			stereotype 	TRUE
+			quidu      	"3FC373020295"
+			client     	@28
+			supplier   	@23
+			line_style 	0)
+		    (object InheritView "" @36
+			stereotype 	TRUE
+			quidu      	"3FC37377028B"
+			client     	@29
+			supplier   	@23
+			line_style 	0)
+		    (object ClassView "Class" "Logical View::MithrilMist" @37
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(688, 1648)
+			label      	(object ItemLabel
+			    Parent_View 	@37
+			    location   	(591, 1603)
+			    nlines     	1
+			    max_width  	194
+			    justify    	0
+			    label      	"MithrilMist")
+			icon_style 	"Icon"
+			quidu      	"3FED07380366"
+			width      	212
+			height     	112
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::FireOfFangorn" @38
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(960, 1648)
+			label      	(object ItemLabel
+			    Parent_View 	@38
+			    location   	(827, 1603)
+			    nlines     	1
+			    max_width  	266
+			    justify    	0
+			    label      	"FireOfFangorn")
+			icon_style 	"Icon"
+			quidu      	"3FED074E0316"
+			width      	284
+			height     	112
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::BaldurBane" @39
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1264, 1648)
+			label      	(object ItemLabel
+			    Parent_View 	@39
+			    location   	(1157, 1603)
+			    nlines     	1
+			    max_width  	214
+			    justify    	0
+			    label      	"BaldurBane")
+			icon_style 	"Icon"
+			quidu      	"3FED07730136"
+			width      	232
+			height     	112
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::Ethel" @40
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1856, 1648)
+			label      	(object ItemLabel
+			    Parent_View 	@40
+			    location   	(1775, 1603)
+			    nlines     	1
+			    max_width  	162
+			    justify    	0
+			    label      	"Ethel")
+			icon_style 	"Icon"
+			quidu      	"3FED0796019A"
+			height     	112
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::TurinThunder2" @41
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1584, 1648)
+			label      	(object ItemLabel
+			    Parent_View 	@41
+			    location   	(1438, 1603)
+			    nlines     	1
+			    max_width  	292
+			    justify    	0
+			    label      	"TurinThunder2")
+			icon_style 	"Icon"
+			quidu      	"3FED08190208"
+			width      	310
+			height     	112
+			annotation 	8
+			autoResize 	TRUE)
+		    (object ClassView "Class" "Logical View::User Services::Spell" @42
+			ShowCompartmentStereotypes 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(1280, 1264)
+			label      	(object ItemLabel
+			    Parent_View 	@42
+			    location   	(1135, 1198)
+			    nlines     	1
+			    max_width  	290
+			    justify    	0
+			    label      	"Spell")
+			icon_style 	"Icon"
+			quidu      	"3FC3729E02B2"
+			width      	308
+			height     	154
+			annotation 	8
+			autoResize 	TRUE)
+		    (object InheritView "" @43
+			stereotype 	TRUE
+			quidu      	"3FC3729E02B3"
+			client     	@42
+			supplier   	@23
+			line_style 	0)
+		    (object InheritTreeView "" @44
+			location   	(1160, 1431)
+			supplier   	@42
+			vertices   	(list Points
+			    (1160, 1431)
+			    (1160, 1341)))
+		    (object InheritView "" @45
+			stereotype 	TRUE
+			quidu      	"3FED07DF00F0"
+			client     	@37
+			supplier   	@42
+			line_style 	3
+			origin_attachment 	(774, 1592)
+			terminal_attachment 	(774, 1431)
+			drawSupplier 	@44)
+		    (object InheritView "" @46
+			stereotype 	TRUE
+			quidu      	"3FED07EA0186"
+			client     	@38
+			supplier   	@42
+			line_style 	3
+			origin_attachment 	(959, 1592)
+			terminal_attachment 	(959, 1431)
+			drawSupplier 	@44)
+		    (object InheritView "" @47
+			stereotype 	TRUE
+			quidu      	"3FED07F200BE"
+			client     	@39
+			supplier   	@42
+			line_style 	0)
+		    (object InheritView "" @48
+			stereotype 	TRUE
+			quidu      	"3FED084303CA"
+			client     	@41
+			supplier   	@42
+			line_style 	0)
+		    (object InheritView "" @49
+			stereotype 	TRUE
+			quidu      	"3FED084F0190"
+			client     	@40
+			supplier   	@42
+			line_style 	0)))
+	    (object Tier_Diagram "Three-Tiered Service Model"
+		quid       	"3FC36DA203F1"
+		title      	"Three-Tiered Service Model"
+		documentation 	"A three-tiered architectural approach separates the various components of a client/server system into three tiers of services. The user services, business and other middle tier services, and data services are the logical tiers that collaborate in an application"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	0
+		items      	(list diagram_item_list
+		    (object TierView "User Services" @50
+			label      	(object ItemLabel
+			    Parent_View 	@50
+			    location   	(6, 6)
+			    nlines     	2
+			    max_width  	-12
+			    justify    	0
+			    label      	"User Services")
+			icon_style 	"Icon"
+			hidden     	TRUE
+			quidu      	"3FC36DA203E5"
+			width      	300
+			height     	180)
+		    (object TierView "Business Services" @51
+			location   	(600, 0)
+			label      	(object ItemLabel
+			    Parent_View 	@51
+			    location   	(606, 6)
+			    nlines     	2
+			    max_width  	-12
+			    justify    	0
+			    label      	"Business Services")
+			icon_style 	"Icon"
+			hidden     	TRUE
+			quidu      	"3FC36DA203E7"
+			width      	300
+			height     	180)
+		    (object TierView "Data Services" @52
+			location   	(1200, 0)
+			label      	(object ItemLabel
+			    Parent_View 	@52
+			    location   	(1206, 6)
+			    nlines     	2
+			    max_width  	-12
+			    justify    	0
+			    label      	"Data Services")
+			icon_style 	"Icon"
+			hidden     	TRUE
+			quidu      	"3FC36DA203E9"
+			width      	300
+			height     	180)))))
+    root_subsystem 	(object SubSystem "Component View"
+	quid       	"3FC36DA203E1"
+	physical_models 	(list unit_reference_list
+	    (object module "
+View 1" "TaskType" "Specification"
+		quid       	"3FC3744600AA"
+		stereotype 	"EXE"
+		language   	"VC++")
+	    (object module "
+View 2" "NotAModuleType" "NotAModulePart"
+		quid       	"3FED14990104"
+		stereotype 	"")
+	    (object module "
+View 3" "NotAModuleType" "NotAModulePart"
+		quid       	"3FED14A10302"
+		stereotype 	"")
+	    (object module "
+Controller" "NotAModuleType" "NotAModulePart"
+		quid       	"3FED14F901EA"
+		stereotype 	""
+		visible_modules 	(list dependency_list
+		    (object Dependency_Relationship
+			quid       	"3FED154F01B8"
+			supplier   	
+|Component View::
+|View 2
+			
+			quidu      	"3FED14990104"
+			supplier_is_spec 	TRUE)
+		    (object Dependency_Relationship
+			quid       	"3FED155700BE"
+			supplier   	
+|Component View::
+|View 3
+			
+			quidu      	"3FED14A10302"
+			supplier_is_spec 	TRUE)
+		    (object Dependency_Relationship
+			quid       	"3FED155903AC"
+			supplier   	
+|Component View::
+|View 1
+			
+			quidu      	"3FC3744600AA"
+			supplier_is_spec 	TRUE)))
+	    (object module "
+GameModel" "NotAModuleType" "NotAModulePart"
+		quid       	"3FED150402B2"
+		stereotype 	""
+		visible_modules 	(list dependency_list
+		    (object Dependency_Relationship
+			quid       	"3FED153F0014"
+			supplier   	
+|Component View::
+|Controller
+			
+			quidu      	"3FED14F901EA"
+			supplier_is_spec 	TRUE)))
+	    (object module "Monster Model" "NotAModuleType" "NotAModulePart"
+		quid       	"3FED1513019A"
+		stereotype 	""
+		visible_modules 	(list dependency_list
+		    (object Dependency_Relationship
+			quid       	"3FED15430244"
+			supplier   	
+|Component View::
+|Controller
+			
+			quidu      	"3FED14F901EA"
+			supplier_is_spec 	TRUE)))
+	    (object module "Tile Model" "NotAModuleType" "NotAModulePart"
+		quid       	"3FED15330334"
+		stereotype 	""
+		visible_modules 	(list dependency_list
+		    (object Dependency_Relationship
+			quid       	"3FED154601EA"
+			supplier   	
+|Component View::
+|Controller
+			
+			quidu      	"3FED14F901EA"
+			supplier_is_spec 	TRUE)))
+	    (object SubSystem "j3a.graphics"
+		quid       	"3FED143D01E0"
+		physical_models 	(list unit_reference_list)
+		physical_presentations 	(list unit_reference_list
+		    (object Module_Diagram "Main"
+			quid       	"3FED143E0208"
+			title      	"Main"
+			zoom       	100
+			max_height 	28350
+			max_width  	21600
+			origin_x   	0
+			origin_y   	0
+			items      	(list diagram_item_list))))
+	    (object SubSystem "TileModel"
+		quid       	"3FED152A024E"
+		physical_models 	(list unit_reference_list)
+		physical_presentations 	(list unit_reference_list
+		    (object Module_Diagram "Main"
+			quid       	"3FED152E03A2"
+			title      	"Main"
+			zoom       	100
+			max_height 	28350
+			max_width  	21600
+			origin_x   	0
+			origin_y   	0
+			items      	(list diagram_item_list)))))
+	physical_presentations 	(list unit_reference_list
+	    (object Module_Diagram "Main"
+		quid       	"3FC36DA30032"
+		title      	"Main"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	0
+		items      	(list diagram_item_list
+		    (object SubSysView "Component View::j3a.graphics" @53
+			location   	(1136, 432)
+			label      	(object ItemLabel
+			    Parent_View 	@53
+			    location   	(683, 207)
+			    nlines     	2
+			    max_width  	906
+			    justify    	0
+			    label      	"j3a.graphics")
+			icon_style 	"Icon"
+			quidu      	"3FED143D01E0"
+			width      	919
+			height     	462)
+		    (object ModView "Component View::
+View 2" "NotAModuleType" "NotAModulePart" @54
+			location   	(1104, 416)
+			label      	(object ItemLabel
+			    Parent_View 	@54
+			    location   	(1069, 391)
+			    anchor_loc 	3
+			    nlines     	2
+			    max_width  	127
+			    label      	
+|
+|View 2
+			    )
+			icon_style 	"Icon"
+			quidu      	"3FED14990104"
+			width      	228
+			autoResize 	TRUE
+			width      	228
+			height     	162)
+		    (object ModView "Component View::
+View 3" "NotAModuleType" "NotAModulePart" @55
+			location   	(1360, 416)
+			label      	(object ItemLabel
+			    Parent_View 	@55
+			    location   	(1325, 391)
+			    anchor_loc 	3
+			    nlines     	2
+			    max_width  	127
+			    label      	
+|
+|View 3
+			    )
+			icon_style 	"Icon"
+			quidu      	"3FED14A10302"
+			width      	228
+			autoResize 	TRUE
+			width      	228
+			height     	162)
+		    (object ModView "Component View::
+View 1" "TaskType" "Specification" @56
+			location   	(832, 416)
+			label      	(object ItemLabel
+			    Parent_View 	@56
+			    location   	(797, 391)
+			    anchor_loc 	3
+			    nlines     	2
+			    max_width  	127
+			    label      	
+|
+|View 1
+			    )
+			icon       	"EXE"
+			icon_style 	"Icon"
+			quidu      	"3FC3744600AA"
+			width      	228
+			autoResize 	TRUE
+			width      	228
+			height     	162)
+		    (object ModView "Component View::
+Controller" "NotAModuleType" "NotAModulePart" @57
+			location   	(1104, 912)
+			label      	(object ItemLabel
+			    Parent_View 	@57
+			    location   	(1057, 887)
+			    anchor_loc 	3
+			    nlines     	2
+			    max_width  	176
+			    label      	
+|
+|Controller
+			    )
+			icon_style 	"Icon"
+			quidu      	"3FED14F901EA"
+			width      	316
+			autoResize 	TRUE
+			width      	316
+			height     	162)
+		    (object ModView "Component View::
+GameModel" "NotAModuleType" "NotAModulePart" @58
+			location   	(800, 1408)
+			label      	(object ItemLabel
+			    Parent_View 	@58
+			    location   	(747, 1383)
+			    anchor_loc 	3
+			    nlines     	2
+			    max_width  	199
+			    label      	
+|
+|GameModel
+			    )
+			icon_style 	"Icon"
+			quidu      	"3FED150402B2"
+			width      	358
+			autoResize 	TRUE
+			width      	358
+			height     	162)
+		    (object ModView "Component View::Monster Model" "NotAModuleType" "NotAModulePart" @59
+			location   	(1168, 1408)
+			label      	(object ItemLabel
+			    Parent_View 	@59
+			    location   	(1124, 1381)
+			    anchor_loc 	3
+			    nlines     	2
+			    max_width  	163
+			    label      	"Monster Model")
+			icon_style 	"Icon"
+			quidu      	"3FED1513019A"
+			width      	294
+			height     	182
+			autoResize 	TRUE
+			width      	294
+			height     	182)
+		    (object ModView "Component View::Tile Model" "NotAModuleType" "NotAModulePart" @60
+			location   	(1488, 1408)
+			label      	(object ItemLabel
+			    Parent_View 	@60
+			    location   	(1453, 1383)
+			    anchor_loc 	3
+			    nlines     	2
+			    max_width  	127
+			    label      	"Tile Model")
+			icon_style 	"Icon"
+			quidu      	"3FED15330334"
+			width      	228
+			autoResize 	TRUE
+			width      	228
+			height     	162)
+		    (object ModVisView "" @61
+			stereotype 	TRUE
+			quidu      	"3FED153F0014"
+			client     	@58
+			supplier   	@57
+			line_style 	0)
+		    (object ModVisView "" @62
+			stereotype 	TRUE
+			quidu      	"3FED15430244"
+			client     	@59
+			supplier   	@57
+			line_style 	0)
+		    (object ModVisView "" @63
+			stereotype 	TRUE
+			quidu      	"3FED154601EA"
+			client     	@60
+			supplier   	@57
+			line_style 	0)
+		    (object ModVisView "" @64
+			stereotype 	TRUE
+			quidu      	"3FED154F01B8"
+			client     	@57
+			supplier   	@54
+			line_style 	0)
+		    (object ModVisView "" @65
+			stereotype 	TRUE
+			quidu      	"3FED155700BE"
+			client     	@57
+			supplier   	@55
+			line_style 	0)
+		    (object ModVisView "" @66
+			stereotype 	TRUE
+			quidu      	"3FED155903AC"
+			client     	@57
+			supplier   	@56
+			line_style 	0)))))
+    process_structure 	(object Processes
+	quid       	"3FC36DA203E2"
+	ProcsNDevs 	(list
+	    (object Process_Diagram "Deployment View"
+		quid       	"3FC36DA203E4"
+		title      	"Deployment View"
+		zoom       	100
+		max_height 	28350
+		max_width  	21600
+		origin_x   	0
+		origin_y   	0
+		items      	(list diagram_item_list))))
+    properties 	(object Properties
+	attributes 	(list Attribute_Set
+	    (object Attribute
+		tool       	"Repository"
+		name       	"HiddenTool"
+		value      	FALSE)
+	    (object Attribute
+		tool       	"SourceSafe"
+		name       	"HiddenTool"
+		value      	FALSE)
+	    (object Attribute
+		tool       	"TypeLibImporter"
+		name       	"HiddenTool"
+		value      	FALSE)
+	    (object Attribute
+		tool       	"VC++"
+		name       	"propertyId"
+		value      	"809135966")
+	    (object Attribute
+		tool       	"VC++"
+		name       	"default__Class"
+		value      	(list Attribute_Set
+		    (object Attribute
+			tool       	"VC++"
+			name       	"Generate"
+			value      	TRUE)
+		    (object Attribute
+			tool       	"VC++"
+			name       	"HeaderFile"
+			value      	"AUTO GENERATE")))
+	    (object Attribute
+		tool       	"VC++"
+		name       	"default__Operation"
+		value      	(list Attribute_Set
+		    (object Attribute
+			tool       	"VC++"
+			name       	"OperationIsConst"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"VC++"
+			name       	"OperationKindSet"
+			value      	(list Attribute_Set
+			    (object Attribute
+				tool       	"VC++"
+				name       	"Non-virtual"
+				value      	200)
+			    (object Attribute
+				tool       	"VC++"
+				name       	"Abstract"
+				value      	201)
+			    (object Attribute
+				tool       	"VC++"
+				name       	"Virtual"
+				value      	202)))
+		    (object Attribute
+			tool       	"VC++"
+			name       	"OperationKind"
+			value      	("OperationKindSet" 200))))
+	    (object Attribute
+		tool       	"VC++"
+		name       	"HiddenTool"
+		value      	FALSE)
+	    (object Attribute
+		tool       	"VJ++"
+		name       	"HiddenTool"
+		value      	FALSE)
+	    (object Attribute
+		tool       	"Visual Basic"
+		name       	"propertyId"
+		value      	"783606378")
+	    (object Attribute
+		tool       	"Visual Basic"
+		name       	"default__Class"
+		value      	(list Attribute_Set
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"CreatableSet"
+			value      	(list Attribute_Set
+			    (object Attribute
+				tool       	"Visual Basic"
+				name       	"Private"
+				value      	221)
+			    (object Attribute
+				tool       	"Visual Basic"
+				name       	"PublicNotCreatable"
+				value      	213)
+			    (object Attribute
+				tool       	"Visual Basic"
+				name       	"SingleUse"
+				value      	214)
+			    (object Attribute
+				tool       	"Visual Basic"
+				name       	"GlobalSingleUse"
+				value      	215)
+			    (object Attribute
+				tool       	"Visual Basic"
+				name       	"MultiUse"
+				value      	219)
+			    (object Attribute
+				tool       	"Visual Basic"
+				name       	"GlobalMultiUse"
+				value      	220)))
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"OptionBase"
+			value      	"0")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"OptionExplicit"
+			value      	TRUE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"OptionCompare"
+			value      	("CompareSet" 202))
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"Creatable"
+			value      	("CreatableSet" 221))
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateInitialization"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateTermination"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"CollectionClass"
+			value      	"Collection")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"CompareSet"
+			value      	(list Attribute_Set
+			    (object Attribute
+				tool       	"Visual Basic"
+				name       	"None"
+				value      	202)
+			    (object Attribute
+				tool       	"Visual Basic"
+				name       	"Binary"
+				value      	203)
+			    (object Attribute
+				tool       	"Visual Basic"
+				name       	"Text"
+				value      	204)))))
+	    (object Attribute
+		tool       	"Visual Basic"
+		name       	"default__Operation"
+		value      	(list Attribute_Set
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"OperationName"
+			value      	"$operation")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"LibraryName"
+			value      	"")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"AliasName"
+			value      	"")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"IsStatic"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"EntryCode"
+			value      	(value Text ""))
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"ExitCode"
+			value      	(value Text ""))))
+	    (object Attribute
+		tool       	"Visual Basic"
+		name       	"default__Attribute"
+		value      	(list Attribute_Set
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"IsConst"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"New"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"WithEvents"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"Subscript"
+			value      	"")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"NameIfUnlabeled"
+			value      	"the$supplier")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateDataMember"
+			value      	TRUE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"DataMemberName"
+			value      	"$relationship")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateGetOperation"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateSetOperation"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateLetOperation"
+			value      	FALSE)))
+	    (object Attribute
+		tool       	"Visual Basic"
+		name       	"default__Role"
+		value      	(list Attribute_Set
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"New"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"WithEvents"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"Subscript"
+			value      	"")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"NameIfUnlabeled"
+			value      	"the$supplier")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateDataMember"
+			value      	TRUE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"DataMemberName"
+			value      	"$relationship")
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateGetOperation"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateSetOperation"
+			value      	FALSE)
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"GenerateLetOperation"
+			value      	FALSE)))
+	    (object Attribute
+		tool       	"Visual Basic"
+		name       	"default__Inherit"
+		value      	(list Attribute_Set
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"ImplementsDelegation"
+			value      	TRUE)))
+	    (object Attribute
+		tool       	"Visual Basic"
+		name       	"default__Module-Spec"
+		value      	(list Attribute_Set
+		    (object Attribute
+			tool       	"Visual Basic"
+			name       	"ProjectFile"
+			value      	"")))
+	    (object Attribute
+		tool       	"Visual Basic"
+		name       	"HiddenTool"
+		value      	FALSE)
+	    (object Attribute
+		tool       	"VisualStudio"
+		name       	"HiddenTool"
+		value      	FALSE))
+	quid       	"3FC36DA203E3"))
