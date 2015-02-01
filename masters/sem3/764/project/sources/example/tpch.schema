@@ -1,0 +1,85 @@
+table PART 1
+group 9
+column P_PARTKEY int 4
+column P_NAME char 55
+column P_MFGR char 25
+column P_BRAND char 10
+column P_TYPE char 25
+column P_SIZE int 4
+column P_CONTAINER char 10
+column P_RETAILPRICE float 4
+column P_COMMENT char 23
+
+table SUPPLIER 1
+group 7
+column S_SUPPKEY int 4
+column S_NAME char 25
+column S_ADDRESS char 40
+column S_NATIONKEY int 4
+column S_PHONE char 15
+column S_ACCTBAL float 4
+column S_COMMENT char 101
+
+table PARTSUPP 1
+group 5
+column PS_PARTKEY int 4
+column PS_SUPPKEY int 4
+column PS_AVAILQTY int 4
+column PS_SUPPLYCOST float 4
+column PS_COMMENT char 199
+
+table CUSTOMER 1
+group 8
+column C_CUSTKEY int 4
+column C_NAME char 25
+column C_ADDRESS char 40
+column C_NATIONKEY int 4
+column C_PHONE char 15
+column C_ACCTBAL float 4
+column C_MKTSEGMENT char 10
+column C_COMMENT char 117
+
+table ORDERS 1
+group 9
+column O_ORDERKEY int 4
+column O_CUSTKEY int 4
+column O_ORDERSTATUS char 1
+column O_TOTALPRICE float 4
+column O_ORDERDATE char 4
+column O_ORDERPRIORITY char 15
+column O_CLERK char 15
+column O_SHIPPRIORITY int 4
+column O_COMMENT char 79
+
+table LINEITEM 1
+group 16
+column L_ORDERKEY int 4
+column L_PARTKEY int 4
+column L_SUPPKEY int 4
+column L_LINENUMBER int 4
+column L_QUANTITY float 4
+column L_EXTENDEDPRICE float 4
+column L_DISCOUNT float 4
+column L_TAX float 4
+column L_RETURNFLAG char 1
+column L_LINESTATUS char 1
+column L_SHIPDATE char 4
+column L_COMMITDATE char 4
+column L_RECEIPTDATE char 4
+column L_SHIPINSTRUCT char 25
+column L_SHIPMODE char 10
+column L_COMMENT char 44
+
+table NATION 1
+group 4
+column N_NATIONKEY int 4
+column N_NAME char 25
+column N_REGIONKEY int 4
+column N_COMMENT char 152
+
+table REGION 1
+group 3
+column R_REGIONKEY int 4
+column R_NAME char 25
+column R_COMMENT char 152
+

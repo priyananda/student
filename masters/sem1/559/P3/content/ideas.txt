@@ -1,0 +1,41 @@
+ideas:
+1. skydome
+	- semi circular
+	- clouds moving
+	- sun moving
+2. lighting
+	- ambient light changes with time of the day
+	- shadows
+3. heightmaps
+	- different textures
+4. sea
+	- surf effect
+	- waves
+5. effects
+	- light maps
+	- bump maps
+	- volcano lava - smoke
+6. articulation
+	- fan
+7. subdivision
+	- egg
+8. bspline
+	- crow on a bspline
+9. trees
+	- lots of leaves, transparent
+
+Grading
+1. multiple moving objects
+	- fan
+	- crow
+2. Multiple different types of behaviors
+	- crow
+3. Multiple different types of buildings / scenery
+4. Multile new textures
+5. You must attempt "enough" technical challenges
+	- sky dome : 2
+	- fake physics : waves 2
+	- culling: frustum culling 1
+	- subdivision: egg 3
+	- shaders: 3
+	- particle: smoke 1

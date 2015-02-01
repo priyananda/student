@@ -1,0 +1,12 @@
+!staelin 994682994 bk-2.0beta11b: sfio -i = 0
+!staelin 994682994 bk-2.0beta11b: sfiles -pAC = 0
+!staelin 994682994 bk-2.0beta11b: sfiles -D = 0
+!staelin 994682994 bk-2.0beta11b: parent /usr/WebPaper/users/staelin/src/LMbench = 0
+!staelin 994682994 bk-2.0beta11b: sfiles = 0
+!staelin 994682999 bk-2.0beta11b: get -s = 0
+!staelin 994682999 bk-2.0beta11b: get -s = 0
+!staelin 994682999 bk-2.0beta11b: get -s = 0
+!staelin 994682999 bk-2.0beta11b: get -s = 0
+!staelin 994682999 bk-2.0beta11b: get -s = 0
+!staelin 994682999 bk-2.0beta11b: sfiles -U -g = 0
+!staelin 994682999 bk-2.0beta11b: prs -hr+ -d$if(:SYMBOL:){:SYMBOL: }:UTC: ../ChangeSet = 0

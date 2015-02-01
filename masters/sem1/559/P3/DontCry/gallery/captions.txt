@@ -1,0 +1,5 @@
+shenoy-1.tga The mountain terrain
+shenoy-2.tga Gyroscope - complex motion
+shenoy-3.tga Per Pixel Dot3 Bump Mapping
+shenoy-4.tga Some tongue-in-cheek humor
+shenoy-5.tga The Matrix Effect in action

@@ -1,0 +1,28 @@
+[lmbench2.0 results for Linux localhost.localdomain 2.2.5-15perf #1 Sun Oct 12 22:35:32 IST 2003 i686 unknown]
+[MHZ: 1461 MHz, 0.68 nanosec clock]
+[OS: i686-pc-linux-gnu]
+[USER: root]
+[SYSNAME: Linux]
+[PROCESSOR: unknown]
+[MACHINE: i686]
+[RELEASE: 2.2.5-15perf]
+Simple syscall: 0.1885 microseconds
+Simple read: 0.2814 microseconds
+Simple write: 0.2297 microseconds
+Simple stat: 2.0146 microseconds
+Simple fstat: 0.3435 microseconds
+Simple open/close: 2.6275 microseconds
+Select on 10 fd's: 1.1162 microseconds
+Select on 100 fd's: 4.3096 microseconds
+Select on 250 fd's: 9.6375 microseconds
+Select on 500 fd's: 49.0442 microseconds
+Process fork+exit: 55.0928 microseconds
+Process fork+execve: 433.6667 microseconds
+Process fork+/bin/sh -c: 2495.3333 microseconds
+2.097152 110
+4.194304 428
+8.388608 1125
+16.777216 2466
+33.554432 4836
+
+[Wed Oct 22 19:17:09 IST 2003]

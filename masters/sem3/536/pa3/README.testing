@@ -1,0 +1,25 @@
+Testcases:
+
+Testcase #0: No arguments are passed to the parser. Should report an error.
+
+Testcase #0: Invalid filename passed as input. Should report an error
+
+Testcase #1: This is the example.simple provided in the code skeleton
+
+Testcase #2: This checks operator precedence and associativity.
+
+Testcase #3: An empty file is passed as input. This should not return ant error.
+
+Testcase #4: Main test file. The following things are tested:
+	- multiple functions in one file
+	- functions with arguments
+	- functions without arguments
+	- integer, string, boolean, float variables and literals
+	- calling function with arguments
+	- calling fucntions without arguments
+	- if,if else and while statements
+	- nested if/while loops
+	- global variables at before and after functions
+	- empty function body
+	- write statment
+	- all the unary and binary operators

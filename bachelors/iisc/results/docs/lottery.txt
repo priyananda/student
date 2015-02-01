@@ -1,0 +1,133 @@
+This paper presents lottery scheduling, a recently introduced
+proportional-share scheduler that enables flexible control over the
+relative rates at which CPU-bound workloads consume processor
+time. The primary advantages of this approach are that users have
+strict control over the relative execution rates of their processes, and
+users are load-insulated from each other, preventing one user from
+dominating the CPU. Lottery scheduling’s ticket and currency
+abstractions provide a resource management framework that allows
+for both flexible allocation and insulation between groups of
+processes. In this project, we have implemented a simple lottery
+scheduler for the Redhat Linux 7.2 kernel, and found that it provides
+flexible and responsive control over the relative execution rates of
+quite a wide range of applications. We have compared the
+performance of our implementation with that of the standard Linux
+scheduler and observed that the overhead imposed by our
+unoptimized implementation is comparable in most cases.
+
+1 Introduction
+
+Scheduling computations in multi-threaded systems is a
+complex, challenging problem [1]. Scarce resources must be
+multiplexed to service requests of varying importance, and the
+policy chosen to manage this multiplexing can have an
+enormous impact on throughput and response time. Accurate
+control over the quality of service provided to users and
+applications requires support for specifying relative
+computation rates. Such control is desirable across a wide
+spectrum of systems. For long running systems such as
+scientific applications and simulations, the consumption of
+computing resources that are shared among users and
+applications of varying importance has to be regulated [2]. For
+interactive computations, such as databases and media based
+applications, programmers and users need the ability to rapidly
+focus available resources on tasks that are currently important
+[3].
+The Linux scheduler is a priority-based scheduler that
+schedules tasks based upon their static and dynamic priorities.
+When these priorities are combined they form a task's
+goodness. Each time the Linux scheduler runs, every runnable
+task is examined and its goodness value computed. The task
+having the highest goodness value is chosen to run next. But
+the Linux scheduling algorithm relies on the simple notion of
+priority that does not provide the encapsulation and modularity
+properties required for the engineering of large software
+systems [1]. In fact, with the exception of hard real-time
+systems, it has been observed that the assignment of priorities
+and dynamic priority adjustment schemes are often ad-hoc [4].
+We have implemented lottery scheduling, a recently
+introduced randomized mechanism by Waldspurger et al. that
+provides responsive control over the relative execution rates of
+computations [1]. Lottery scheduling efficiently implements
+proportional-share resource management - the resource
+consumption rates of active computations are proportional to
+the relative shares that they are allocated. The resource
+management framework developed for lottery scheduling
+provides a means for resource allocation to be more flexible
+and responsive. Clients receive a share of a given resource that
+is proportional to the number of tickets that they hold for that
+resource; changing the number of tickets that a client holds
+automatically leads to a change in its resource rights.
+In addition, lottery scheduling provides a currency
+abstraction that allows processes to be grouped together and
+insulated from other processes. For example, the system might
+choose to fund each user’s applications with tickets issued by a
+currency specific to that user. Each currency effectively
+maintains its own exchange rate with a central base currency:
+the more tickets a currency issues, the less they are worth with
+respect to the base currency, and their total base value can
+never exceed the value of the tickets used to back the currency
+itself. By employing equally-funded user currencies, the
+system can ensure that each user receives the same overall
+rights to the system’s resources for his or her processes, and
+that no single user can monopolize the system.
+The primary contribution of this paper is that we implement
+a lottery scheduler for the Linux kernel and compare the
+performance of this scheduler with that of the traditional Linux
+scheduler.
+The remainder of the paper is organized as follows. The
+next section briefly discusses the characteristics of the
+traditional Linux scheduler. Section 3 describes the lotteryscheduling
+algorithm in detail. The concept of currencies,
+compensation tickets, etc have been explained here. Section 4
+describes our implementation details. Section 5 shows the
+results we achieved. Section 6 discusses the related work that
+has been done. The last section concludes with a brief
+discussion.
+2 Background
+A process scheduler has several conflicting goals. scheduler should ensure that interactive processes are
+responsive to user input despite not being able to always
+distinguish these processes from non-interactive processes.
+Batch processes should be scheduled to maximize throughput
+despite potential lock contention between such processes.
+While addressing these goals, the scheduler must ensure that
+no process starves and the needs of low and high-priority jobs
+are reconciled. In this paper, however, we are not concerned
+with real-time schedulers.
+2.1 Scheduling in Linux
+The Linux kernel currently uses a priority-based scheduler
+that allocates a resource to the process with the highest priority
+at the time the scheduler is invoked. In Linux, process priority
+is dynamic. The scheduler keeps track of what processes are
+doing and adjusts their priorities periodically; in this way,
+processes that have been denied the use of the CPU for a long
+time interval are boosted by dynamically increasing their
+priority. Correspondingly, processes running for a long time
+are penalized by decreasing their priority. The Linux scheduler
+schedules tasks based both upon their static and dynamic
+priorities. When these priorities are combined they form a
+task's goodness. Each time the Linux scheduler runs, every
+task on the run queue is examined and its goodness value is
+computed. The task with the highest goodness is chosen to run
+next. Ties in goodness result in the task that is closest to the
+front of the queue running first.
+When there are compute bound tasks running in the system,
+the Linux scheduler may not be called for intervals of up to
+0.40 seconds or so depending upon the nice value of a process.
+This means that the currently running task has the CPU to
+itself for periods of up to 0.40 seconds or so. This provides
+good throughput because there are few computationally
+unnecessary context switches. However it can kill interactivity
+because Linux only reschedules when a task blocks or when
+the task's dynamic priority (counter) reaches zero. Thus under
+Linux's default priority based scheduling method, long
+scheduling latencies can occur.
+There are also a number of other limitations with standard
+Linux scheduling algorithm. Linux provides no inter-user load
+insulation. It is possible for a single user to monopolize the
+CPU simply by starting many processes. Further, there is no
+way to directly control relative execution rates, i.e. a user or an
+administrator cannot specify that one task should get half as
+much CPU as another.
+These limitations become significant on large systems with
+many users.

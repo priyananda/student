@@ -1,0 +1,90 @@
+h59793
+s 00001/00001/00031
+d D 1.3 00/12/11 16:12:47 staelin 4 3
+c - Add new relevant entries to "SEE ALSO" section
+cC
+cK15495
+e
+s 00002/00002/00030
+d D 1.2 00/12/11 15:50:35 staelin 3 2
+c - Add information to "SEE ALSO" section
+cC
+cHhpli8.hpli.hpl.hp.com
+cK13359
+cZ+02:00
+e
+s 00032/00000/00000
+d D 1.1 94/11/18 01:26:35 lm 2 1
+c Initial revision
+cC
+cK13351
+e
+s 00000/00000/00000
+d D 1.0 94/11/18 01:26:34 lm 1 0
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHlm.bitmover.com
+cK03877
+cPdoc/lat_mmap.8
+cR84a64349f0123bfd
+cV4
+cX0x21
+cZ-08:00
+e
+u
+U
+f e 0
+f x 0x21
+t
+lmbench doc checkin
+T
+I 2
+.\" $Id$
+.TH LAT_MMAP 8 "$Date$" "(c)1994 Larry McVoy" "LMBENCH"
+.SH NAME
+lat_mmap \- costs of mmapping and unmmapping varying file sizes
+.SH SYNOPSIS
+.B lat_mmap
+.I size
+.I file
+.SH DESCRIPTION
+.B lat_mmap
+times how fast a mapping can be made and unmade.  This is useful because it
+is a fundemental part of processes that use SunOS style shared libraries
+(the libraries are mapped in at process start up time and unmapped at 
+process exit).
+D 3
+.LP
+E 3
+I 3
+.PP
+E 3
+The benchmark maps in and unmaps the first \fIsize\fP bytes of the file
+repeatedly and reports the average time for one mapping/unmapping.  
+D 3
+.LP
+E 3
+I 3
+.PP
+E 3
+The size
+specification may end with ``k'' or ``m'' to mean
+kilobytes (* 1024) or megabytes (* 1024 * 1024).
+.SH OUTPUT
+Output format is \f(CB"%0.2f %d\\n", megabytes, usecs\fP, i.e.,
+.sp
+.ft CB
+8.00 1200
+.ft
+.SH ACKNOWLEDGEMENT
+Funding for the development of
+this tool was provided by Sun Microsystems Computer Corporation.
+.SH "SEE ALSO"
+D 4
+lmbench(8).
+E 4
+I 4
+lmbench(8), open(2), mmap(2), munmap(2).
+E 4
+E 2
+I 1
+E 1

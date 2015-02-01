@@ -1,0 +1,73 @@
+h64440
+s 00011/00008/00004
+d D 1.2 98/06/30 11:09:05 lm 3 2
+cC
+cK59783
+cZ-07:00
+e
+s 00012/00000/00000
+d D 1.1 94/11/25 17:19:40 lm 2 1
+c Initial revision
+cK46895
+e
+s 00000/00000/00000
+d D 1.0 94/11/25 17:19:39 lm 1 0
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHlm.bitmover.com
+cK12849
+cPCOPYING-2
+cRb10a375651a436ed
+cV4
+cX0x21
+cZ-08:00
+e
+u
+U
+f e 0
+f x 0x21
+t
+LMbench v2.x benchmarking system
+T
+I 2
+D 3
+$Id$
+E 3
+I 3
+%M% %I% %E%
+E 3
+
+D 3
+The set of programs and documentation known as "lmbench" are
+distributed under the Free Software Foundation's General Public License
+with the following additional restriction (which overrides any
+conflicting restriction in the GPL):
+E 3
+I 3
+The set of programs and documentation known as "lmbench" are distributed
+under the Free Software Foundation's General Public License with the
+following additional restrictions (which override any conflicting
+restrictions in the GPL):
+E 3
+
+D 3
+You may not distribute results in any public forum, in any publication,
+or in any other way if you have modified the benchmarks.  
+E 3
+I 3
+1. You may not distribute results in any public forum, in any publication,
+   or in any other way if you have modified the benchmarks.  
+
+2. You may not distribute the results for a fee of any kind.  This includes
+   web sites which generate revenue from advertising.
+E 3
+
+If you have modifications or enhancements that you wish included in
+D 3
+future versions, please mail those to me, Larry McVoy, at lm@sgi.com.
+E 3
+I 3
+future versions, please mail those to me, Larry McVoy, at lm@bitmover.com.
+E 3
+E 2
+I 1
+E 1

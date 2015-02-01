@@ -1,0 +1,94 @@
+h11914
+s 00005/00004/00032
+d D 1.2 00/12/11 16:12:51 staelin 3 2
+c - Add new relevant entries to "SEE ALSO" section
+cC
+cHhpli8.hpli.hpl.hp.com
+cK27940
+cZ+02:00
+e
+s 00036/00000/00000
+d D 1.1 94/11/18 01:26:35 lm 2 1
+c Initial revision
+cC
+cK23542
+e
+s 00000/00000/00000
+d D 1.0 94/11/18 01:26:34 lm 1 0
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHlm.bitmover.com
+cK03777
+cPdoc/lat_tcp.8
+cR5609f9268d2e1165
+cV4
+cX0x21
+cZ-08:00
+e
+u
+U
+f e 0
+f x 0x21
+t
+lmbench doc checkin
+T
+I 2
+.\" $Id$
+.TH LAT_TCP 8 "$Date$" "(c)1994 Larry McVoy" "LMBENCH"
+.SH NAME
+lat_tcp \- measure interprocess communication latency via TCP/IP
+.SH SYNOPSIS
+.B lat_tcp
+.I -s
+.sp .5
+.B lat_tcp
+.I hostname
+.sp .5
+.B lat_tcp
+.I -hostname
+.SH DESCRIPTION
+.B lat_tcp
+is a client/server program that measures interprocess
+communication latencies.  The benchmark passes a token back and forth between
+the two processes (this sort of benchmark is frequently referred to as a
+``hot potato'' benchmark).  No other work is done in the processes.
+D 3
+.LP
+E 3
+I 3
+.PP
+E 3
+.B lat_tcp
+D 3
+has three forms of usage: as a server (-s), as a client (lat_tcp localhost), and
+E 3
+I 3
+has three forms of usage: as a server (lat_tcp -s), 
+as a client (lat_tcp localhost), and
+E 3
+as a shutdown (lat_tcp -localhost).
+.SH OUTPUT
+The reported time is in microseconds per round trip and includes the total
+D 3
+time, i.e., the context switching overhead is includeded.
+E 3
+I 3
+time, i.e., the context switching overhead is included.
+E 3
+Output format is like so
+.sp
+.ft CB
+TCP latency using localhost: 700 microseconds
+.ft
+.SH ACKNOWLEDGEMENT
+Funding for the development of
+this tool was provided by Sun Microsystems Computer Corporation.
+.SH "SEE ALSO"
+D 3
+lmbench(8).
+E 3
+I 3
+lmbench(8), read(2), write(2), socket(2), bind(2), connect(2).
+E 3
+E 2
+I 1
+E 1

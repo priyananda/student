@@ -1,0 +1,85 @@
+/**********************************************************************
+ Grammar for Simple programs
+ **********************************************************************/
+program		: declList
+		;
+
+declList 	: declList decl
+		|
+		;
+
+decl		: varDecl
+		| fnDecl
+		;
+
+varDecl		: type id SEMICOLON
+		;
+
+fnDecl		: VOID id formals fnBody        // only functions that don't
+		;				// return anything
+
+type		: INTEGER
+	        | FLOAT
+	        | BOOLEAN
+                | STRING
+		;
+
+formals		: LPAREN RPAREN
+		| LPAREN formalList RPAREN
+		;
+
+formalList	: type id
+		| formalList COMMA type id
+		;
+
+fnBody		: LCURLY varDeclList stmtList RCURLY
+		;
+
+varDeclList	: varDeclList varDecl
+		| /* epsilon */
+		;
+
+stmtList	: stmtList stmt
+		| /* epsilon */
+		;
+
+stmt		: WRITE LPAREN exp RPAREN SEMICOLON
+	        | id ASSIGN exp SEMICOLON
+	        | IF LPAREN exp RPAREN LCURLY stmtList RCURLY
+	        | IF LPAREN exp RPAREN LCURLY stmtList RCURLY ELSE LCURLY stmtList RCURLY
+	        | WHILE LPAREN exp RPAREN LCURLY stmtList RCURLY
+		| RETURN SEMICOLON
+	        | id LPAREN RPAREN SEMICOLON  	  // function call with no args
+	        | id LPAREN actualList RPAREN SEMICOLON // with args
+		;
+
+exp		: id
+	        | INTLITERAL
+	        | FLOATLITERAL
+	        | STRINGLITERAL
+	        | TRUE
+	        | FALSE
+		| MINUS exp
+	        | exp PLUS exp
+	        | exp MINUS exp
+	        | exp TIMES exp
+	        | exp DIVIDE exp
+	        | NOT exp
+	        | exp AND exp
+	        | exp OR exp
+		| exp EQUALS exp
+		| exp NOTEQUALS exp
+		| exp LESS exp
+		| exp GREATER exp
+		| exp LESSEQ exp
+		| exp GREATEREQ exp
+	        | LPAREN exp RPAREN
+		;
+
+actualList	: exp
+		| actualList COMMA exp
+		;
+
+id              : ID
+		;
+

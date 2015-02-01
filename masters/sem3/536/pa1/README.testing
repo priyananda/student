@@ -1,0 +1,23 @@
+These situations are tested by the 'test' target in the Makefile:
+a) No input arguments
+	The main program expects the input file name to be passed as
+	a commandline parameter. If this is missing, the program should
+	print an error message and exit.
+b) Nonexistent/inaccessible file
+	If the input file is not accessible, then the program should
+	print an error message and exit.
+c) Duplicates
+	If there are multiple repeated symbols in the file, the program
+	should print an error message and exit when it detects the second
+	occurance of the symbol. The file 'duplicates.txt' has the symbol
+	'cat' repeated.
+d) Case sensitivity
+	The file 'case.txt' has multiple symbols with same letters but
+	differing in case. There should be no error messages in this case.
+e) Hash collisions
+	The file 'hash_collisions.txt' has many symbols that hash to the
+	same bucket. There should be no error messages and every symbol
+	must be present in the output.
+
+If there are no errors the main program prints the contents of the
+symbol table.

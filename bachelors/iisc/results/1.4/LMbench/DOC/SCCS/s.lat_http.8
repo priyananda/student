@@ -1,0 +1,76 @@
+h04185
+s 00046/00000/00000
+d D 1.1 00/12/11 15:39:13 staelin 2 1
+cC
+cF1
+cK40245
+cO-rw-rw-r--
+e
+s 00000/00000/00000
+d D 1.0 00/12/11 15:39:13 staelin 1 0
+c BitKeeper file /tmp_mnt/usr/WebPaper/users/staelin/src/LMbench2/doc/lat_http.8
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHhpli8.hpli.hpl.hp.com
+cK12023
+cPdoc/lat_http.8
+cR6f042819330a4fd2
+cV4
+cX0xa1
+cZ+02:00
+e
+u
+U
+f e 0
+f x 0xa1
+t
+T
+I 2
+.\" $Id$
+.TH LAT_HTTP 8 "$Date$" "(c)1994 Larry McVoy" "LMBENCH"
+.SH NAME
+lat_http \- measure HTTP latencies
+.SH SYNOPSIS
+.B lat_http
+.I -s
+.sp .5
+.B lat_tcp
+.I hostname
+.sp .5
+.B lat_tcp
+.I -hostname
+.SH DESCRIPTION
+.B lat_http
+implements a
+.I very
+simple HTTP server and uses this simple server to measure
+HTTP version 1.0 transactional latency.  
+.PP
+.B lat_http
+has three forms of usage: as a server (lat_http -s), 
+as a client (lat_http localhost), and
+as a shutdown (lat_http -localhost).
+.PP
+.B lat_http
+is not meant to be used to measure HTTP server performance,
+but was intended to provide some insight into the potential
+performance for HTTP version 1.0 servers.  
+HTTP version 1.0 is very inefficient with respect to system
+and networking resources, since it creates a new TCP connection
+for each file request.
+.SH OUTPUT
+.B lat_http
+reports the average file size, the total number of bytes
+transferred, the total time to transfer the data, and
+the average bandwidth, i.e.:
+.sp
+.ft CB
+Avg xfer: 3.2KB, 41.8KB in 14.4990 millisecs, 2.88 MB/sec
+.ft
+.SH ACKNOWLEDGEMENT
+Funding for the development of
+this tool was provided by Sun Microsystems Computer Corporation.
+.SH "SEE ALSO"
+lmbench(8), read(2), write(2), socket(2), bind(2), connect(2).
+E 2
+I 1
+E 1

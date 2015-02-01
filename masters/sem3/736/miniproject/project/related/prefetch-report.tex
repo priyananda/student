@@ -1,0 +1,189 @@
+\documentclass[twocolumn,11pt]{article}
+\usepackage{url}
+\usepackage{graphics}
+\usepackage{hyperref}
+\usepackage{epsfig}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\lstset{language=C}
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green}
+}
+\newcommand{\chumma}[1]{\subsubsection {#1}}
+\newcommand{\mus}{$\mu s$}
+%\setlength{\parindent}{0in}
+\newcommand{\g}{\mathcal{G}}
+
+\title{\bf \textsf{Enhanced File Prefetching}}
+
+\author{ Tushar Khot \hspace{20pt} Varghese Mathew \hspace{20pt}  Priyananda Shenoy \
+\\
+       {\em \normalsize Department of Computer Sciences}\\
+       {\em \normalsize University of Wisconsin, Madison, WI}\\
+       {\tt \normalsize \{tushar,vmathew,shenoy\}@cs.wisc.edu}}
+
+\begin{document}
+\date{}
+\raggedbottom
+
+\maketitle
+
+\pagenumbering{arabic}
+\pagestyle{plain}\setlength{\footskip}{25pt}
+
+\section{Related Work}
+With rapidly increasing processing speeds that have not quite been matched
+by rising disk speeds, prefetching and caching gain dominance as mechanisms
+to mitigate the lag and allow higher utilization of the processor even
+with I/O bound tasks.
+
+Cao et. al \cite{1} compares two prefetching strategies, aggressive and conservative,
+and conclude that an aggressive strategy comes closer to the offline-computed
+optimal strategy than the conservative one. However, we believe that this
+is overly generalized. In our perspective, the comparison of aggressive vs.
+conservative must be done at a file-type granularity. For e.g.. a multimedia
+audio file will not need extremely aggressive access since the read need
+not take place faster than the rate at which the file is being played.
+Likewise, an archive file which most likely is accessed in a piecewise
+sequential manner can again be prefetched somewhat conservatively to
+avoid buffer cache pollution and wasteful prefetching.
+
+Shih et al. \cite{6} propose to use cache hit histories to determine the
+sequentiality of access and perform prefetching accordingly. However,
+the inferences thus drawn are not persistent. And storing them on a
+per-file basis may not be a scalable approach. However, file-types
+offer a convenient axis against which inferences about access
+patterns can be aggregated and stored.
+
+With concurrent I/O by different applications brought into the equation,
+Li et al. \cite{2} propose a strategy where prefetch depth is determined by
+the amount of data that can be read in the average time gap between
+an I/O switch. However, this approach is not without problems. For e.g..
+with a multimedia file and a Pdf file contending for prefetch from
+disk, an equal share is not the best solution.. The multimedia file
+needs to get priority as it is the one that would suffer more because
+of delays. This is again a situation where prioritizing based on
+file-type can possibly yield a solution.
+
+Butt et al. \cite{7} stress on the importance of studying prefetching algorithms
+and cache management algorithms in conjunction. These two are closely related
+and therefore an optimization in one without regard to its impact on the
+other can actually result in deterioration of performance. We therefore
+look at cache management strategies that can complement the prefetching
+enhancements at the file-type granularity. Eviction policy is an ideal
+candidate for improvisation with knowledge of file-type.
+
+A fairly obvious idea is to allow applications to inform the file system
+about it's prefetching policy. Griffioen \cite{3} uses application
+specified hints to better tune the prefetching policy. Patterson et al.
+\cite{4} extends this idea to cover both prefetching and caching policies.
+To relieve the programmer of the responsibility of giving hints correctly,
+Chang et al. \cite{5} instrument the application binary to analyze access
+patterns and generate hints automatically.
+The problem with hints is that most of the time applications do not themselves
+know future access patterns, and static analysis of application may not
+yield the right patterns.
+
+Another approach which has been tried is to build application specific
+optimizations for complex access patterns. Mitra et al. \cite{8} 
+developed specialized application level prefetch prediction for
+multimedia programs. They achieve this by generating a prefetch
+thread which prefetches entirely at the application level. But
+such approaches do not generalize well to other applications.
+
+Baek et al. \cite{9} optimize prefetching for massive media files.
+They distinguish between metadata reads and sequential data reads
+and adapt accordingly. But they do not use any file type or file
+history information to make a prefetch decision.
+
+Kim et al. \cite{10} streamline cache management and prefetch policies
+for multimedia servers. They use system load to determine prefetch
+depth and cache policies. Their goal is not necessarily to optimize
+overall performance, but to guarantee quality of service to each
+client.
+
+File prefetching can be done at both inter-file and intra-file level.
+Griffioen \cite{12} studied the performance of automatic prefetching
+which remembers file access patterns and aggressively loads files 
+related to this file. Preload \cite{11} operates as a daemon which looks at
+file accesses, and uses a predictive probabilistic model to preload
+files likely to be accessed next. While these techniques work fine
+for inter-file dependencies, they cannot directly be applied for
+intra-file block accesses.
+
+A large body of work has been concentrated on analyzing the access 
+patterns of a file and predicting the prefetch depth. Fido \cite{13}
+uses a dynamic learning algorithm to determine which class the
+access belongs to, in the specific context of databases. Such 
+approaches suffer from having only local histories, which are
+forgotten after the session ends. On the other hand, maintaining
+per-file access histories across sessions involves too much of an
+overhead.
+
+Phunchongharn et al. \cite{14} used file type information to optimize
+various strategies such as disk allocation, redundancy, and caching
+strategies. But their work doesn't cover prefetching strategies.
+
+\begin{thebibliography}{99}
+
+\bibitem[1]{1} Cao P, Edward W. Felten, Anna R and Y Kai Li.
+	A study of integrated prefetching and caching strategies.
+	In {\em In Proceedings of the ACM SIGMETRICS}, 1995.
+	
+\bibitem[2]{2} Chuanpeng Li, Kai Shen, Athanasios E. Papathanasiou
+	Competitive prefetching for concurrent sequential I/O.
+	In {\em Proceedings of the 2nd ACM SIGOPS/EuroSys European Conference on Computer Systems}, 2007.
+
+\bibitem[3]{3} James Griffioen.
+	Reducing file system latency using a predictive approach.
+	In {\em USENIX 94}, 1994.
+
+\bibitem[4]{4} R. Hugo Patterson and Garth A. Gibson and Eka Ginting and Daniel Stodolsky and Jim Zelenka.
+	Informed Prefetching and Caching.
+	In {\em In Proceedings of the Fifteenth ACM Symposium on Operating Systems Principles}, 1995.
+	
+\bibitem[5]{5} Fay W. Chang and Garth A. Gibson.
+	Automatic I/O Hint Generation through Speculative Execution.
+	In {\em Proceedings of the 3rd Symposium on Operating Systems Design and Implementation}, 1999.
+
+\bibitem[6]{6} Shih, F.W.; Lee, T.-C.; Ong, S.
+	A file-based adaptive prefetch caching design.
+	In {\em Proceedings 1990 IEEE International Conference on Volume}, 1990.
+
+\bibitem[7]{7} Ali R. Butt, Chris Gniady, Y. Charlie Hu
+	The performance impact of kernel prefetching on buffer cache replacement algorithms.
+	In {\em ACM SIGMETRICS Performance Evaluation Review Volume 33 , Issue 1}, 2005.
+
+\bibitem[8]{8} Tulika Mitra, Chuan-Kai Yang, Tzi-cker Chiueh	.
+	APPLICATION-SPECIFIC FILE PREFETCHING FOR MULTIMEDIA PROGRAMS.
+
+\bibitem[9]{9} Sung Hoon Baek, Kyu Ho Park.
+	Massive Stripe Cache And Prefetching for Massive File I/O.
+	In {\em ICCE 2007}, 2007.
+
+\bibitem[10]{10} K.-H. Kim, S.-H. Lim, and K.-H. Park.
+	Adaptive Read-Ahead and Buffer Management for Multimedia Systems.
+	In {\em Internet and Multimedia Systems and Applications}, 2004.
+	
+\bibitem[11]{11} Behdad Esfahbod.
+	Preload — An Adaptive Prefetching Daemon.
+	{\em Masters Thesis, Graduate Department of Computer Science. University of Toronto}, 2006.
+
+\bibitem[12]{12} James Griffioen.
+	Performance measurements of automatic prefetching.
+	In {\em Proceedings of the ISCA International Conference on Parallel and Distributed Computing Systems}, 1995.
+
+\bibitem[13]{13} Mark Palmer, Stanley B. Zdonik.
+	Fido: A Cache That Learns To Fetch.
+	In {\em Technical Report: CS-91-15, Brown University}, 1991.
+	
+\bibitem[14]{14}Phunchongharn, Phond Pornnapa, Supart Achalakul, Tiranee.
+	File Type Classification for Adaptive Object File System.
+	In {\em TENCON 2006 - IEEE Region 10 Conference}, 2006.
+\end{thebibliography}
+
+\end{document}

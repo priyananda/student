@@ -1,0 +1,55 @@
+h49875
+s 00025/00000/00000
+d D 1.1 00/12/11 15:39:14 staelin 2 1
+cC
+cF1
+cK18634
+cO-rw-rw-r--
+e
+s 00000/00000/00000
+d D 1.0 00/12/11 15:39:14 staelin 1 0
+c BitKeeper file /tmp_mnt/usr/WebPaper/users/staelin/src/LMbench2/doc/lat_unix_connect.8
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHhpli8.hpli.hpl.hp.com
+cK52961
+cPdoc/lat_unix_connect.8
+cR6f02a81d330f6d78
+cV4
+cX0xa1
+cZ+02:00
+e
+u
+U
+f e 0
+f x 0xa1
+t
+T
+I 2
+.\" $Id$
+.TH LAT_UNIX_CONNECT 8 "$Date$" "(c)1994 Larry McVoy" "LMBENCH"
+.SH NAME
+lat_unix_connect \- measures interprocess connection latency through Unix sockets
+.SH SYNOPSIS
+.B lat_unix_connect
+.SH DESCRIPTION
+.B lat_unix_connect
+uses two processes communicating through a Unix socket to measure interprocess
+communication latencies.  The benchmark passes a token back and forth between
+the two processes (this sort of benchmark is frequently referred to as a
+``hot potato'' benchmark).  No other work is done in the processes.
+.SH OUTPUT
+The reported time is in microseconds per round trip and includes the total
+time, i.e., the context switching overhead is included.
+Output format is like so
+.sp
+.ft CB
+AF_UNIX sock stream latency: 491 microseconds
+.ft
+.SH ACKNOWLEDGEMENT
+Funding for the development of
+this tool was provided by Sun Microsystems Computer Corporation.
+.SH "SEE ALSO"
+lmbench(8), lat_connect(8), socket(2), bind(2), connect(2), listen(2).
+E 2
+I 1
+E 1

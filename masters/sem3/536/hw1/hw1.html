@@ -1,0 +1,89 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  
+    <title>CS 536 Homework 1</title>
+  </head><body>
+    <center>
+    <h1>CS 536 Homework 1: Regular Languages</h1>
+    </center>
+
+    <hr>
+
+    <p>
+    <b>Homework Assignment 1 is due (in hard-copy form) by 5:00 PM
+    on Monday, Sept. 29, 2008 in the box outside my office door
+    (6361 CS)</b>
+
+    </p><hr>
+    <p>
+    </p><p>
+    <i> Watch this space for corrections, clarifications, and hints.</i> <br>
+    </p><p>
+    <i> Last updated:
+    Mon Sep 22 22:25:12 CDT 2008
+    </i>
+    </p><p>
+    </p><hr>
+
+    <ol>
+       <li> For each of the following languages over the alphabet {0,1}, give a
+            deterministic finite-state machine that accepts the language:
+	<ol>
+	  <li> The set of all strings ending in 10
+	  </li><li> The set of all strings such that the next-to-last symbol is 1.
+	  </li><li> The set of strings in which there are at least two 1's and at least one 0.
+	</li></ol>
+        For each machine, give a trace of its actions for the inputs 1010 and 0101.
+       <p>
+       </p></li><li> For each of the following languages over the alphabet {0,1}, give a
+            nondeterministic finite-state machine that accepts the language:
+	<ol>
+	  <li> The set of all strings ending in 10
+	  </li><li> The set of all strings such that the next-to-last symbol is 1.
+	</li></ol>
+        Again, for each machine, explain what happens for the inputs
+        1010 and 0101.
+        <p>
+        <b>Note</b>: Your answers must be different from the deterministic machines
+        that you give for Question 1, and they must use nondeterminism
+        in a significant way.  For instance, you will not receive
+        credit if you just stick in a gratuitous epsilon transition.
+        (Actually, you should find that the nondeterministic machines are
+        simpler than the corresponding deterministic machines.)
+       </p><p>
+       </p></li><li> Write a regular expression for each of the following languages
+            over the alphabet {0,1}:
+	<ol>
+	  <li> The set of strings whose length is a multiple of 3.
+	  </li><li> The set of strings that contain 000 as a substring.
+	  </li><li> The set of strings that contain exactly three 0's.
+	</li></ol>
+        Note: Your grade for this part will depend in part on how easy
+        it is for us to understand your answer.
+        You will increase your chances of receiving full credit
+        if you provide explains of the roles of the main subexpressions
+        of your regular expressions.
+       <p>
+       </p></li><li> Which of the following strings are accepted by
+            the regular expression (0*) | (0*10*) | (0*1(00<sup>+</sup>|1)*10*),
+            and why?
+	<ol>
+	  <li> 00100
+	  </li><li> 00110
+	  </li><li> 01010
+	</li></ol>
+       <p>
+       </p></li><li> For arbitrary regular expressions R and S, prove or disprove
+            the following statements: 
+	<ol> 
+	  <li>  RS = SR
+	  </li><li>  ( S | R ) * = R* | S*
+	  </li><li>  ( R* S* ) * = ( R | S ) *
+        </li></ol>
+        For each of these assertions, by "lhs = rhs", we mean "L(lhs) = L(rhs)".
+        A statement may be <em>disproved</em> by giving a counterexample.
+        To <em>prove</em> a statement, you must argue that it holds for
+        two arbitrarily chosen regular expressions R and S.
+    </li></ol>
+    <hr>
+  </body></html>

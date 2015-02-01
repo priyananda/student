@@ -1,0 +1,13 @@
+#A sweep object
+#each line is an x y pair of floats, each describing a control point
+#all x,ys should be positive
+0 4
+2 3
+4 4
+6 5
+8 5
+10 7
+12 12
+14 8
+16 8
+18 8

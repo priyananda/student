@@ -1,0 +1,78 @@
+<html>
+<head>
+	<style>
+	body{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+	}
+	table{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+		border-style:single;
+		border-width: 1px;
+		border-color:grey;
+	}
+</style>
+<head>
+<body>
+
+<b>
+Quantum Coaster<br/>
+CS 559 Fall 2007 - Project 2 Programming checkpoint<br />
+priyananda shenoy ( shenoy@cs.wisc.edu )<br />
+</b>
+<br />
+  This file describes the Roller Coaster simulator from an "end-user"
+perspective. For details regarding the code and implementation, please
+refer to <a href="technical.html">technical.html</a>
+
+<p>
+	<b>Running the project</b><br />
+	Build and run the project. Make sure you set the current working
+	directory to 'bin' if you are debugging.
+	<br />
+	The simulator has two basic modes: RUN and EDIT. In EDIT mode you can
+	change the track. In RUN mode you sit back and watch the coaster fly!
+	In RUN mode, you have two camera modes, GOD and TRAIN. In GOD mode you
+	can move forward/backward, turn horizontally and vertically. In TRAIN
+	mode you have no freedom and see the world as if you are on the train.
+
+<p>
+	<b>Common Keys</b><br />
+	<ul>
+		<li> Press ESC to quit program
+		<li> Press UP/DOWN to move forward/backward in GOD camera mode
+		<li> Press LEFT/RIGHT to turn left or right in GOD camera mode
+		<li> Press PGUP/PGDOWN to look up/down in GOD camera mode
+	</ul>
+
+<p>
+	<b>Run Mode Keys</b><br />
+	<ul>	
+		<li> Press 'R' to go into EDIT mode
+		<li> Press 'F' to toggle GOD/TRAIN camera
+		<li> Press SPACE to toggle train animation
+		<li> Press 'P' to start/reset train
+		<li> Press '+'/'-' to increase/decrease speed
+		<li> Press '<'/'>' to increase/decrease bogeys in the train
+		<li> Press 'S' to toggle shadows
+	</ul>
+
+<p>
+	<b>Edit Mode Keys</b><br />
+	<ul>
+		<li> Press 'R' to go into RUN mode
+		<li> Press 'A'/'D'/'W'/'S'/'Q'/'Z' to move selected control point in X,Z,Y directions
+		<li> Press TAB to switch to next control point
+		<li> Press 'N' to add new control point
+		<li> Press DELETE to delete a control point
+	</ul>
+
+<p>
+	<b>Editing the Track</b><br />
+	You can click on a control point to select it(it will change its color to white). You can
+	then click-and-drag using the LEFT mouse button to move it in XZ(horizontal) direction.
+	You can click-and-drag using the RIGHT mouse button to move it vertically(Y).
+
+</body>
+</html>

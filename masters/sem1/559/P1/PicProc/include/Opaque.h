@@ -1,0 +1,22 @@
+// CS559 Project 1 : Picture Processor
+// author: priyananda( shenoy@cs.wisc.edu )
+// date: 15 sep 2007
+// random quote: [Pulp Fiction] Butch: Zed's dead, baby.
+#pragma once
+
+#include "Command.h"
+
+//forward declaration
+class TargaImage;
+
+//command behavior: turns all aphas to max
+//format: opaque <variable>
+class Opaque : public Command
+{
+public:
+	//overriding these fuctions
+	bool extract(const CommandLine &c);
+	void execute();
+private:
+	TargaImage * image;
+};

@@ -1,0 +1,21 @@
+#!/s/std/bin/perl
+# CS 764 : Project CALF
+# author: satish@cs.wisc.edu,shenoy@cs.wisc.edu
+# date: 10 Dec 2008
+
+my ($dbname,$schema) = @ARGV;
+open ROW, ">$dbname\_row.database";
+open COL, ">$dbname\_col.database";
+open GRP, ">$dbname\_grp.database";
+
+print ROW "$schema\n";
+print COL "$schema\n";
+print GRP "$schema\n";
+
+print ROW "Slotted\n";
+print COL "Column\n";
+print GRP "Group\n";
+
+close ROW;
+close COL;
+close GRP;

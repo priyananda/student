@@ -1,0 +1,92 @@
+table CUSTOMER 1
+group 8
+column C_CUSTKEY 21 4
+column C_NAME 23 25
+column C_ADDRESS 23 40
+column C_NATIONKEY 21 4
+column C_PHONE 23 15
+column C_ACCTBAL 22 4
+column C_MKTSEGMENT 23 10
+column C_COMMENT 23 117
+
+table LINEITEM 4
+group 11
+column L_ORDERKEY 21 4
+column L_PARTKEY 21 4
+column L_SUPPKEY 21 4
+column L_LINENUMBER 21 4
+column L_RETURNFLAG 23 1
+column L_LINESTATUS 23 1
+column L_COMMITDATE 23 4
+column L_RECEIPTDATE 23 4
+column L_SHIPINSTRUCT 23 25
+column L_SHIPMODE 23 10
+column L_COMMENT 23 44
+group 2
+column L_QUANTITY 22 4
+column L_DISCOUNT 22 4
+group 2
+column L_EXTENDEDPRICE 22 4
+column L_SHIPDATE 23 4
+group 1
+column L_TAX 22 4
+
+table NATION 1
+group 4
+column N_NATIONKEY 21 4
+column N_NAME 23 25
+column N_REGIONKEY 21 4
+column N_COMMENT 23 152
+
+table ORDERS 1
+group 9
+column O_ORDERKEY 21 4
+column O_CUSTKEY 21 4
+column O_ORDERSTATUS 23 1
+column O_TOTALPRICE 22 4
+column O_ORDERDATE 23 4
+column O_ORDERPRIORITY 23 15
+column O_CLERK 23 15
+column O_SHIPPRIORITY 21 4
+column O_COMMENT 23 79
+
+table PART 5
+group 1
+column P_PARTKEY 21 4
+group 1
+column P_NAME 23 55
+group 5
+column P_MFGR 23 25
+column P_BRAND 23 10
+column P_CONTAINER 23 10
+column P_RETAILPRICE 22 4
+column P_COMMENT 23 23
+group 1
+column P_TYPE 23 25
+group 1
+column P_SIZE 21 4
+
+table PARTSUPP 1
+group 5
+column PS_PARTKEY 21 4
+column PS_SUPPKEY 21 4
+column PS_AVAILQTY 21 4
+column PS_SUPPLYCOST 22 4
+column PS_COMMENT 23 199
+
+table REGION 1
+group 3
+column R_REGIONKEY 21 4
+column R_NAME 23 25
+column R_COMMENT 23 152
+
+table SUPPLIER 1
+group 7
+column S_SUPPKEY 21 4
+column S_NAME 23 25
+column S_ADDRESS 23 40
+column S_NATIONKEY 21 4
+column S_PHONE 23 15
+column S_ACCTBAL 22 4
+column S_COMMENT 23 101
+

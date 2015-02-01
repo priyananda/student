@@ -1,0 +1,112 @@
+	.globl main
+_true:	.asciiz "true"
+_false:	.asciiz "false"
+_a:	.word   0
+_b:	.word   0
+	.text
+			#entry code for _f
+_f:
+	sw      $ra, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	sw      $fp, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	addu    $fp, $sp, 4
+	subu    $sp, $sp, 12
+	
+			#Assign statement
+	lw      $t0, 8($fp)
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, -4($fp)
+	
+			#Assign statement
+	l.s     $f0, 12($fp)
+	s.s     $f0, 0($sp)	#FPUSH
+	subu    $sp, $sp, 4
+	l.s     $f0, 4($sp)	#FPOP
+	addu    $sp, $sp, 4
+	s.s     $f0, -8($fp)
+	
+			#Assign statement
+	lw      $t0, 16($fp)
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, -12($fp)
+	
+			#Write statement
+	lw      $t0, 8($fp)
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	li      $v0, 1
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	syscall
+	
+			#Write statement
+	l.s     $f0, 12($fp)
+	s.s     $f0, 0($sp)	#FPUSH
+	subu    $sp, $sp, 4
+	li      $v0, 2
+	l.s     $f12, 4($sp)	#FPOP
+	addu    $sp, $sp, 4
+	syscall
+	
+			#Write statement
+	lw      $t0, 16($fp)
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	li      $v0, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	syscall
+	
+._L0:		#exit code for _f
+	addu    $sp, $fp, 0
+	lw      $fp, 0($fp)
+	lw      $ra, 4($sp)	#POP
+	addu    $sp, $sp, 4
+			#entry code for main
+main:
+	sw      $ra, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	sw      $fp, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	addu    $fp, $sp, 4
+	subu    $sp, $sp, 4
+	
+			#Assign statement
+	lw      $t0, _a
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, _b
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t1, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	addu    $t0, $t0, $t1
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, -4($fp)
+	
+			#Write statement
+	lw      $t0, -4($fp)
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	li      $v0, 1
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	syscall
+	
+._L1:		#exit code for main
+	addu    $sp, $fp, 0
+	lw      $fp, 0($fp)
+	lw      $ra, 4($sp)	#POP
+	addu    $sp, $sp, 4

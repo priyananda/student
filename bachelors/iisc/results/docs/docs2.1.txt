@@ -1,0 +1,36 @@
+Section : YEFP/sched/2.1
+Objective : To develop a convergence scheduler
+Rationale :
+	In traditional kernels there is an imbalance brought out by priorities.Though the Round-Robin scheme is generally fair, the size of the time-slice is dependent on the static priority . Hence higher-priority processes take away a proportionally larger share . This happens at every scheduling decision . Though from an optimality viewpoint , this is alright, but it is not fair . 
+	The fairness of the scheduler can be increased by using the convergence algorithm . Here the effective static priority of a task converges towards a mean. Higher priority tasks decrease in priority  while lower priority processes increase in priority till they reach a mean. Hence every process is guaranteed to get a minimum time-size equalling that corresponding to the mean priority. This ensures fairness and prevents starvation.When a task's effective priority reaches the mean , it is reset to it's original (nice) static priority. 
+	This algorithm is fair even to higher-priority processes because they continue to get bigger time-slices on the average. 
+
+Implementation:
+	The algorithm makes it important to distinguish between effective priority and static priority ( nice value ).This mandates a change to the task structure ( include/linux/sched.h )
+
+struct task_struct
+{
+	//....
+	unsigned long prof_priority;
+	//....
+};
+
+In function schedule() ( kernel/sched.c ), the recalculation of dynamic priority loop is changed to implement the convergence scheduling algorithm
+void schedule()
+{
+	// ...
+		if( p->prof_priority > PROF_PRIORITY_MEAN )
+			-- p->prof_priority;
+		else if( p->prof_priority < PROF_PRIORITY_MEAN )
+			++ p->prof_priority;
+	 	     else
+			p->prof_priority = p->priority;
+	//...
+}
+Here 
+	prof_priority - the current effective static priority of a task
+	PROF_PRIORITY_MEAN - the mean priority to which the processes converge upon.
+	An interesting issue to consider is the value of PROF_PRIORITY_MEAM . If it is too high , a sort of priority-inversion can occur. If it is too low , then it becomes unfair to the higher priority process . The value used here is DEF_PRIORITY ( which comes to around 20 in the 0..39 nice range ). 
+
+Results :
+	The algorithm directly doesnot improve perfomance and hence there is no quantifiable results . It only results in lesser starvation of low-priority processes. 

@@ -1,0 +1,45 @@
+[shenoy@cs]$ forget --help
+	forget(8) is a tool developed by Univ of Wisconsin,
+	Madison. Using advanced techniques like Bayesian
+	Indifference, Pedantically arbitrarily complicated
+	(PAC) unlearning and Statistical Senility, forget
+	forgets even the most memorable things.
+	Report bugs to shenoy@cs.wisc.edu.
+
+[shenoy@cs]$ forget todays-date
+
+[shenoy@cs]$ date
+	0:0:0 0:0:0 some day, some time zone
+
+[shenoy@cs]$ su
+	password:
+	incorrect password
+
+[shenoy@cs]$ forget root-password
+
+[shenoy@cs]$ su
+
+[root@cs]$ forget ex-girlfriend
+	deleting 1038 pictures            [DONE]
+	deleting 227 emails               [DONE]
+	removing her from facebook profile[DONE]
+	reactivating match.com profile    [DONE]	
+
+[root@cs]$ forget pennstate-beating-badgers
+	forgetting complete with 1 warning(s)
+	warning: Reality not changed: we still lost.
+
+[root@cs]$ forget cs540-hw5
+	forgetting failed: cs540-hw5 marked as unforgettable.
+
+[root@cs]$ forget everything
+	Are you sure you want to forget everything[Y/n]:y
+
+[?@?]$ ls
+	huh?
+
+[?@?]$ reboot
+	huh?
+
+[?@?]$ help
+	huh?

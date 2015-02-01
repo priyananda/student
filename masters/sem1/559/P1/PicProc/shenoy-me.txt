@@ -1,0 +1,27 @@
+#This script will transform me from a boring nerd to
+#a super-awesome spartan
+
+#mask
+read a shenoy3.tga
+
+#my head
+read c shenoy4.tga
+
+#poster with Gerald Butler
+read z shenoy5.tga
+
+#get rid of my body
+composite a heldin c 0 0
+
+#cut out the useless portions
+crop c 10 0 180 230
+
+darken c 0.7
+
+#resize face to his body dimensions
+stretch c 2 3 2 3
+
+composite c over z 377 17
+
+#THIS IS SPARTA!
+write z shenoy-me.tga

@@ -1,0 +1,396 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+
+<title>Programming Assignment 5</title>
+
+</head><body>
+
+<h1>CS 536 Assignment 5: Code Generation</h1>
+<h3>(Due Date: 11:59 PM, Monday, December 8, 2008)</h3>
+
+<hr>
+
+<a name="contents">
+<h2>Contents</h2>
+</a>
+
+<ul>
+<li> <a href="#news"> News</a>
+</li><li> <a href="#introduction">Introduction</a>
+</li><li> <a href="#spim">Spim</a>
+</li><li> <a href="#code%20changes">Changes to Your Old Code</a>
+</li><li> <a href="#simple%20semantics">Non-Obvious Semantic Issues</a>
+</li><li> <a href="#suggestions">Suggestions</a>
+</li><li> <a href="#files">Finding/Using the Files for the Assignment</a>
+</li><li> <a href="#testing">Testing</a>
+</li><li> <a href="#turning%20in">What to Turn In</a>
+</li></ul>
+
+<hr>
+
+<a name="news">
+<h2>News</h2>
+</a>
+
+<i> Watch this space for corrections, clarifications, and hints.</i> <br>
+<p>
+<i> Last updated:
+Sun Nov 16 17:10:20 CST 2008
+</i>
+
+<!--
+  <p>
+  The archive of postings to the CS 536 class mailing list can be found
+  <A HREF="http://www.cs.wisc.edu/lists/classes/cs536-1list/">here</A>.
+-->
+
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="introduction">
+<h2>Introduction</h2>
+</a>
+
+For this assignment, you will write a code generator that generates
+MIPS assembly code for a <samp>Simple</samp> program represented as an
+abstract-syntax tree.
+You will also create appropriate <samp>Simple</samp> programs
+to test your code generator, and you will execute the code
+you generate under the control of the <samp><a href="#spim">Spim</a></samp>
+simulator of the MIPS instruction set.
+</p><p>
+Similar to the <samp>Unparse</samp>, <samp>NameAnalysis</samp>, and
+<samp>TypeCheck</samp> passes that you wrote for Programming Assignments
+3 and 4, the code generator will be implemented as a collection
+of member functions for the various kinds of AST nodes.
+So that we can know where to look for your code, <b>you must put this
+code in a file named <samp>codegen.cc</samp></b>.
+</p><p>
+You will also update the <samp>main</samp> program you wrote for
+Programming Assignment 4 so that, if there are no errors
+(including type errors), the code generator is called after the type checker.
+</p><p>
+You should set up your <samp>Makefile</samp> so that typing
+<samp>"make"</samp> creates the executable <samp>simple</samp>.
+That executable should take one command-line argument (the name of
+the <samp>Simple</samp> program
+to be compiled), and it should write MIPS assembly code (suitable
+for input to the <samp>Spim</samp> simulator)
+to a file named <samp>xxx.spim</samp>, where <samp>xxx</samp>
+is the name of the input file.
+(For instance, the result of compiling a program in a file named
+<samp>test.simple</samp> should go into the file named
+<samp>test.simple.spim</samp>.)
+</p><p>
+As usual, ten percent of your grade will be based on how well you
+test your code.
+Therefore, you must provide a suite of <samp>Simple</samp> programs that
+thoroughly tests your code generator, and you must set up your
+<samp>Makefile</samp> so that
+<samp>"make test"</samp> creates the executable
+<samp>simple</samp> and runs it on your test programs.
+(<b>Note: <samp>"make test"</samp> should <em>not</em> run
+<samp>spim</samp>, just <samp>simple</samp>.  The TA will
+be applying your compiler to our own suite of test programs,
+and executing the compiled versions of those programs.
+The command <samp>"make test"</samp> is just so we can see how
+well a job you have done exercising your code generator.</b>)
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="spim">
+<h2>Spim</h2>
+</a>
+
+For your convenience, here is a link to documentation on <samp>spim</samp>,
+the emulator of the MIPS instruction set that will be used in this assignment:
+</p><ul>
+  <li> <a href="http://www.cs.wisc.edu/%7Elarus/SPIM/spim_documentation.pdf">SPIM Reference Manual (in PDF)</a>
+</li></ul>
+You can run ``plain'' spim by typing:
+<pre>  <samp>spim -file xxx</samp>
+</pre>
+where <samp>xxx</samp> is the name of the file produced by your compiler.
+Or you can use the X-windows version by doing the following:
+<ol>
+  <li>
+    Issue the command <samp>xspim</samp>.
+    This will open a new window.
+  </li><li>
+    Click on the ``load'' button.
+    This will open a small window in which you should type the name of
+    the file produced by your compiler;
+    finish with a carriage-return, or click on the
+    ``assembly file'' button in the small window.
+  </li><li>
+    Click on the ``run'' button.
+    This will open another small window.
+    Click on the ``ok'' button in that window.
+</li></ol>
+Syntax and runtime errors will be reported at the bottom of the large
+window opened when you first typed <samp>xspim</samp>.
+If your Simple program produces output, yet another window will be opened,
+and the output will be written to that window.
+<p>
+So that you can experiment with <samp>Spim</samp>, here is a sample
+source file and the corresponding assembly-code file:
+</p><pre>  <a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG5/Description/test.assign.global.simple">/p/course/cs536-reps/public/html/Programs/PROG5/Description/test.assign.global.simple</a>
+  <a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG5/Description/test.assign.global.simple.spim">/p/course/cs536-reps/public/html/Programs/PROG5/Description/test.assign.global.simple.spim</a>
+</pre>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="code changes">
+<h2>Changes to Your Old Code</h2>
+</a>
+
+Required changes:
+</p><ol>
+  <li>
+    Add to the name analyzer (or type checker, as appropriate) a check
+    on whether function <samp>main</samp> has one or more parameters.
+    If <samp>main</samp> does have parameters, the error message
+    <pre>      <samp>Main function has parameters</samp>
+    </pre>
+    should be issued.  (The line and column position should be reported as 0:0.)
+  </li><li>
+    Add a new <samp>offset</samp> field to the <samp>Symbol</samp> class.
+    Change your symbol-handling code to compute offsets for each function's
+    parameters and local variables (i.e., where in the function's activation record
+    they will be stored at runtime) and to fill in the new offset field.
+    Note: When doing code generation, you will need to know whether each variable
+    is local or global;
+    one way to distinguish them is to use some special value
+    as the offset for all globals (e.g., use 1 for globals, and non-positive
+    offsets for locals).
+  </li><li>
+    Change the definition of all subclasses of class
+    <samp>ExpNode</samp> to include a (private) field (e.g.,
+    <samp>myType</samp>) to hold the type of the operation that has to
+    be performed, and change your type-checking function to fill in
+    that field.
+    (It is also convenient to do the same thing for
+    <samp>WriteStmtNode</samp>, since <samp>write</samp> is also an
+    overloaded symbol of the language.)
+</li></ol>
+<p>
+The following changes may be helpful for code generation, but are not required:
+</p><ol>
+  <li>
+    Keep track of the total number of local variables declared in each function
+    (e.g., by adding a new <samp>numberOfLocals</samp> field to the <samp>Symbol</samp>
+    class, filled in only for functions).
+  </li><li>
+    Keep track of the total number of parameters declared in each function
+    (e.g., by adding a new <samp>numberOfParameters</samp> field to the <samp>Symbol</samp>
+    class, filled in only for functions).
+  </li><li>
+    Change the definition of class <samp>WriteStmtNode</samp> to
+    include a (private) field (e.g., <samp>myType</samp>) to hold the
+    type of the expression being written, and change your
+    type-checking function for the <samp>WriteStmtNode</samp> to fill
+    in that field.
+</li></ol>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="simple semantics">
+<h2>Non-Obvious Semantic Issues</h2>
+</a>
+
+</p><ul>
+  <li>
+    The ``and'' and ``or'' operators (<samp>&amp;&amp;</samp> and <samp>||</samp>)
+    are <em>short circuited</em>, just as they are in C++.
+    That means that their right operands are only evaluated if
+    necessary (for all of the other binary operators, both operands
+    are always evaluated).
+    If the left operand of <samp>&amp;&amp;</samp> evaluates to <samp>false</samp>,
+    then the right operand is not evaluated (and the value of the whole
+    expression is <samp>false</samp>);
+    similarly, if the left operand of <samp>||</samp>
+    evaluates to <samp>true</samp>, then the right operand is not evaluated
+    (and the value of the whole expression is <samp>true</samp>).
+  </li><li>
+    Two strings are considered to be equal only if they are stored
+    at the same address (yes, this is ugly, but it will make your
+    implementation much easier!).
+    Thus, the first two conditions shown below should evaluate to <samp>false</samp>,
+    and the third condition should evaluate to <samp>true</samp>:
+<ol>
+<li>
+  <pre>    <samp>x = "a";
+    y = "a";
+    if (x == y) ...</samp>
+  </pre>
+</li><li>
+  <pre>    <samp>if ( "a" == "a" ) ...</samp>
+  </pre>
+</li><li>
+  <pre>    <samp>x = "a";
+    y = x;
+    if (x == y) ...</samp>
+  </pre>
+</li></ol>
+  </li><li>
+    A <samp>write</samp> statement should output the value of the given expression
+    with no extra characters such as spaces, tabs, or newlines.
+    To write a newline, use: <samp>write("\n");</samp>
+  </li><li>
+    Boolean values should be output as <samp>true</samp> and <samp>false</samp>
+    (although internally, you will probably want to represent <samp>true</samp>
+    as <samp>-1</samp> and <samp>false</samp> as <samp>0</samp>).
+</li></ul>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="suggestions">
+<h2>Suggestions</h2>
+</a>
+
+</p><ul>
+  <li>
+    Use an <samp>ofstream</samp> (not a <samp>FILE *</samp>) for the output file.
+    Make it a global variable (declared in your <samp>main</samp> program) so that
+    you do not have to pass it around to all of the code-generating functions.
+    Use a variable of type <samp>String</samp> for the name of the output file.
+    Set the file name by first assigning from <samp>argv[1]</samp> (the name
+    of the input file) and then appending <samp>".spim"</samp> using the <samp>+</samp> operator.
+    Use the <samp>open</samp> member function to open the file (that function
+    requires the file name as its argument), and use the <samp>fail</samp> member
+    function (with no arguments) to test whether the open succeeded.
+    For example:
+    <pre>      <samp>#include &lt;cstdio&gt;
+      #include &lt;iostream&gt;
+      #include &lt;fstream&gt;
+      #include &lt;string&gt;
+      . . .
+
+      std::ofstream outFile;
+
+      . . .
+
+      // In function main:
+
+          // OPEN OUTPUT FILE
+          String fname = argv[1];
+          fname = fname + ".spim";
+          outFile.open(fname);
+          if (outFile.fail()) {
+            cerr &lt;&lt; "Unable to open " &lt;&lt; fname &lt;&lt; endl;
+            exit(1);
+          }</samp>
+    </pre>
+  </li><li>
+    Implement code generation for global declarations, function entry, and
+    function exit first.
+    Write a test program that just declares some variables
+    and functions, and make sure you can generate and run spim code for that
+    test program.
+    Next, implement code generation for statements and expressions
+    (one kind at a time).
+    Start with the <samp>write</samp> statement and test your code generator
+    for every new statement and expression by writing out the result
+    of the newly implemented operation.
+  </li><li>
+    Use the values <samp>0</samp> and <samp>-1</samp> to represent false and
+    true internally (this will make implementing the not operator (<samp>!</samp>)
+    easier, because <samp>Spim</samp> includes a <samp>not</samp> instruction, and that operation
+    applied to <samp>0</samp> yields <samp>-1</samp>, while applying it to <samp>-1</samp> yields
+    <samp>0</samp>).
+</li></ul>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+
+<a name="files">
+<h2>Finding/Using the Files for the Assignment</h2>
+</a>
+
+No code skeleton is provided to you for this assignment;
+however, code for several utility functions for generating
+labels and assembly-code instructions, can be found in the following files:
+</p><pre>  <samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG5/CodeSkeleton/generate.h">/p/course/cs536-reps/public/html/Programs/PROG5/CodeSkeleton/generate.h</a>
+  <a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG5/CodeSkeleton/generate.cc">/p/course/cs536-reps/public/html/Programs/PROG5/CodeSkeleton/generate.cc</a></samp>.
+</pre>
+<p>
+You are encouraged to use the code that you wrote for
+<a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG4/Description/assign4.html">Programming Assignment 4</a>.
+However, if you were unable to complete that program, a working
+version is supplied in the directory
+<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG4/CodeSolution">/p/course/cs536-reps/public/html/Programs/PROG4/CodeSolution</a></samp>.
+</p><p>
+You should make a subdirectory called <samp>PROG5</samp>
+in your <samp>private</samp> directory, and work on things for
+this programming assignment in that subdirectory.
+To set things up initially, you should issue the following commands:
+</p><pre><samp>cd ~/private
+mkdir PROG5
+cd PROG5
+ln -s ~cs536-1/public/html/Supplementary/List/list_T.h .
+ln -s ~cs536-1/public/html/Supplementary/ref_ptr/ref_ptr_T.h .
+ln -s ~cs536-1/public/html/Programs/PROG5/CodeSkeleton/generate.h .
+ln -s ~cs536-1/public/html/Programs/PROG5/CodeSkeleton/generate.cc .
+cp ~cs536-1/public/html/Programs/PROG5/Description/test.assign.global.simple .
+cp ~cs536-1/public/html/Programs/PROG5/Description/test.assign.global.simple.spim .</samp>
+</pre>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="testing">
+<h2>Testing</h2>
+</a>
+
+Part of your task will be to figure out a strategy for testing
+your implementation.
+As mentioned in the <a href="#introduction">Introduction</a>,
+part of your grade will be determined by the testing scheme
+that you implement; i.e., how thoroughly the test files that you turn
+in test your code generator.
+</p><p>
+As usual, put a brief description of each of your tests (e.g., what
+it tests for and how it goes about doing so) in a file named
+README.testing, <em>which is to be turned in, along with your source
+code and test files</em>.
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="turning in">
+<h2>What To Turn In</h2>
+</a>
+
+To hand in your program, copy all of the files that are needed to
+create and run <samp>simple</samp> and <samp>simple.purecov</samp>,
+including your Makefile and your test program(s), to
+</p><pre>  <samp>~cs536-1/public/Handin5/&lt;<i>your login name</i>&gt;</samp>
+</pre>
+using your actual login name in place of &lt;<i>your login name</i>&gt;.
+Please do <em>not</em> create any subdirectories in your handin directory,
+and be sure <em>not</em> to copy any object files or executable files
+(they take up a lot of space and may cause the directory to exceed its
+quota).
+<p>
+After you have copied over your files, you can check that they
+are there by issuing the command
+</p><pre>  <samp>ls -l ~cs536-1/public/Handin5/&lt;<i>your login name</i>&gt;</samp>
+</pre>
+<p>
+REMEMBER: <em>No late assignments will be accepted without prior
+permission!</em>
+Thus, it is important that you get to work soon.
+</p><p>
+As always, remember that partially finished programs are better than
+no programs at all, so be sure to turn in whatever you've done --- even
+if you don't finish the assignment.
+If you do turn in only a partially finished program, it is a good
+idea to provide a description (say in a file called <samp>README</samp>)
+of what works, what doesn't work, and sketch out how you would have gone
+about changing things to finish up.
+</p><p>
+<em>GOOD LUCK!!</em>
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+</p></body></html>

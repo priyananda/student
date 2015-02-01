@@ -1,0 +1,54 @@
+h22680
+s 00024/00000/00000
+d D 1.1 00/12/11 16:08:30 staelin 2 1
+cC
+cF1
+cK59069
+cO-rw-rw-r--
+e
+s 00000/00000/00000
+d D 1.0 00/12/11 16:08:30 staelin 1 0
+c BitKeeper file /tmp_mnt/usr/WebPaper/users/staelin/src/LMbench2/doc/loop_o.8
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHhpli8.hpli.hpl.hp.com
+cK06009
+cPdoc/loop_o.8
+cR6b40fca13929b6c0
+cV4
+cX0xa1
+cZ+02:00
+e
+u
+U
+f e 0
+f x 0xa1
+t
+T
+I 2
+.\" $Id$
+.TH LOOP_O 8 "$Date$" "(c)1994 Larry McVoy" "LMBENCH"
+.SH NAME
+loop_o \- report timing overhead
+.SH SYNOPSIS
+.B loop_o
+.SH DESCRIPTION
+.B loop_o
+reports the 
+.IR for ()
+loop overhead associated with measuring timing intervals.
+This is critical mostly for experiments which measure very
+fast operations, such as memory loads, and which haven't
+been designed to minimize the loop overhead effects by
+some form of manual loop unrolling.
+.SH OUTPUT
+The output is reported in microseconds as an float:
+.IP ""
+\fC0.000005\fR
+.SH ACKNOWLEDGEMENT
+Funding for the development of
+this tool was provided by Sun Microsystems Computer Corporation.
+.SH "SEE ALSO"
+lmbench(8), lmbench(3), timing(3).
+E 2
+I 1
+E 1

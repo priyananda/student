@@ -1,0 +1,126 @@
+h45902
+s 00049/00007/00015
+d D 1.2 00/12/11 15:53:45 staelin 3 2
+c - Major rewrite of man pages
+cC
+cHhpli8.hpli.hpl.hp.com
+cK55596
+cZ+02:00
+e
+s 00022/00000/00000
+d D 1.1 94/11/18 01:26:35 lm 2 1
+c Initial revision
+cC
+cK48253
+e
+s 00000/00000/00000
+d D 1.0 94/11/18 01:26:34 lm 1 0
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHlm.bitmover.com
+cK04213
+cPdoc/lat_syscall.8
+cRb18bb8295c98aaf1
+cV4
+cX0x21
+cZ-08:00
+e
+u
+U
+f e 0
+f x 0x21
+t
+lmbench doc checkin
+T
+I 2
+.\" $Id$
+.TH LAT_SYSCALL 8 "$Date$" "(c)1994 Larry McVoy" "LMBENCH"
+.SH NAME
+lat_syscall - time simple entry into the operating system
+.SH SYNOPSIS
+.B lat_syscall
+I 3
+.I "null|read|write|stat|fstat|open"
+E 3
+.SH DESCRIPTION
+.B lat_syscall
+D 3
+times how long it takes to write one byte to \f(CB/dev/null\fP.  This
+is useful as a lower bound cost on anything that has to interact with
+the operating system.
+E 3
+I 3
+measures how long it takes to do various simple system call
+operations.  
+.TP
+.B null
+measures how long it takes to do
+.BR getppid .
+This is useful as a lower bound cost on anything that has to interact
+with the operating system.
+.TP
+.B write
+measures how long it takes to write one byte to \f(CB/dev/null\fP.  
+.TP
+.B read
+measures how long it takes to read one byte from \f(CB/dev/zero\fP.  
+.TP
+.B stat
+measures how long it takes to 
+.B stat
+a file.
+.TP
+.B fstat
+measures how long it takes to 
+.B fstat
+a file.
+.TP
+open
+measures how long it takes to
+.B open
+and then
+.B close
+a file.  
+Note that this does not include the time to read the directories or
+inodes from disk, since everything should be in the buffer cache.
+E 3
+.SH OUTPUT
+D 3
+Output format is 
+.sp
+E 3
+I 3
+Output formats are:
+E 3
+.ft CB
+D 3
+Null syscall: 67 microseconds
+E 3
+I 3
+.br
+Simple syscall: 67 microseconds
+.br
+Simple write: 67 microseconds
+.br
+Simple read: 67 microseconds
+.br
+Simple stat: 67 microseconds
+.br
+Simple fstat: 67 microseconds
+.br
+Simple open/close: 67 microseconds
+E 3
+.ft
+.SH ACKNOWLEDGEMENT
+Funding for the development of
+this tool was provided by Sun Microsystems Computer Corporation.
+.SH "SEE ALSO"
+D 3
+lmbench(8).
+E 3
+I 3
+lmbench(8), getppid(2), read(2), write(2), stat(2), fstat(2), open(2),
+close(2).
+E 3
+E 2
+I 1
+E 1

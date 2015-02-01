@@ -1,0 +1,154 @@
+﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{A447C98C-35E9-45A5-9FCB-15FF20A381BA}</ProjectGUID>
+    <RootNamespace>Planetz</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(LocalAppData)\Microsoft\VisualStudio\10.0\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(LocalAppData)\Microsoft\VisualStudio\10.0\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\QuantumCoaster.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\BaseObject.h" />
+    <ClInclude Include="include\Building.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\Command.h" />
+    <ClInclude Include="include\ControlPoint.h" />
+    <ClInclude Include="include\Cube.h" />
+    <ClInclude Include="include\Director.h" />
+    <ClInclude Include="include\Flag.h" />
+    <ClInclude Include="include\God.h" />
+    <ClInclude Include="include\Hoarding.h" />
+    <ClInclude Include="include\libtarga.h" />
+    <ClInclude Include="include\OrientableObject.h" />
+    <ClInclude Include="include\PickableObject.h" />
+    <ClInclude Include="include\Polygon.h" />
+    <ClInclude Include="include\PropObject.h" />
+    <ClInclude Include="include\Rail.h" />
+    <ClInclude Include="include\Renderer.h" />
+    <ClInclude Include="include\resource.h" />
+    <ClInclude Include="include\SkyBox.h" />
+    <ClInclude Include="include\SolidObject.h" />
+    <ClInclude Include="include\TargaImage.h" />
+    <ClInclude Include="include\TextureManager.h" />
+    <ClInclude Include="include\Track.h" />
+    <ClInclude Include="include\Train.h" />
+    <ClInclude Include="include\Tree.h" />
+    <ClInclude Include="include\Vector.h" />
+    <ClInclude Include="include\ViewPort.h" />
+    <ClInclude Include="include\Win32Helper.h" />
+    <ClInclude Include="include\Window.h" />
+    <ClInclude Include="include\WindowEventHandler.h" />
+    <ClInclude Include="include\World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Building.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Command.cpp" />
+    <ClCompile Include="src\ControlPoint.cpp" />
+    <ClCompile Include="src\Cube.cpp" />
+    <ClCompile Include="src\Director.cpp" />
+    <ClCompile Include="src\Flag.cpp" />
+    <ClCompile Include="src\God.cpp" />
+    <ClCompile Include="src\Hoarding.cpp" />
+    <ClCompile Include="src\libtarga.c" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PickableObject.cpp" />
+    <ClCompile Include="src\Polygon.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\SkyBox.cpp" />
+    <ClCompile Include="src\SolidObject.cpp" />
+    <ClCompile Include="src\TargaImage.cpp" />
+    <ClCompile Include="src\TextureManager.cpp" />
+    <ClCompile Include="src\Track.cpp" />
+    <ClCompile Include="src\Train.cpp" />
+    <ClCompile Include="src\Tree.cpp" />
+    <ClCompile Include="src\Vector.cpp" />
+    <ClCompile Include="src\ViewPort.cpp" />
+    <ClCompile Include="src\Win32Helper.cpp" />
+    <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\World.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

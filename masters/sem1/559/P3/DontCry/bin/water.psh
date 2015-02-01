@@ -1,0 +1,14 @@
+uniform sampler2D tex1,tex2;
+
+void main (void)
+{
+	vec4 water = texture2D(tex1,gl_TexCoord[0].st);
+	vec4 wave  = texture2D(tex2,gl_TexCoord[1].st);
+	
+	if(wave.a == 0){
+		gl_FragColor = water * gl_Color;
+	}else{
+		gl_FragColor = water + wave;
+		gl_FragColor = gl_FragColor * gl_Color;
+	}
+}

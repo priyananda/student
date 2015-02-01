@@ -1,0 +1,106 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsmath}
+
+\begin{document}
+\begin{center}
+\textbf{Project 2 - Written Assignment 1}\\
+\textbf{priyananda ( shenoy@cs.wisc.edu )}\\
+\end{center}
+1.\\
+	$(4,-4)(4,-2)(6,-2)(6,-4)$\\
+\\
+2.\\
+	translate 5 0 \\
+	draw square \\
+	translate -2 0\\
+	scale 2 2\\
+	draw square\\
+	translate $-\frac{3}{2}$ 0\\
+	scale $\frac{3}{2} \frac{3}{2}$\\
+	draw square\\
+\\
+3A.\\
+	translate 320 240 \\
+	scale 320 -240		\\
+\\
+3B.
+	\[ \left( \begin{array}{ccc}
+	320 & 0    & 320 \\
+	0   & -240 & 240 \\
+	0   & 0    & 1   \\
+	\end{array} \right) \]
+\\
+4.
+	\[ \left( \begin{array}{ccc}
+	2 & 2 & 1 \\
+	2 & 2 & 2 \\
+	0 & 0 & 1 \\
+	\end{array} \right) \]\\
+\\
+5. \\
+	translate -3 -4 \\
+	rotate 45 \\
+	translate 3 4 \\
+\\
+6. \\
+	a. world-origin to base of the lamp: translate x y 0\\
+	b. align base on the table: rotate around vertical axis by $-\theta_0$\\
+	c. vertical(Z) to match first arm: rotate around y by $\theta_1$\\
+	d. move origin to first joint: translate 0 0 5\\
+	e. vertical to match second arm: rotate around y by $-\theta_2$\\
+	f. move origin to second joint: translate 0 0 5\\
+	g. vertical to match third arm: rotate around y by $\theta_3 - 180$\\
+	h. move origin to bulb: translate 0 0 1\\
+\\	
+	$T(x,y,0) R_z(-\theta_0) R_y(\theta_1) T(0,0,5) R_y(- \theta_2) T(0,0,5) R_y(\theta_3 - 180) T(0,0,1)$\\
+\\
+7.
+The matrix M maps unit X vector $(1,0,0)$ to $(0,1,1)$\\
+M maps unit Y vector $(0,1,0)$ to $(0,1,-1)$\\
+This gives the first two columns of the matrix.\\
+\[ \left( \begin{array}{cccc}
+	0 & 0 &  x & 0 \\
+	1 & 1 & y & 0   \\
+	1 & -1 & z & 0  \\
+	0 & 0 & 0 & 1
+\end{array} \right) \]\\
+Assuming that this transformation was a result of a rotation and a scale. We can write\\
+M = R . S\\
+where R is some rotation matrix and S is the scale matrix.
+Since R is a rotation matrix, each column must be normalized and each pair of columns orthogonal.
+We split M into R so that R becomes normalized. This can be done using
+S = \[ \left( \begin{array}{cccc}
+	$\sqrt{2}$ & 0 &  0 & 0 \\
+	0 & $\sqrt{2}$ & 0 & 0   \\
+	0 & 0 & $\sqrt{2}$ & 0  \\
+	0 & 0 & 0 & 1
+\end{array} \right) \]\\
+To find the third column of R we can
+calculate the cross product of the two vectors.\\
+$x = \frac{1}{\sqrt{2}}(-\frac{1}{\sqrt{2}}) - 1(1) = -1$\\
+$y = 1(0) - 0(0) = 0$\\
+$z = 0(1) - 0(1) = 0$\\
+\\
+So the matrix R is \\
+\[ \left( \begin{array}{cccc}
+	0 & 0 &  -1 & 0 \\
+	\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 & 0   \\
+	\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} & 0 & 0  \\
+	0 & 0 & 0 & 1
+\end{array} \right) \]\\
+and matrix M = R.S is \\
+\[ \left( \begin{array}{cccc}
+	0 & 0 &  -$\sqrt{2}$ & 0 \\
+	1 & 1 & 0 & 0   \\
+	1 & -1 & 0 & 0  \\
+	0 & 0 & 0 & 1
+\end{array} \right) \]\\
+\\
+7.A The unit Z vector gets mapped to $(-\sqrt{2},0,0)$\\
+7.B The uniform scale is $\sqrt{2}$
+\end{document}

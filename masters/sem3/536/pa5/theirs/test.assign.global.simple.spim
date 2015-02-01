@@ -1,0 +1,330 @@
+	.data
+_true:	.asciiz "true"
+_false:	.asciiz "false"
+	.data
+_a:	.word 0
+	.data
+_b:	.word 0
+	.data
+_c:	.word 0
+	.data
+_d:	.word 0
+	.data
+_e:	.float 0.0
+	.data
+_f:	.float 0.0
+	.data
+_s1:	.word 0
+	.data
+_s2:	.word 0
+
+# Function entry: main[Fn(0 params)]
+	.text
+	.globl main
+main:
+	sw      $ra, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	sw      $fp, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	addu    $fp, $sp, 8
+	# Start: a[int: 1] = 5;
+	li      $t0, 5
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _a
+	# End:   a[int: 1] = 5;
+
+	# Start: write (a[int: 1]);
+	lw      $t0, _a
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 1
+	syscall
+	# End:   write (a[int: 1]);
+
+	# Start: write ("\n");
+	.data
+	.align 2
+._L1:	.asciiz "\n"
+	.text
+	la      $t0, ._L1
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write ("\n");
+
+	# Start: b[int: 1] = 17;
+	li      $t0, 17
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _b
+	# End:   b[int: 1] = 17;
+
+	# Start: write (b[int: 1]);
+	lw      $t0, _b
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 1
+	syscall
+	# End:   write (b[int: 1]);
+
+	# Start: write ("\n");
+	.data
+	.align 2
+._L2:	.asciiz "\n"
+	.text
+	la      $t0, ._L2
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write ("\n");
+
+	# Start: c[bool: 1] = true;
+	li      $t0, -1
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _c
+	# End:   c[bool: 1] = true;
+
+	# Start: write (c[bool: 1]);
+	lw      $t0, _c
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	beqz    $t0, ._L3
+	la      $a0, _true
+	b       ._L4
+._L3:
+	la      $a0, _false
+._L4:
+	li      $v0, 4
+	syscall
+	# End:   write (c[bool: 1]);
+
+	# Start: write ("\n");
+	.data
+	.align 2
+._L5:	.asciiz "\n"
+	.text
+	la      $t0, ._L5
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write ("\n");
+
+	# Start: d[bool: 1] = false;
+	li      $t0, 0
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _d
+	# End:   d[bool: 1] = false;
+
+	# Start: write (d[bool: 1]);
+	lw      $t0, _d
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	beqz    $t0, ._L6
+	la      $a0, _true
+	b       ._L7
+._L6:
+	la      $a0, _false
+._L7:
+	li      $v0, 4
+	syscall
+	# End:   write (d[bool: 1]);
+
+	# Start: write ("\n");
+	.data
+	.align 2
+._L8:	.asciiz "\n"
+	.text
+	la      $t0, ._L8
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write ("\n");
+
+	# Start: e[float: 1] = 4;
+	.data
+	.align 2
+._L9:
+	.float  4.000000e+00
+	.text
+	l.s     $f0, ._L9
+	s.s     $f0, 0($sp)	#FPUSH
+	subu    $sp, $sp, 4
+	l.s     $f0, 4($sp)	#FPOP
+	addu    $sp, $sp, 4
+	s.s     $f0, _e
+	# End:   e[float: 1] = 4.000000;
+
+	# Start: write (e[float: 1]);
+	l.s     $f0, _e
+	s.s     $f0, 0($sp)	#FPUSH
+	subu    $sp, $sp, 4
+	l.s     $f12, 4($sp)	#FPOP
+	addu    $sp, $sp, 4
+	li      $v0, 2
+	syscall
+	# End:   write (e[float: 1]);
+
+	# Start: write ("\n");
+	.data
+	.align 2
+._L10:	.asciiz "\n"
+	.text
+	la      $t0, ._L10
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write ("\n");
+
+	# Start: f[float: 1] = 9.000000;
+	.data
+	.align 2
+._L11:
+	.float  9.000000e+00
+	.text
+	l.s     $f0, ._L11
+	s.s     $f0, 0($sp)	#FPUSH
+	subu    $sp, $sp, 4
+	l.s     $f0, 4($sp)	#FPOP
+	addu    $sp, $sp, 4
+	s.s     $f0, _f
+	# End:   f[float: 1] = 9.000000;
+
+	# Start: write (f[float: 1]);
+	l.s     $f0, _f
+	s.s     $f0, 0($sp)	#FPUSH
+	subu    $sp, $sp, 4
+	l.s     $f12, 4($sp)	#FPOP
+	addu    $sp, $sp, 4
+	li      $v0, 2
+	syscall
+	# End:   write (f[float: 1]);
+
+	# Start: write ("\n");
+	.data
+	.align 2
+._L12:	.asciiz "\n"
+	.text
+	la      $t0, ._L12
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write ("\n");
+
+	# Start: s1[String: 1] = "Four score and seven";
+	.data
+	.align 2
+._L13:	.asciiz "Four score and seven"
+	.text
+	la      $t0, ._L13
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _s1
+	# End:   s1[String: 1] = "Four score and seven";
+
+	# Start: write (s1[String: 1]);
+	lw      $t0, _s1
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write (s1[String: 1]);
+
+	# Start: write ("\n");
+	.data
+	.align 2
+._L14:	.asciiz "\n"
+	.text
+	la      $t0, ._L14
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write ("\n");
+
+	# Start: s1[String: 1] = "years ago, our forefathers . . .";
+	.data
+	.align 2
+._L15:	.asciiz "years ago, our forefathers . . ."
+	.text
+	la      $t0, ._L15
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _s1
+	# End:   s1[String: 1] = "years ago, our forefathers . . .";
+
+	# Start: write (s1[String: 1]);
+	lw      $t0, _s1
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write (s1[String: 1]);
+
+	# Start: write ("\n");
+	.data
+	.align 2
+._L16:	.asciiz "\n"
+	.text
+	la      $t0, ._L16
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $a0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	li      $v0, 4
+	syscall
+	# End:   write ("\n");
+
+._L0:
+	lw      $ra, 0($fp)
+	move    $sp, $fp
+	lw      $fp, -4($fp)
+	jr      $ra
+# Function exit: main[Fn(0 params)]
+

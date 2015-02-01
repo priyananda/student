@@ -1,0 +1,74 @@
+This is pdfTeX, Version 3.141592-1.40.3 (MiKTeX 2.6) (preloaded format=pdflatex 2008.9.3)  28 OCT 2008 18:43
+entering extended mode
+**prefetch-proposal.tex
+(prefetch-proposal.tex
+LaTeX2e <2005/12/01>
+Babel <v3.8g> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman, ngerman, french, loaded.
+(D:\priyananda\programs\miktex\tex\latex\base\article.cls
+Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
+(D:\priyananda\programs\miktex\tex\latex\base\size10.clo
+File: size10.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(D:\priyananda\programs\miktex\tex\latex\arial\uarial.sty
+Package: uarial 2006/03/21 1.0 (WaS)
+
+(D:\priyananda\programs\miktex\tex\latex\graphics\keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+))
+(prefetch-proposal.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 26.
+ (D:\priyananda\programs\miktex\tex\latex\base\omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 26.
+ [1
+
+{psfonts.map}]
+Missing character: There is no — in font cmr10!
+ [2] (prefetch-proposal.aux) ) 
+Here is how much of TeX's memory you used:
+ 294 strings out of 95305
+ 3161 string characters out of 1185100
+ 49551 words of memory out of 1050691
+ 3525 multiletter control sequences out of 60000
+ 5504 words of font info for 20 fonts, out of 1000000 for 2000
+ 14 hyphenation exceptions out of 8191
+ 23i,4n,19p,155b,136s stack positions out of 5000i,500n,10000p,200000b,32768s
+<D:/priyananda/programs/miktex/fonts/type1/bluesk
+y/cm/cmbx10.pfb><D:/priyananda/programs/miktex/fonts/type1/bluesky/cm/cmbx12.pf
+b><D:/priyananda/programs/miktex/fonts/type1/bluesky/cm/cmr10.pfb><D:/priyanand
+a/programs/miktex/fonts/type1/bluesky/cm/cmsy10.pfb><D:/priyananda/programs/mik
+tex/fonts/type1/bluesky/cm/cmti10.pfb>
+Output written on prefetch-proposal.pdf (2 pages, 50859 bytes).
+PDF statistics:
+ 29 PDF objects out of 300000 (max. 8388607)
+ 0 named destinations out of 300000 (max. 131072)
+ 1 words of extra memory for PDF output out of 65536 (max. 10000000)
+

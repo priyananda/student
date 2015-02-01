@@ -1,0 +1,19 @@
+This is pdfTeX, Version 3.141592-1.40.3 (MiKTeX 2.6) (preloaded format=pdflatex 2008.9.3)  12 SEP 2008 18:47
+entering extended mode
+***.tex
+
+! Emergency stop.
+<*> *.tex
+         
+End of file on the terminal!
+
+ 
+Here is how much of TeX's memory you used:
+ 3 strings out of 95305
+ 15 string characters out of 1185100
+ 44877 words of memory out of 1048577
+ 3286 multiletter control sequences out of 60000
+ 3640 words of font info for 14 fonts, out of 1000000 for 2000
+ 14 hyphenation exceptions out of 8191
+ 0i,0n,0p,1b,6s stack positions out of 5000i,500n,10000p,200000b,32768s
+!  ==> Fatal error occurred, no output PDF file produced!

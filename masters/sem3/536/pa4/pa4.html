@@ -1,0 +1,683 @@
+<html>
+
+<head>
+
+<title>Programming Assignment 4</title>
+
+</head>
+
+<body>
+
+<h1>CS 536 Assignment 4: Name Analysis and Type Checking</h1>
+<h3>(Due Date: 11:59 PM, Tuesday, November 18, 2008)</h3>
+
+<hr>
+
+<a name="contents">
+<h2>Contents</h2>
+</a>
+
+<ul>
+<li> <a href="#news"> News</a>
+<li> <a href="#introduction">Introduction</a>
+<li> <a href="#name analysis">Name Analysis</a>
+<ul>
+  <li> <a href="#programNode">Adding Class <samp>ProgramNode</samp></a>
+  <li> <a href="#name analysis implementation">Implementing the Name-Analysis Pass</a>
+  <li> <a href="#undeclared identifiers">Multiply Declared and Undeclared Identifiers</a>
+  <li> <a href="#class idnode">Extending Class <samp>IdNode</samp></a>
+  <li> <a href="#class symbol">Extending Class <samp>Symbol</samp></a>
+</ul>
+<li> <a href="#error handling">Changes to the Error-Handling Function</a>
+<li> <a href="#type checking">Type Checking</a>
+<li> <a href="#advice">Some Advice</a>
+<li> <a href="#files">Finding/Using the Files for the Assignment</a>
+<li> <a href="#testing">Testing</a>
+<li> <a href="#turning in">What to Turn In</a>
+</ul>
+
+<hr>
+
+<a name="news">
+<h2>News</h2>
+</a>
+
+<i> Watch this space for corrections, clarifications, and hints.</i> <br>
+<p>
+<i> Last updated:
+Tue Oct 28 09:13:30 CDT 2008
+</i>
+
+<!--
+  <p>
+  The archive of postings to the CS 536 class mailing list can be found
+  <A HREF="http://www.cs.wisc.edu/lists/classes/cs536-1list/">here</A>.
+-->
+
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="introduction">
+<h2>Introduction</h2>
+</a>
+
+For this assignment you will write a two-pass static-semantic analyzer for
+<samp>Simple</samp> programs represented as abstract-syntax trees.
+<b>This assignment involves considerably more programming than the
+previous assignments, so it is important that you get to work on it
+soon</b>.
+<p>
+The first pass, <a href="#name analysis">name analysis</a>,
+performs the following kinds of tasks:
+<ol>
+<li>
+Builds symbol tables (one global table, plus one local table for
+each function) containing appropriate symbol-table entries for
+each declaration of an identifier.
+(In the case of function declarations, this should include
+information about the number and types of the parameters.)
+<li>
+Finds multiply declared identifiers and uses of undeclared identifiers.
+<li>
+Updates the <samp>IdNode</samp>s of the abstract-syntax tree
+to include pointers (i.e., ref_ptrs) to the corresponding symbol-table entries.
+</ol>
+We will refer to this pass as the <em>name analyzer</em>.
+<p>
+The second pass is the <em><a href="#type checking">type checker</a></em>.
+It will determine the type of every expression represented
+in the abstract-syntax tree, and use this information to identify
+type errors, as described below.
+<p>
+You will also write a main program that first parses the
+program in the file named on the command line, then calls the name analyzer.
+If there have been no errors so far, it will then call the type checker.
+(Calling the name analyzer and the type checker means calling the
+appropriate member function of the <samp>ASTnode</samp> that is the
+root of the tree built by the parser.)
+<p>
+As usual, ten percent of your grade will be based on how well you
+test your code (your name analyzer and your type checker).
+Therefore, you must provide one or more <samp>Simple</samp> programs that
+thoroughly tests your code, and you must set up your <samp>Makefile</samp>
+so that ``<samp>make test</samp>''
+creates the executable <samp>parse</samp>
+and runs it on your test input.
+<p>
+So that the graders can count on there being some uniformity to the
+projects handed in by different students, your Makefile must be
+organized on the following model (which is able to create and run
+tests on <samp>parse</samp>):
+<pre>
+  <samp># Define which executable to run
+  PARSE = parse
+  
+  OFILES =  ... all object files ...
+  
+  parse: $(OFILES)
+        $(CC) $(CFLAGS) -o parse $(OFILES) -ll
+  
+  ###
+  # run tests
+  ###
+  test: $(PARSE)
+        @echo "Test 1: no data file -------------------------------------"
+        -$(PARSE)
+        @echo "Test 2: sample 'program' -----------------------------------"
+        -$(PARSE) test2.simple &gt; test2.out 2&gt; test2.err</samp>
+</pre>
+(Use <samp><a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSolution/Makefile">/p/course/cs536-reps/public/html/Programs/PROG3/CodeSolution/Makefile</a></samp>
+as a starting point for your <samp>Makefile</samp>.)
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="name analysis">
+<h2>Name Analysis</h2>
+</a>
+
+<a name="programNode">
+<h3>Adding Class <samp>ProgramNode</samp></h3>
+</a>
+
+You may find it useful to add one new kind of node,
+<samp>ProgramNode</samp>, to the <samp>ASTnode</samp> hierarchy (a
+<samp>ProgramNode</samp> is a subclass of <samp>ASTnode</samp>, and
+has no subclasses itself).
+The root node of the AST built by the parser would be a
+<samp>ProgramNode</samp> (and no other <samp>ProgramNode</samp>s
+would appear elsewhere in the AST);
+it would have a single child of type <samp>DeclListNode</samp>.
+The reason for using <samp>ProgramNode</samp> as the AST root
+(rather than <samp>DeclListNode</samp>) is that, because it
+would only appear at the root of an AST,
+the name-analyzer member function of <samp>ProgramNode</samp>
+can do whatever initialization is needed.
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="name analysis implementation">
+<h3>Implementing the Name-Analysis Pass</h3>
+</a>
+
+You must implement your name analyzer by writing appropriate member
+functions for the different subclasses of <samp>ASTnode</samp>.
+So that the grader will be able to locate easily the functions
+that implement the name analyzer, <b>this code is to go
+in a file named ``<samp>name-analyzer.cc</samp>''</b>.
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="undeclared identifiers">
+<h3>Multiply Declared and Undeclared Identifiers</h3>
+</a>
+
+The name analyzer is responsible for finding all instances of
+multiply declared identifiers (identifiers declared more than once in
+the same scope).
+Note that this includes function names that are defined more than once.
+It also includes formal parameters (i.e., a function is not
+allowed to have two or more formal parameters with the same name).
+Also note that a function's formal parameters are considered to be in the
+<em>same</em> scope as that function's local variables (i.e., a function
+is not allowed to have a formal parameter and a local variable with the same
+name).
+<p>
+An error message (see below) should be given for each multiply
+declared identifier, and all but the first declaration should be
+ignored (i.e., do not update the symbol table when you are
+processing an identifier that is multiply declared, and do not bother to link
+that IdNode to any symbol-table entry).
+<p>
+The name analyzer is also responsible for finding all instances of
+uses of undeclared identifiers.
+Note that this includes calls to functions that have not yet been declared.
+An error message should be given for each use of an undeclared identifier.
+<p>
+In addition, the name analyzer is responsible for checking that the program
+includes a function named <samp>main</samp>.
+If the program does not, the error message ``<samp>No main function declared</samp>''
+is to be issued (using zero for both the line and column numbers).
+<p>
+Error messages should have the same format as in the scanner and parser
+(i.e., they should include a line and column number indicating the
+position of the error).
+For multiply declared or undeclared identifiers, the reported position
+should be the first character of the identifier.
+<p>
+In summary, your name analyzer should find all of the errors described
+in the following table;
+it must report the specified position of the error,
+and it must give <em>exactly</em> the specified error message.
+(Each message should appear on a single line, rather than how it is
+formatted in the following table.)
+
+<CENTER><TABLE BORDER >
+<TR>
+  <TD>
+    <CENTER>Type of Error</CENTER>
+  </TD>
+  <TD>
+    <CENTER>Error Message</CENTER>
+  </TD>
+  <TD>
+    <CENTER>Position to Report</CENTER>
+  </TD>
+</TR>
+<TR>
+  <TD>
+    More than one declaration of an identifier in a given scope
+  </TD>
+  <TD>
+    Multiply declared identifier
+  </TD>
+  <TD>
+    The first character of the duplicate declaration
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Use of an undeclared identifier
+  </TD>
+  <TD>
+    Undeclared identifier
+  </TD>
+  <TD>
+    The first character of the occurrence of the undeclared identifier
+  </TD>
+</TR>
+<TR>
+  <TD>
+    No declaration of main provided
+  </TD>
+  <TD>
+    No main function declared
+  </TD>
+  <TD>
+    0:0
+  </TD>
+</TR>
+</TABLE></CENTER>
+
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="class idnode">
+<h3>Extending Class <samp>IdNode</samp></h3>
+</a>
+
+You should add a field of type ``<samp>ref_ptr&lt;Symbol&gt;</samp>'' to the
+<samp>IdNode</samp> class.
+For every <samp>IdNode</samp> that corresponds to a valid declaration
+or a valid use of an identifier, your name analyzer should fill
+in this field with a ref_ptr to the corresponding symbol-table entry.
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="class symbol">
+<h3>Extending Class<samp>Symbol</samp></h3>
+</a>
+
+A symbol-table entry will need to contain the type of each symbol as
+well as its name.
+For function names, the symbol-table entry will also need to
+include information about the number of parameters and their types
+(this could be accomplished by having a list of the symbol-table entries
+for the parameters).
+All of this information will be needed in order to implement the
+<a href="#type checking">type checker</a>.
+<p>
+Eventually, you will also need to know the number
+of local variables declared in each function, and the offsets
+for each parameter and each local variable
+(i.e., where they will be stored in the function's activation
+record).
+You can handle computing and recording this information now, or you can add
+code to do this when you do Programming Assignment 5.
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="error handling">
+<h2>Changes to the Error-Handling Function</h2>
+</a>
+
+Your compiler should quit after the name-analysis pass if any
+errors have been detected so far (either by the scanner, the parser, or
+the name analyzer).
+To accomplish this, you can use a global variable (of type <samp>bool</samp>)
+that is declared and initialized to <samp>false</samp>
+in your <samp>main</samp> program, and is set
+to <samp>true</samp> by your error-handling function (the function that handles
+warnings should not change the value of this variable).
+Alternatively, the global variable can be of type <samp>int</samp>,
+initialized to <samp>0</samp>, and incremented by the error-handling
+function.
+The <samp>main</samp> program can check the value of this variable,
+and only call the type-checker if it is <samp>false</samp> or
+<samp>0</samp>.
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="type checking">
+<h2>Type Checking</h2>
+</a>
+
+You must implement your type checker by writing appropriate member
+functions for the different subclasses of <samp>ASTnode</samp>.
+So that the grader will be able to locate easily the functions
+that implement the type checker, <b>this code is to go
+in a file named ``<samp>type-checker.cc</samp>''</b>.
+<p>
+Your type checker should find all of the type errors described in the
+following table;
+it must report the specified position of the error,
+and it must give <em>exactly</em> the specified error message.
+(Each message should appear on a single line, rather than how it is
+formatted in the following table.)
+
+<CENTER><TABLE BORDER >
+<TR>
+  <TD>
+    <CENTER>Type of Error</CENTER>
+  </TD>
+  <TD>
+    <CENTER>Error Message</CENTER>
+  </TD>
+  <TD>
+    <CENTER>Position to Report</CENTER>
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Assigning to a function;
+    e.g., ``<samp>f = 3;</samp>'', where f is a function name.
+  </TD>
+  <TD>
+    Assignment to a function
+  </TD>
+  <TD>
+    The first character of the function name.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Assigning from a function;
+    e.g., ``<samp>x = f;</samp>'', where f is a function name.
+  </TD>
+  <TD>
+    Assignment from a function
+  </TD>
+  <TD>
+    The first character of the function name.
+  </TD>
+</TR>
+
+<TR>
+  <TD>
+    Writing a function;
+    e.g., ``<samp>write(f)</samp>'', where f is a function name.
+  </TD>
+  <TD>
+    Attempt to write a function
+  </TD>
+  <TD>
+    The first character of the function name.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Comparing two functions; e.g., ``f == g'', ``f != g'',
+    ``f &lt; g'', etc., where f and g are function names.
+  </TD>
+  <TD>
+    Comparison between two functions
+  </TD>
+  <TD>
+    The first character of the first function name.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Calling something other than a function;
+    e.g.: ``x();'', where x is not a function name.
+    Note: In this case, you should <em>not</em> type-check the actual parameters.
+  </TD>
+  <TD>
+    Attempt to call a non-function
+  </TD>
+  <TD>
+    The first character of the variable name.
+  </TD>
+</TR>
+
+<TR>
+  <TD>
+    Calling a function with the wrong number of arguments.
+    Note: In this case, you should <em>not</em> type-check the actual parameters.
+  </TD>
+  <TD>
+    Function call with wrong number of args
+  </TD>
+  <TD>
+    The first character of the function name.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Calling a function with an argument of the wrong type.
+    Note: you should only check for this error if the number of arguments
+    is correct;
+    if there are several arguments with the wrong type, you must give an
+    error message for each such argument.
+  </TD>
+  <TD>
+    Type of actual does not match type of formal
+  </TD>
+  <TD>
+    The first character of the first identifier or literal in the actual expression with the wrong type.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Applying an arithmetic operator (+, -, *, /)
+    to an operand with type other than <samp>int</samp> or <samp>float</samp>.
+  </TD>
+  <TD>
+    Arithmetic operator applied to non-numeric operand
+  </TD>
+  <TD>
+    The first character of the first identifier or literal in an operand
+    that is an expression of the wrong type.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Applying a relational operator (&lt;, &gt;, &lt;=, &gt;=) to an operand
+    with type other than <samp>int</samp> or <samp>float</samp>.
+  </TD>
+  <TD>
+    Relational operator applied to non-numeric operand
+  </TD>
+  <TD>
+    The first character of the first identifier or literal in an operand
+    that is an expression of the wrong type.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Applying a logical operator (!, &&, ||) to an operand
+    with type other than <samp>bool</samp>.
+  </TD>
+  <TD>
+    Logical operator applied to non-bool operand
+  </TD>
+  <TD>
+    The first character of the first identifier or literal in an operand
+    that is an expression of the wrong type.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Using a non-boolean expression as the condition of an if.
+  </TD>
+  <TD>
+    Non-bool expression used as an if condition
+  </TD>
+  <TD>
+    The first character of the first identifier or literal in the condition.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Using a non-boolean expression as the condition of a while.
+  </TD>
+  <TD>
+    Non-bool expression used as a while condition
+  </TD>
+  <TD>
+    The first character of the first identifier or literal in the condition.
+  </TD>
+</TR>
+<TR>
+  <TD>
+    Mixing modes:
+    applying an equality operator (==, !=) to operands of two
+    different types (e.g., ``j == true'', where j is of type <samp>int</samp>);
+    assigning a value of one type to a variable of another type
+    (e.g., ``j = true'', where j is of type <samp>int</samp>);
+    applying an arithmetic operator or relational operator to
+    different numeric types (e.g., ``j + x'' or ``j &lt; x'',
+    where j is of type <samp>int</samp> and x is of type <samp>float</samp>).
+  </TD>
+  <TD>
+    Type mismatch
+  </TD>
+  <TD>
+    The first character of the first identifier or literal in the left-hand
+    expression.
+  </TD>
+</TR>
+</TABLE></CENTER>
+<p>
+To perform type-checking, you should introduce the enumerated type:
+<pre>
+   <samp>enum SymbolType {IntType, FloatType, BoolType, StringType, FnType, ErrorType};</samp>
+</pre>
+<samp>ErrorType</samp> is used to prevent a single type error
+in an expression or statement from triggering multiple error messages,
+For example, each of the following expressions should cause only one error
+message:
+<pre>
+  <samp>(true + 3) * 4
+  true && (false || 3)</samp>
+</pre>
+The type given to <samp>(true + 3)</samp> should be <samp>ErrorType</samp>,
+and the instance of the multiplication operator should <em>not</em> report
+``Arithmetic operator applied to non-numeric operand'' for the
+first operand.
+But note that the following should cause <em>two</em> error messages (one for
+each of the non-integer operands of the plus operator):
+<pre>
+  <samp>true + "hello"</samp>
+</pre>
+<p>
+To provide some help with this issue, 
+<a href="example.simple">here is an example input file</a>, along
+with the <a href="example.err">corresponding file of error messsages</a>.
+(Note: This is not meant to a complete test of the type checker;
+it is provided merely to help you understand some of the messages you
+need to report.)
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="advice">
+<h2>Some Advice</h2>
+</a>
+
+Here are few words of advice about various issues that come up
+in the assignment:
+<ul>
+<li>
+The tree-traversal code you wrote to perform unparsing provides
+a good model for the traversals that you need to write to handle
+<a href="#name analysis">name analysis</a> and
+<a href="#type checking">type checking</a>.
+(See <samp><a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSolution/unparse.cc">~cs536-1/public/html/Programs/PROG3/CodeSolution/unparse.cc</a></samp> and
+<samp><a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSolution/ast.h">~cs536-1/public/html/Programs/PROG3/CodeSolution/ast.h</a></samp>.)
+However, you probably do <em>not</em> want to declare the name-analysis
+and type-checking member functions to be virtual members of class
+<samp>ASTnode</samp> (as we did for <samp>Unparse</samp>).
+The reason is that this will require you to supply a member
+function for <em>all</em> subclasses of <samp>ASTnode</samp>.
+This was OK for <samp>Unparse</samp>, because we wanted to have a
+pretty-printing function for each node in the tree; however, for type
+checking (for example), the type-checking traversal does not need to
+visit all parts of the tree, so not all node classes need furnish a
+type-checking member function.
+<p>
+However, you may find it useful to declare the name-analysis and
+type-checking functions to be virtual members of classes that are lower
+down in the inheritance hierarchy.
+<p>
+<li>
+Note that <samp>Symbol</samp>s need to persist beyond the lifetime of the
+<samp>SymbolTable</samp>s they are in because we are having
+the name analyzer create a ref_ptr link between
+every <samp>IdNode</samp> (that corresponds to a valid declaration
+or a valid use of an identifier) and the corresponding symbol-table entry.
+Because of the automatic reference counting provided by
+ref_ptrs, this should happen automatically:
+the occurrences of <samp>Symbol</samp> will persist beyond the lifetime
+of the <samp>SymbolTable</samp>s they are in.
+<p>
+<li>
+  I found it useful to change <samp>Unparse</samp> so that it produced
+  an annotated version of the code in which all identifiers (both in
+  declarations and in statements) are annotated with their types.  For
+  instance, for the <a href="example.simple">example input file</a>
+  referred to earlier, here is the <a href="example.out">corresponding
+  output file</a>.
+</ul>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="files">
+<h2>Finding/Using the Files for the Assignment</h2>
+</a>
+
+No code skeleton is provided to you for this assignment.
+<p>
+You are encouraged to use the code you wrote for
+<a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG1/Description/assign1.html">Programming Assignment 1</a>
+and
+<a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html">Programming Assignment 3</a>.
+However, if you were unable to complete those programs, working
+versions will be supplied in the directories
+<samp><a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG1/CodeSolution">~cs536-1/public/html/Programs/PROG1/CodeSolution</a></samp>
+and
+<samp><a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSolution">~cs536-1/public/html/Programs/PROG3/CodeSolution</a></samp>.
+<p>
+You should make a subdirectory called <samp>PROG4</samp>
+in your <samp>private</samp> directory, and work on things for
+this programming assignment in that subdirectory.
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="testing">
+<h2>Testing</h2>
+</a>
+
+Part of your task will be to figure out a strategy for testing
+your implementation.
+As mentioned in the <a href="#introduction">Introduction</a>,
+part of your grade will be determined by the testing scheme
+that you implement; i.e., how thoroughly your main program and the test
+files that you turn in test your parser.
+<p>
+As usual, put a brief description of each of your tests (e.g., what
+it tests for and how it goes about doing so) in a file named
+README.testing, <em>which is to be turned in, along with your source
+code and test files</em>.
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="turning in">
+<h2>What To Turn In</h2>
+</a>
+
+To hand in your program, copy all of the files that are needed to
+create and run <samp>parse</samp>, including
+your Makefile, your test program(s), and README.testing to
+<pre>
+  <samp>~cs536-1/public/Handin4/&lt;<i>your login name</i>&gt;</samp>
+</pre>
+using your actual login name in place of &lt;<i>your login name</i>&gt;.
+Please do <em>not</em> create any subdirectories in your handin directory,
+and be sure <em>not</em> to copy any object files or executable files
+(they take up a lot of space and may cause the directory to exceed its
+quota).
+<p>
+After you have copied over your files, you can check that they
+are there by issuing the command
+<pre>
+  <samp>ls -l ~cs536-1/public/Handin4/&lt;<i>your login name</i>&gt;</samp>
+</pre>
+<p>
+REMEMBER: <em>No late assignments will be accepted without prior
+permission!</em>
+Thus, it is important that you get to work soon.
+<p>
+As always, remember that partially finished programs are better than
+no programs at all, so be sure to turn in whatever you've done --- even
+if you don't finish the assignment.
+If you do turn in only a partially finished program, it is a good
+idea to provide a description (say in a file called <samp>README</samp>)
+of what works, what doesn't work, and sketch out how you would have gone
+about changing things to finish up.
+<p>
+<em>GOOD LUCK!!</em>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+</body>
+
+</html>

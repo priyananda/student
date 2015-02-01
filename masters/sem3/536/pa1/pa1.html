@@ -1,0 +1,369 @@
+<html>
+<head>
+  <title>CS 536, Program 1</title>
+</head>
+<body>
+
+<h1>CS 536 Program 1: Symbols and the Symbol Table</h1>
+<h3>(Due Date: 11:59 PM, Monday, September 22, 2008)</h3>
+
+<hr>
+
+<a name="contents">
+<h2>Contents</h2>
+</a>
+
+<ul>
+<li> <a href="#news"> News</a>
+<li> <a href="#introduction">Introduction</a>
+<li> <a href="#symbol class">The Symbol Class</a>
+<ul>
+  <li> <a href="#string class">The String Class</a>
+</ul>
+<li> <a href="#symbol-table class">The SymbolTable Class</a>
+<li> <a href="#what to write">What to Write</a>
+<li> <a href="#files">Finding/Using the Files for the Assignment</a>
+<li> <a href="#testing">Testing</a>
+<li> <a href="#turning in">What to Turn In</a>
+</ul>
+
+<hr>
+
+<a name="news">
+<h2>News</h2>
+</a>
+
+<i> Watch this space for corrections, clarifications, and hints.</i> <br>
+<p>
+<i> Last updated:
+Tue Sep  9 21:36:02 CDT 2008
+</i>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="introduction">
+<h2>Introduction</h2>
+</a>
+
+For this assignment you will define two C++ classes:
+<samp>Symbol</samp> and <samp>SymbolTable</samp>.
+The <samp>Symbol</samp> class will be used to store information about
+the identifiers that appear in a program (the variable and function names).
+For now, the only information that is to be stored is the name of
+the identifier;
+more information will be added in future assignments.
+The <samp>SymbolTable</samp> class will be used to store a set
+of pointers to <samp>Symbol</samp>s, each with a unique name.
+<p>
+In addition to defining the two classes, you will write a main program
+to <a href="#testing">test</a> them.
+Ten percent of your grade will be determined by how thoroughly your
+<samp>Symbol</samp> and <samp>SymbolTable</samp> classes are tested by
+the main program and the test files that you turn in.
+<p>
+In addition to creating the <samp>Symbol</samp> and <samp>SymbolTable</samp>
+classes, this assignment will allow you to gain experience with
+<a href="http://www.cs.wisc.edu/~cs536-1/cs536.html#make"><code>make</code></a>.
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="symbol class">
+<h2>The Symbol Class</h2>
+</a>
+
+For now, the <samp>Symbol</samp> class should have one public data member
+<pre>
+  <samp>std::string symbolName;</samp>
+</pre>
+and one public member function (the constructor function)
+<pre>
+  <samp>Symbol::Symbol(std::string S);</samp>
+</pre>
+that sets the <samp>symbolName</samp> field to the given value.
+Using the name <samp>symbolName</samp> is important for grading purposes.
+You will lose points for this assignment if you use a different name!
+
+<a name="string class">
+<h3>The string Class</h3>
+</a>
+
+To use the <samp>string</samp> class, you must use an appropriate include directive;
+any file that needs to access the <samp>string</samp> class
+must include the following line at the beginning:
+<pre>
+<samp>  #include &lt;string&gt</samp>
+</pre>
+Here are some useful operations on <samp>string</samp>s (not all of which
+you'll be using in this assignment):
+<pre>
+  <samp>S.length()          // the number of characters in string S
+  S[k]                // the k-th character in S (starting with 0)
+  S1 == S2            // true iff S1 and S2 contain the same sequence of characters
+  S1 != S2            // true iff S1 and S2 do <em>not</em> contain the same sequence of characters
+  S1 &lt; S2             // true iff S1 comes before S2 in alphabetical order
+  cout &lt;&lt; S           // write S to the standard output
+  cin &gt&gt S            // reads the next sequence of non-whitespace characters into S
+
+  string str1 = "Hello ";
+  string str2 = "there";
+  string str3 = str1 + str2; // "Hello there" 
+
+  string str1 = "Hello ";
+  string str4 = str1 + "there";  //  "Hello there" 
+
+  string str5 = "The End";
+  string str6 = str5 + '!'; //  "The End!"
+
+  S1 = S2             // S1 is assigned the value of S2
+  S1 = "hello"        // S1 is assigned the string "hello"
+  S1 = 'a'            // S1 is assigned the character 'a'
+  S1 += S2            // S2 is attached at the end of S1
+  S1 += "hello"       // "hello" is attached at the end of S1
+  S1 += 'a'           // 'a' is attached at the end of S1</samp>
+</pre>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="symbol-table class">
+<h2>The SymbolTable Class</h2>
+</a>
+
+Your <samp>SymbolTable</samp> class should be a hashtable in which
+the hash keys are the names of the <samp>Symbol</samp>s.
+You may use any reasonable hash function (you can treat a character
+like an <samp>int</samp>;
+for example: <samp>k + S[0]</samp> is legal).
+You must use chaining for collision resolution.
+In order to do this, the bucket table of your hashtable should be defined
+to be an array of linked lists, where each item in a list element is a
+pointer to a <samp>Symbol</samp>.
+Rather than writing your own linked-list operations,
+you should use the <samp>List</samp> class template defined in:
+<pre>
+  <samp><a href="http://www.cs.wisc.edu/~cs536-1/Supplementary/List/list_T.h">~cs536-1/public/html/Supplementary/List/list_T.h</a></samp>
+</pre>
+(You will also find this class template useful in later programming
+assignments.) 
+Using the <samp>List</samp> class template, your <samp>SymbolTable</samp> class
+will have a (private) data member declared something like this:
+<pre>
+<samp>  static const int TABSIZE = 100;
+  List&lt;Symbol *&gt; bucketTable[TABSIZE];</samp>
+</pre>
+<p>
+Note that <samp>symboltable.h</samp> should include <samp>list_T.h</samp>.
+<p>
+You must implement the following (public) operations on
+<samp>SymbolTable</samp>s:
+<dl>
+  <dt> <samp>void SymbolTable::FreeTable()</samp>
+    <dd>
+    Re-initialize the table to be empty by freeing the storage used by each
+    linked list in the array.
+    (You can free the storage used by an
+    individual list <samp>L</samp> using the function call
+    <samp>L.FreeList()</samp>.)
+  <dt> <samp>SymbolTable::~SymbolTable()</samp>
+    <dd>
+    This is the destructor function;
+    it should just call <samp>FreeTable</samp>.
+  <dt> <samp>void SymbolTable::Insert(Symbol *sym)</samp>
+    <dd>
+    Insert the given (pointer to a) <samp>Symbol</samp> into the
+    <samp>SymbolTable</samp>.
+    If there is already a <samp>Symbol</samp> in the table with the
+    same name, you should give an error message and quit (you can use
+    a call to <samp>assert</samp> to accomplish this --- in that case,
+    you must include <samp>&lt;cassert&gt;</samp>).
+    Note that case is important, so for example
+    <samp>"variableName"</samp> is <em>not</em> the same name as
+    <samp>"variablename"</samp> (but you won't have to worry about this
+    if you just use the ``<samp>==</samp>'' operator to compare two
+    <samp>string</samp>s).
+  <dt> <samp>Symbol *SymbolTable::Lookup(string S)</samp>
+    <dd>
+    If there is a <samp>Symbol</samp> in the table with the given name,
+    then return a pointer to that <samp>Symbol</samp>;
+    otherwise, return <samp>NULL</samp> (to use <samp>NULL</samp>, you
+    should include <samp>&lt;fstream&gt;</samp>).
+  <dt> <samp>void SymbolTable::Print(ostream & out)</samp>
+    <dd>
+    This operation is for debugging.
+    It should print the names of all of the <samp>Symbol</samp>s
+    currently in the table to the given <samp>ostream</samp>, one per line.
+    It should <em>not</em> print anything else!
+</dl>
+<p>
+Note that if you use the declaration of <samp>bucketTable</samp>
+given above, you will not need a constructor function (because the
+<samp>List</samp> constructor function will be called to initialize
+each element of the array to be an empty list).
+If you define any pointer data members, you will not only need to
+define a constructor function, you will also need to define a
+copy-constructor and operator=.
+It is easy to get those wrong, so you are strongly advised not to include
+any pointer data members!
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="what to write">
+<h2>What to Write</h2>
+</a>
+
+You must implement the <samp>Symbol</samp> and
+<samp>SymbolTable</samp> classes using files named
+<samp>symbol.h</samp>, <samp>symbol.cc</samp>,
+<samp>symboltable.h</samp> and <samp>symboltable.cc</samp>.
+(<em>BE SURE TO USE THESE FILE NAMES!</em>)
+In addition, you must write a main program, input test files, and
+set up the target <samp>test</samp> in your <samp>Makefile</samp>
+to <a href="#testing">test</a> your implementation.
+<p>
+If your main program requires input, it can come from the standard
+input (<samp>cin</samp>), or from a file whose name is ``hard coded''
+so that the program always reads from the same file (you can name that
+file whatever you like, but don't forget to hand it in --- see
+``<a href="#turning in">What to Turn In</a>'' below), or the main program
+can be written to expect the file as a ``command-line'' argument.
+(See the file
+<samp><a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG1/CodeSkeleton/main.cc">~cs536-1/public/html/Programs/PROG1/CodeSkeleton/main.cc</a></samp>
+for examples of how to use command-line arguments, how to open a file,
+and how to read from that file.)
+<p>
+You must also write a <samp>Makefile</samp> that is all set up with targets for
+both creating and testing your program.
+In particular, the <samp>Makefile</samp> must contain the target
+<samp>test</samp>, which should perform as follows:
+<ul>
+  <li>
+  Typing <samp>make test</samp> should first create an
+  executable named <samp>p1</samp>, and then should run
+  <samp>p1</samp> as many times as necessary to test your code.
+  (For instance, you may want to have a separate run to test errors like
+  a call to the <samp>SymbolTable</samp> <samp>Insert</samp> operation
+  with a <samp>Symbol</samp> whose name is already in the table.)
+</ul>
+(See the file <samp><a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG1/CodeSkeleton/Makefile">~cs536-1/public/html/Programs/PROG1/CodeSkeleton/Makefile</a></samp>
+for examples of how to define the <samp>p1</samp> and
+<samp>test</samp> targets.)
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="files">
+<h2>Finding/Using the Files for the Assignment</h2>
+</a>
+
+We have provided you with a sample program that illustrates the following:
+<ul>
+  <li> How to use ``command-line'' arguments
+  <li> How to open a file (for reading)
+  <li> How to read strings from a file
+  <li> How to use the List class template
+</ul>
+When this program is run, it opens the file named on the command line,
+then reads names from that file, adding each name to the end of a list.
+On end-of-file, it iterates through the list and writes all of the names
+to the standard output.
+<p>
+If the executable is named <samp>a.out</samp> and the input file is named
+<samp>data</samp>, then to run the program you type:
+<pre>
+  <samp>a.out data</samp>
+</pre>
+<p>
+The files for this assignment are in the directory
+<samp><a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG1/CodeSkeleton">~cs536-1/public/html/Programs/PROG1/CodeSkeleton</a></samp>.
+You should make a subdirectory called PROG1 in your <em>private</em>
+directory, and place in that directory the files that you will be
+using and modifying.
+To set things up initially, you should issue the following commands:
+<pre>
+<samp>cd ~/private
+mkdir PROG1
+cd PROG1
+cp ~cs536-1/public/html/Programs/PROG1/CodeSkeleton/Makefile .
+cp ~cs536-1/public/html/Programs/PROG1/CodeSkeleton/main.cc .
+cp ~cs536-1/public/html/Programs/PROG1/CodeSkeleton/data1 .
+ln -s ~cs536-1/public/html/Supplementary/List/list_T.h .
+</samp></pre>
+<p>
+The file <samp>main.cc</samp> can serve as
+a starting point for your implementation of the assignment.
+<p>
+When you initially invoke <samp>make</samp>, you should see something like
+the following on your screen:
+<pre>
+<samp>% make
+/s/std/bin/g++ -Wall -g -c main.cc
+/s/std/bin/g++ -Wall -g -o p1 main.o</samp>
+</pre>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="testing">
+<h2>Testing</h2>
+</a>
+
+Part of your task will be to figure out a strategy for testing
+your implementation.
+As mentioned in the <a href="#introduction">Introduction</a>,
+ten percent of your grade will be determined by the testing scheme
+that you implement; i.e., how thoroughly
+your <samp>Symbol</samp> and <samp>SymbolTable</samp> classes
+are tested by your main program and the test files that you turn in.
+<p>
+You are to add commands that invoke your tests to your <samp>Makefile</samp>.
+The <a href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG1/CodeSkeleton/Makefile"><samp>Makefile</samp>
+that we have provided you with</a> serves as an example of how to
+do this.
+It includes a target, named <samp>test</samp>, that invokes a couple of tests.
+<p>
+In addition, put a brief description of each test (e.g., what it tests
+for and how it goes about doing so) in a file named <samp>README.testing</samp>,
+<em>which is to be turned in, along with your source code and test
+files</em>.
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="turning in">
+<h2>What To Turn In</h2>
+</a>
+
+To hand in your program, copy all of the files that are needed to
+create and run the <samp>p1</samp> executable (including your
+Makefile, a copy of <samp>list_T.h</samp>,
+your <samp>README.testing</samp> file, and any required test data files) to
+<pre>
+  <samp>~cs536-1/public/Handin1/&lt;<i>your login name</i>&gt;</samp>
+</pre>
+using your actual login name in place of &lt;<i>your login name</i>&gt;.
+Please do <em>not</em> create any subdirectories in your handin directory,
+and be sure <em>not</em> to copy any object files or executable files
+(they take up a lot of space and may cause the directory to exceed its
+quota).
+<p>
+After you have copied over your files, you can check that they
+are there by issuing the command
+<pre>
+  <samp>ls -l ~cs536-1/public/Handin1/&lt;<i>your login name</i>&gt;</samp>
+</pre>
+<p>
+REMEMBER: <em>No late assignments will be accepted without prior
+permission!</em>
+Thus, it is important that you get to work soon.
+<p>
+As always, remember that partially finished programs are better than
+no programs at all, so be sure to turn in whatever you've done -- even
+if you don't finish the assignment.
+If you do turn in only a partially finished program, it is a good
+idea to provide a description (say in a file called <samp>README</samp>)
+of what works, what doesn't work, and sketch out how you would have gone
+about changing things to finish up.
+<p>
+<em>GOOD LUCK!!</em>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+</body>
+
+</html>

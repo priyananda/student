@@ -1,0 +1,42 @@
+Steps to run the demo:
+
+1. run "make" to build the executables. The following
+executables must be present in the folder after the build takes place:
+	calfpreprocess
+	calfcreatedb
+	calfblkload
+	calfexec
+	
+2. Run
+		perl calfpreprocess tpch tpch.sql
+	This command parses the sql file and extracts the table definitions
+	and queries from it. It should create two files: "tpch.schema" and
+	"tpch.query".
+
+3. Run
+		./calfoptimize tpch.schema tpch.query > tpch.opt.schema
+	This command uses the analytical cost model to find the optimal
+	partitioning. The new schema is written to standard output
+	which is captured in the "tpch.opt.schema" file.
+
+4. Run
+		./calfcreatedb tpch tpch.opt.schema
+	This command creates the database files, one for each supported type.
+	After this tool is run, there should be "tpch_row.database",
+	"tpch_col.database" and "tpch_grp.database" files created.
+
+5. Run
+		./calfblkload tpch_row.database 10000
+		./calfblkload tpch_col.database 10000
+		./calfblkload tpch_grp.database 10000
+	This preloads the database with dummy rows. The second parameter
+	is the number of rows. After this you should see 
+	"<table>.Slotted.data", "<table>.Column.data", "<table>.Group.data"
+	for each table.
+
+6. Run
+		./calfexec tpch_row tpch.query
+		./calfexec tpch_col tpch.query
+		./calfexec tpch_grp tpch.query
+	This eecutes each query in the query file and reports the time it took.
+	This step must be done on the flash device.

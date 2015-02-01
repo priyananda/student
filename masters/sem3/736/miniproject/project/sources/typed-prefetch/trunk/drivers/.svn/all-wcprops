@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svnroot/typed-prefetch/!svn/ver/11/trunk/drivers
+END
+print_debug.c
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svnroot/typed-prefetch/!svn/ver/11/trunk/drivers/print_debug.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svnroot/typed-prefetch/!svn/ver/9/trunk/drivers/Makefile
+END

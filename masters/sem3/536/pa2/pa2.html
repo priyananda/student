@@ -1,0 +1,466 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<title>Programming Assignment 2</title>
+</head><body>
+
+<h1>CS 536 Assignment 2: Scanning</h1>
+<h3>(Due Date: 11:59 PM, Saturday, October 11, 2008)</h3>
+
+<hr>
+
+<a name="contents">
+<h2>Contents</h2>
+</a>
+
+<ul>
+<li> <a href="#news"> News</a>
+</li><li> <a href="#introduction">Introduction</a>
+</li><li> <a href="#simple%20language">The Simple Language</a>
+</li><li> <a href="#scanner%20actions">What the Scanner Should Do</a>
+</li><li> <a href="#errors">Errors and Warnings</a>
+</li><li> <a href="#main">The Main Program</a>
+</li><li> <a href="#makefile">The Makefile</a>
+</li><li> <a href="#files">Finding/Using the Files for the Assignment</a>
+</li><li> <a href="#testing">Testing</a>
+</li><li> <a href="#turning%20in">What to Turn In</a>
+</li></ul>
+
+<hr>
+
+<a name="news">
+<h2>News</h2>
+</a>
+
+<i> Watch this space for corrections, clarifications, and hints.</i> <br>
+<p>
+<i> Last updated:
+Wed Oct  1 20:58:57 CDT 2008
+</i>
+
+<!--
+  <p>
+  The archive of postings to the CS 536 class mailing list can be found
+  <A HREF="http://www.cs.wisc.edu/lists/classes/cs536-1list/">here</A>.
+-->
+
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="introduction">
+<h2>Introduction</h2>
+</a>
+
+For this assignment you will use <samp>flex</samp> to write a scanner
+for a small language (a subset of C++), called Simple.
+Features of <samp>Simple</samp> that are relevant to this assignment
+are described below.
+You will also write a main program to test your scanner.
+You will be graded both on the correctness of your scanner
+and on how thoroughly your main program tests the scanner.
+</p><p>
+Your scanner will use definitions in the files
+<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/scanner.h">~cs536-1/public/html/Programs/PROG2/CodeSkeleton/scanner.h</a></samp>
+and
+<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/gram.tab.h">~cs536-1/public/html/Programs/PROG2/CodeSkeleton/gram.tab.h</a></samp>.
+(Later in the term, after we create the parser, <samp>gram.tab.h</samp> will be
+generated from our specification of the parser by the parser generator
+<samp>bison</samp>.)
+We have also provided you with an incomplete <samp>flex</samp> specification
+for Simple
+(<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/simple.l">~cs536-1/public/html/Programs/PROG2/CodeSkeleton/simple.l</a></samp>),
+an incomplete main program
+(<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/main.cc">~cs536-1/public/html/Programs/PROG2/CodeSkeleton/main.cc</a></samp>), and 
+a Makefile
+(<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/Makefile">~cs536-1/public/html/Programs/PROG2/CodeSkeleton/Makefile</a></samp>).
+</p><p>
+
+<!--
+<p>
+In addition to creating the scanner,
+classes, this assignment will allow you to gain experience with
+<a href="http://www.cs.wisc.edu/~cs536-1/cs536.html#purecov"><code>purecov</code></a>.
+(The department now has a sufficient number of <samp>purecov</samp> licenses,
+and our evaluation of your testing strategy will be based, in part, on
+the reports that <samp>purecov</samp> generates.)
+
+<p>
+(You might also wish to experiment with
+<a href="http://www.cs.wisc.edu/~cs536-1/cs536.html#purify"><code>purify</code></a>.)
+-->
+
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="simple language">
+<h2>The Simple Language</h2>
+</a>
+
+This section defines the lexical level of the Simple language.
+At this level, we have the following language issues:
+</p><dl>
+<dt> TOKENS
+</dt><dd>
+The tokens of the Simple language are defined as follows:
+<ul>
+<li>
+Any of the following reserved words:
+<pre>int   float  bool   String   void    true
+false if     else   while    write   return
+</pre>
+</li><li>
+Any identifier (the same as C++ identifiers: a sequence of one or more
+letters and/or digits, and/or underscores,
+starting with a letter or underscore, excluding reserved words).
+</li><li>
+Any integer literal (a sequence of one or more digits).
+</li><li>
+Any float literal (a sequence of zero or more digits followed by a . and one or
+more digits).
+</li><li>
+Any string literal (a sequence of zero or more ``string'' characters
+surrounded by double quotes; a ``string'' character is either an
+escaped character --- a backslash followed by any character other than
+a newline, including a double quote or another backslash --- or a
+single character other than newline or double quote or backslash).
+Examples of legal string literals:
+<pre>""
+"&amp;!#"
+"use \n to denote a newline character"
+"include a \" like this and a \\ like this"
+</pre>
+Examples of things that are <em>not</em> legal string literals:
+<pre>"unterminated
+"also unterminated \"
+</pre>
+</li><li>
+Any of the following one- or two-character symbols:
+<pre>{      }     (      )      ,      =      ;
++      -     *      /      !      &amp;&amp;     ||
+==     !=    &lt;      &gt;      &lt;=     &gt;=
+</pre>
+</li></ul>
+Token ``names'' (i.e., values to be returned by the scanner)
+are defined in the file
+<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/gram.tab.h">gram.tab.h</a></samp>.
+For example, the name for the token to be returned when an identifier
+is recognized is ID.
+
+</dd><dt> COMMENTS
+</dt><dd>
+Comments in Simple are like C++ comments:
+they start with // and continue until end-of-line
+(or end-of-file, if that comes first).
+Note that the scanner should recognize comments, but that COMMENT is not
+a token.
+
+</dd><dt> WHITESPACE
+</dt><dd>
+Spaces, tabs, and newline characters are whitespace.
+
+</dd><dt> ILLEGAL CHARACTERS
+</dt><dd>
+Any character that is not whitespace and is not part of a token or
+comment is illegal.
+
+</dd><dt> LENGTH LIMITS
+</dt><dd>
+You may not assume any limits on the lengths of identifiers, string literals,
+integer literals, float literals, comments, etc.
+</dd></dl>
+
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="scanner actions">
+<h2>What the Scanner Should Do</h2>
+</a>
+
+In addition to identifying and returning the next token, your
+scanner should record information about the line and ``column'' on which
+the token starts;
+this information should be recorded in the global variable <samp>yylval</samp>
+(see <samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/scanner.h">scanner.h</a></samp>
+and <samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/gram.tab.h">gram.tab.h</a></samp>.
+Line and column numbers should both start from 1 (not 0).
+``Column'' numbers should be a count of the number of characters from the beginning
+of the line (not actual columns).  In particular, a tab should be treated
+like any other character (scanning a tab causes the column number
+to be incremented by one).
+(See the description of the <a href="#main">main program</a> for information
+about how the line and column counts will be used.)
+</p><p>
+For identifiers, integer literals, float literals, and string literals, your scanner
+should also record (in <samp>yylval</samp>) the actual values of the tokens.
+Variable <samp>yylval</samp> is a struct:
+the <samp>lineNum</samp> and <samp>colNum</samp> fields are
+to be filled in for every token;
+the <samp>intVal</samp>, <samp>floatVal</samp>, and <samp>strVal</samp> fields are only
+to be filled in for appropriate tokens;
+note that the type of the <samp>strVal</samp> field is
+``pointer to string''
+so to fill it in, you must allocate new memory each time (see
+<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/simple.l">simple.l</a></samp>).
+For string literals, the value stored in <samp>yylval.strVal</samp> should be
+the entire lexeme, including the enclosing quotes, and any backslash used as
+an ``escape'' character inside the string.
+</p><p>
+Here are some useful variables provided by <samp>flex</samp>
+(you can use them in the actions you write in your flex specification):
+</p><dl>
+<dt> <samp>yytext</samp>
+</dt><dd>
+This variable is of type <samp>char *</samp>.
+It contains the actual characters that matched the current pattern.
+</dd><dt> <samp>yyleng</samp>
+</dt><dd>
+This variable is of type <samp>int</samp>.
+It contains the number of characters that matched the current pattern.
+</dd></dl>
+<p>
+To convert an integer literal to an <samp>int</samp>, include the header files
+<samp>&lt;cstdlib&gt;</samp>,
+<samp>&lt;limits.h&gt;</samp>, and
+<samp>&lt;float.h&gt;</samp>,
+and use code like the following:
+</p><pre>  <samp>double d;
+  int k;
+  d = atof(yytext);  // convert lexeme to a double
+  // insert code here to check for bad value -- see Errors and Warnings below
+  k = int(d);  // convert double to int</samp>
+</pre>
+<p>
+To convert a float literal to a <samp>float</samp>, use code like this:
+</p><pre>  <samp>double d;
+  float v;
+  d = atof(yytext);  // convert lexeme to a double
+  // insert code here to check for bad value -- see Errors and Warnings below
+  v = float(d);  // convert double to float</samp>
+</pre>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+
+<a name="errors">
+<h2>Errors and Warnings</h2>
+</a>
+
+The scanner should handle the following errors in the indicated ways:
+</p><dl>
+<dt> Illegal characters:
+</dt><dd>
+Issue the error message
+``ignoring illegal character'' and ignore the character.
+</dd><dt> Bad string literals (newline or end-of-file before closing quote):
+</dt><dd>
+Issue the error message ``ignoring unterminated string literal''
+and ignore the unterminated string literal.
+</dd></dl>
+Error messages should be of the form:
+<pre>  &lt;<i>line</i>&gt;:&lt;<i>column</i>&gt; <samp>ERROR</samp> &lt;<i>message</i>&gt;
+</pre>
+where &lt;<i>line</i>&gt; and &lt;<i>column</i>&gt; are the line
+and column numbers of the <em>beginning</em> of the bad input,
+and &lt;<i>message</i>&gt; is exactly as specified above.
+<p>
+The scanner should give the warning message
+``integer literal too large; using max value''
+if the input contains an
+integer literal that is larger than INT_MAX (2147483647), and should return
+INT_MAX in the <samp>intVal</samp> field for that token.
+</p><p>
+The scanner should give the warning message
+``float literal too large; using max value''
+if the input contains a float literal that is larger than FLT_MAX, and should return
+FLT_MAX in the <samp>floatVal</samp> field for that token.
+Similarly, the scanner should give the warning message
+``float literal too small; using min value''
+if the input contains a non-zero float literal that is smaller
+than FLT_MIN, and should return
+FLT_MIN in the <samp>floatVal</samp> field for that token.
+</p><p>
+Warning messages should be of the form:
+</p><pre>  &lt;<i>line</i>&gt;:&lt;<i>column</i>&gt; <samp>WARNING</samp> &lt;<i>message</i>&gt;
+</pre>
+<p>
+Error and warning messages should be written to <samp>cerr</samp>.
+You should handle the printing of these messages in special
+functions that take the line and column numbers and the message
+as parameters.
+That way, errors discovered in any phase of the compiler can be handled by
+the same function.
+<b>Because logically these functions are not associated with any
+particular phase of the compiler, the error- and warning-handler functions
+should be put in their own "message" module.</b>
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+
+<a name="main">
+<h2>The Main Program</h2>
+</a>
+
+In addition to specifying a scanner, you should extend the main
+program in
+<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/main.cc">~cs536-1/public/html/Programs/PROG2/CodeSkeleton/main.cc</a></samp>.
+The main program expects one command-line argument: the name of the file
+to be scanned.
+That file is opened for reading;
+then the program loops, calling the scanner (<samp>yylex</samp>) until the
+value 0 is returned.
+The tokens returned by the scanner should be printed, one per line,
+preceded by the token's line and column numbers:
+</p><pre>  &lt;<i>line</i>&gt;:&lt;<i>column</i>&gt; &lt;<i>token</i>&gt;
+</pre>
+where &lt;<i>token</i>&gt; means the token ``name'' as defined in
+<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/gram.tab.h">gram.tab.h</a></samp>,
+for example, <samp>INTEGER</samp>, <samp>BOOLEAN</samp>, <samp>ID</samp>,
+<samp>INTLITERAL</samp>).
+For <samp>ID</samp>, <samp>STRINGLITERAL</samp>, <samp>FLOATLITERAL</samp>,
+and <samp>INTLITERAL</samp> tokens,
+the main program should also print the value returned (on
+the same line as the token, enclosed in parentheses):
+<pre>  &lt;<i>line</i>&gt;:&lt;<i>column</i>&gt; &lt;<i>token</i>&gt; ( &lt;<i>value</i>&gt; )
+</pre>
+<p>
+Note the the purpose of the main program is only to test the scanner.
+The scanner itself should be self-contained (e.g., the main
+program should not initialize any variables for the scanner).
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="makefile">
+<h2>The Makefile</h2>
+</a>
+
+You must also write a <samp>Makefile</samp> that is all set up with targets for
+both compiling your program, as well as testing it.
+In particular, the <samp>Makefile</samp> must retain the same basic
+structure as <samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/Makefile">~cs536-1/public/html/Programs/PROG2/CodeSkeleton/Makefile</a></samp>:
+it must contain the target <samp>test</samp>, which is to perform as follows:
+</p><ul>
+  <li>
+  Typing <samp>make test</samp> should first create <samp>scanner</samp>,
+  and then should run <samp>scanner</samp> as many times as necessary to test your code.
+  (You may want to have separate runs to test different error conditions.)
+</li></ul>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="files">
+<h2>Finding/Using the Files for the Assignment</h2>
+</a>
+
+The files for this assignment are in the directory
+<samp><a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton">~cs536-1/public/html/Programs/PROG2/CodeSkeleton</a></samp>.
+You should make a subdirectory called PROG2 in your <em>private</em>
+directory, and place in that directory the files that you will be
+using and modifying.
+To set things up initially, you should issue the following commands:
+</p><pre><samp>cd ~/private
+mkdir PROG2
+cd PROG2
+cp ~cs536-1/public/html/Programs/PROG2/CodeSkeleton/Makefile .
+cp ~cs536-1/public/html/Programs/PROG2/CodeSkeleton/gram.tab.h .
+cp ~cs536-1/public/html/Programs/PROG2/CodeSkeleton/main.cc .
+cp ~cs536-1/public/html/Programs/PROG2/CodeSkeleton/test2 .
+cp ~cs536-1/public/html/Programs/PROG2/CodeSkeleton/scanner.h .
+cp ~cs536-1/public/html/Programs/PROG2/CodeSkeleton/simple.l .
+</samp></pre>
+<p>
+The files <samp>main.cc</samp> and <samp>simple.l</samp> can serve as
+a starting point for your implementation of the assignment.
+</p><p>
+When you initially invoke <samp>make</samp>, you should see something like
+the following on your screen:
+</p><pre><samp>% make
+g++ -g -Wall -c main.cc
+flex simple.l
+g++ -g -Wall -c lex.yy.c -o scanner.o
+lex.yy.c:988: warning: 'void yyunput(int, char*)' defined but not used
+g++ -g -Wall -o scanner main.o scanner.o -ll</samp>
+</pre>
+<p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="testing">
+<h2>Testing</h2>
+</a>
+
+Part of your task will be to figure out a strategy for testing
+your implementation.
+As mentioned in the <a href="#introduction">Introduction</a>,
+part of your grade will be determined by the testing scheme
+that you implement; i.e., how thoroughly your main program and the test
+files that you turn in test your scanner.
+</p><p>
+You are to add commands that invoke your tests to your <samp>Makefile</samp>.
+The <a href="http://www.cs.wisc.edu/%7Ecs536-1/Programs/PROG2/CodeSkeleton/Makefile"><samp>Makefile</samp>
+that we have provided you with</a> serves as an example of how to
+do this.
+It includes a target, named <samp>test</samp>, that invokes a couple of tests.
+</p><p>
+In addition, put a brief description of each of your tests (e.g., what
+it tests for and how it goes about doing so) in a file named
+README.testing, <em>which is to be turned in, along with your source
+code and test files</em>.
+
+<!--
+<p>
+Depending on how you choose to format the file <samp>simple.l</samp>,
+<samp>purecov</samp> may report that some lines are not covered.
+In particular, the line with the pattern will be reported as
+``not covered'' (even though the action is reported as ``covered'')
+if you format things as follows:
+<pre>
+<samp>pattern              {
+                       action
+                     }</samp>
+</pre>
+<p>
+Note that <samp>flex</samp> generates an output file, called
+<samp>lex.yy.c</samp>.    
+You are not likely to be able to get
+<samp>purecov</samp> to report that your tests give complete
+coverage of <samp>lex.yy.c</samp>.)
+-->
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+<a name="turning in">
+<h2>What to Turn In</h2>
+</a>
+
+To hand in your program, copy all of the files that are needed to
+create and run the <samp>scanner</samp> program, (including your
+Makefile and any required files of test data) to
+</p><pre>  <samp>~cs536-1/public/Handin2/&lt;<i>your login name</i>&gt;</samp>
+</pre>
+using your actual login name in place of &lt;<i>your login name</i>&gt;.
+Please do <em>not</em> create any subdirectories in your handin directory,
+and be sure <em>not</em> to copy any object files or executable files
+(they take up a lot of space and may cause the directory to exceed its
+quota).
+<p>
+After you have copied over your files, you can check that they
+are there by issuing the command
+</p><pre>  <samp>ls -l ~cs536-1/public/Handin2/&lt;<i>your login name</i>&gt;</samp>
+</pre>
+<p>
+REMEMBER: <em>No late assignments will be accepted without prior
+permission!</em>
+Thus, it is important that you get to work soon.
+</p><p>
+As always, remember that partially finished programs are better than
+no programs at all, so be sure to turn in whatever you've done -- even
+if you don't finish the assignment.
+If you do turn in only a partially finished program, it is a good
+idea to provide a description (say in a file called <samp>README</samp>)
+of what works, what doesn't work, and sketch out how you would have gone
+about changing things to finish up.
+</p><p>
+<em>GOOD LUCK!!</em>
+</p><p>
+[<a href="#contents">Back to the Table of Contents</a>]
+
+</p></body></html>

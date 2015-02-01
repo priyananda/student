@@ -1,0 +1,55 @@
+h30020
+s 00025/00000/00000
+d D 1.1 00/12/11 15:39:13 staelin 2 1
+cC
+cF1
+cK00348
+cO-rw-rw-r--
+e
+s 00000/00000/00000
+d D 1.0 00/12/11 15:39:13 staelin 1 0
+c BitKeeper file /tmp_mnt/usr/WebPaper/users/staelin/src/LMbench2/doc/lat_fcntl.8
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHhpli8.hpli.hpl.hp.com
+cK45658
+cPdoc/lat_fcntl.8
+cR6f00bc08330885d8
+cV4
+cX0xa1
+cZ+02:00
+e
+u
+U
+f e 0
+f x 0xa1
+t
+T
+I 2
+.\" $Id$
+.TH LAT_FCNTL 8 "$Date$" "(c)1994 Larry McVoy" "LMBENCH"
+.SH NAME
+lat_fcntl \- measure fctl() locking latencies
+.SH SYNOPSIS
+.B lat_fcntl
+.SH DESCRIPTION
+.B lat_fcntl
+uses two processes and alternately locks and unlocks files so that
+only one of the processes is running at a time, similar to 
+``hot potato'' message passing benchmarks.
+No other work is done in the processes.
+.SH OUTPUT
+The reported time is in microseconds per round trip and includes the total
+time, i.e., the context switching overhead is included.
+Output format is like so
+.sp
+.ft CB
+AF_UNIX sock stream latency: 491 microseconds
+.ft
+.SH ACKNOWLEDGEMENT
+Funding for the development of
+this tool was provided by Sun Microsystems Computer Corporation.
+.SH "SEE ALSO"
+lmbench(8), fcntl(2).
+E 2
+I 1
+E 1

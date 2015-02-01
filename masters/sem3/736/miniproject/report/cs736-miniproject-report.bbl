@@ -1,0 +1,25 @@
+\begin{thebibliography}{1}
+
+\bibitem{ext2_loi}
+Ext2(wikipedia).
+\newblock {\url{http://en.wikipedia.org/wiki/Ext2}}, Sept. 2008.
+
+\bibitem{dynamic_fcache}
+Linux buffer cache.
+\newblock {\url{http://www.faqs.org/docs/linux\_admin/buffer-cache.html}},
+  Sept. 2008.
+
+\bibitem{drop_cache}
+/proc file system documentation.
+\newblock {\url{http://www.linuxinsight.com/proc\_sys\_vm\_drop\_caches.html}},
+  Sept. 2008.
+
+\bibitem{wiki_rdtsc}
+Rdtsc(wikipedia).
+\newblock {\url{http://en.wikipedia.org/wiki/RDTSC}}, Sept. 2008.
+
+\bibitem{sched_affinity}
+sched\_setaffinity man page.
+\newblock {\url{http://linux.die.net/man/2/sched\_setaffinity}}, Sept. 2008.
+
+\end{thebibliography}

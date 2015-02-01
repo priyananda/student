@@ -1,0 +1,102 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+\usepackage{uarial}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Do not modify the dimensions of the page
+\setlength{\topmargin}{-0.5in}
+\setlength{\textheight}{9.9in}
+\setlength{\oddsidemargin}{0.2in}
+\setlength{\textwidth}{6.0in}
+% Do not modify the dimensions of the page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% No paragraph indent or paragraph skip
+\parindent=10pt
+\parskip=0pt
+
+\begin{document}
+
+\centerline{\bf Advanced Operating Systems (CS 736)}
+\vspace{6pt}
+\centerline{{\large {\bf Enhanced File Prefetching}}}
+\vspace{6pt}
+\centerline{{\bf Tushar Khot \hspace{20pt} Varghese Mathew \hspace{20pt}  Priyananda Shenoy}}
+\vspace{6pt}
+\centerline{ \{tushar,vmathew,shenoy\}@cs.wisc.edu }
+
+\section{Problem Summary}
+
+Current file prefetching implementations are static, and are agnostic to file-type. We propose to
+fine tune the prefetching algorithm to make informed decisions based on the type of file being
+accessed. Likewise, the file-type and therefore the access pattern can be used to fine-tune the
+cache eviction policy to improve cache utilization.
+
+\section{Motivation}
+
+We believe that the access pattern for a certain type of file generally remains the same 
+across differnt files of that type. This observation can be put to use in determining ideal 
+prefetch depths for different frequently encountered file-types. We expect prefetching
+driven by such a file-type determined depth to outperform contemporary implementations
+of prefetching which are rather static. Similarly with caching, the access pattern as suggested
+by the file-type can hint at the likelihood of the block being accessed again. A cache
+replacement policy driven by this can make sure that we do not cache blocks that are 
+unlikely to be needed.
+
+\section{Initial plan of approach}
+
+The type of file determines the access pattern (like sequential, random or piecewise 
+sequential) and the cache replacment policy (whether the block is likely to be accessed
+again). And if the access is sequential, the rate at which the file is normally read can be used 
+to compute an optimal prefetch depth for the file-type. The initial part of our project involves
+gathering traces to determine file access patterns and analysing them on a per-file-type basis.
+We then plan to use this information to propose a better policy for prefetching and cache replacement.
+
+\section{Proposed Methodology and Evaluation}
+
+\begin{itemize}
+\item As a first step, we plan to instrument the linux kernel to yield a trace of file access patterns
+including prefetching and cache hit/miss patterns. Through this, we desire to attain twofold objectives
+	\begin{enumerate}
+  \item Determine an offline, optimal prefetching and cache replacement policy, which will serve as a reference point for
+     comparison in our evaluation of our own strategy.
+  \item Familiarize ourselves with the prefetching code in the linux kernel.
+  \end{enumerate}
+\item Next we plan to gather long sample traces over real workloads. We will use these traces to 
+  determine and generalize access patterns over file-types and compute the optimal prefetch 
+  depth and cache eviction policy statically.
+\item As the third step, we plan to incorporate the optimal depth so obtained into the linux 
+  kernel and evaluate resultant performance of the system, both against the offline optimal
+  strategy and the performance obtained without our modifications.
+\item As a potential last step, if time permits, we will try to incorporate a feedback mechanism to 
+  adjust the offline determined ideal prefetch depth.
+\end{itemize}
+
+\section{Software resources}
+
+We propose to confine ourselves to Linux 2.6.x in this study. Additionally, we will primarily work
+on the ext2 file system. However, if time permits, we may also perform the same modifications
+on the IBM jfs filesystem to exclude file-system specific anomalies.
+
+\section{Hardware resources}
+We plan to run our tests on an i386 system with a SATA hard disk. We plan to use a machine in
+the Crash and Burn Lab for our experiments.
+
+\begin{thebibliography}{99}
+
+\bibitem[1]{C1} Behdad Esfahbod.
+	Preload — An Adaptive Prefetching Daemon.
+	{\em Masters Thesis, Graduate Department of Computer Science. University of Toronto}, 2006.
+	
+\bibitem[2]{C2} Jeffrey Scott Vitter, P. Krishnan.
+Optimal prefetching via data compression.
+{\em Journal of the ACM, vol.43, pp. 771-793}, September 1996.
+
+\bibitem[3]{C3} James Griffioen, Randy Appleton.
+Reducing File System Latency using a
+Predictive Approach
+{\em USENIX 94}, 1994.
+
+\end{thebibliography}
+
+\end{document}

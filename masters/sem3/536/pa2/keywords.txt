@@ -1,0 +1,6 @@
+int   float  bool   String   void    true
+false if     else   while    write   return
+{      }     (      )      ,      =      ;
++      -     *      /      !      &&     ||
+==     !=    <      >      <=     >=
+

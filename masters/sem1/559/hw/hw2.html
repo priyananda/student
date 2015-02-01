@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><title>CS559 Computer Graphics Fall 2007 | Main / P2-1</title>
+
+
+  
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="hw2_files/pmwiki.css" type="text/css">
+  <link rel="stylesheet" href="hw2_files/graphics.css" type="text/css"><!--HTMLHeader-->
+  <style type="text/css"><!--
+  ul, ol, pre, dl, p { margin-top:0px; margin-bottom:0px; }
+  code.escaped { white-space: nowrap; }
+  .vspace { margin-top:1.33em; }
+  .indent { margin-left:40px; }
+  .outdent { margin-left:40px; text-indent:-40px; }
+  a.createlinktext { text-decoration:none; border-bottom:1px dotted gray; }
+  a.createlink { text-decoration:none; position:relative; top:-0.5em;
+    font-weight:bold; font-size:smaller; border-bottom:none; }
+  img { border:0px; }
+  
+/* styling of commentbox entries */
+.messagehead, .journalhead {
+            margin:1em 0 0 0;
+            padding:10px 0 0 3px;
+            xborder:1px solid #999;
+            }
+.messageitem, .journalitem {
+            margin:0;
+            padding:3px;
+            border-left:1px solid #999;
+            border-right:1px solid #999;
+            border-bottom:1px solid #999;
+            }
+.messagehead { background:#e5e5ff; }
+/*use the following if message head should be same as message item */
+/* .messagehead { background:#eef; border-bottom:none; } */
+.messageitem { background:#eef; }
+.journalhead { background:#ffb; }
+.journalitem { background:#ffc; }
+
+.diaryhead h4 { border-bottom:1px solid #999;
+            margin-bottom:1px; }
+* html .diaryhead h4 { margin-bottom:0; }
+.diaryitem {background:#ffc;
+            margin:0;
+            padding:3px;
+            border-left:1px solid #999;
+            border-right:1px solid #999;
+            border-bottom:1px solid #999;
+            }
+.messagehead h5, .messagedate h4, .journalhead h5, .journaldate h4,
+.diaryhead h4 { margin:0.25em 0 0 0; }
+
+.commentbutton { margin:0 0 0 5px;
+                padding:0 3px }
+.commenttext { width:100%;
+               margin:0 0 3px 0 }
+em.access { font-style:normal; color:#FF2222;}
+
+span.anchor {
+	float: left;
+	font-size: 10px;
+	margin-left: -10px;
+	width: 10px;
+    position:relative; top:-0.1em;
+	text-align: center;
+}
+span.anchor a { text-decoration: none; }
+span.anchor a:hover { text-decoration: underline; }
+ol.toc { text-indent:-20px; list-style: none; }
+ol.toc ol.toc { text-indent:-40px; }
+div.tocfloat { font-size: smaller; margin-bottom: 10px;
+    border-top: 1px dotted #555555; border-bottom: 1px dotted #555555;
+    padding-top: 5px; padding-bottom: 5px; 
+    width: 38%; float: right; margin-left: 10px; clear: right;
+    margin-right:-13px; padding-right: 13px; padding-left: 13px;
+    background-color: #eeeeee; }
+div.toc { font-size: smaller; 
+    padding: 5px; border: 1px dotted #cccccc;
+    background: #f7f7f7;
+    margin-bottom: 10px; }
+div.toc p { background-color: #f9f6d6;
+    margin-top:-5px;   padding-top: 5px;
+    margin-left:-5px;  padding-left: 5px;
+    margin-right:-5px; padding-right: 5px;
+    padding-bottom: 3px;
+    border-bottom:  1px dotted #cccccc; }
+div.eqn { margin: 0 2em; }
+div.eqn table { width: 100%; }
+div.eqn iframe {
+ width: 100%;
+ height: 80px;
+}
+.adldeletebutton {
+   display: inline;
+}
+.adldeletebutton input {
+   font-size: 80%;
+}
+.editconflict { color:green; 
+  font-style:italic; margin-top:1.33em; margin-bottom:1.33em; }
+
+  table.markup { border:2px dotted #ccf; width:90%; }
+  td.markup1, td.markup2 { padding-left:10px; padding-right:10px; }
+  table.vert td.markup1 { border-bottom:1px solid #ccf; }
+  table.horiz td.markup1 { width:23em; border-right:1px solid #ccf; }
+  table.markup caption { text-align:left; }
+  div.faq p, div.faq pre { margin-left:2em; }
+  div.faq p.question { margin:1em 0 0.75em 0; font-weight:bold; }
+   
+    .frame 
+      { border:1px solid #cccccc; padding:4px; background-color:#f9f9f9; }
+    .lfloat { float:left; margin-right:0.5em; }
+    .rfloat { float:right; margin-left:0.5em; }
+a.varlink { text-decoration:none; }
+
+--></style>
+<script type="text/javascript" language="JavaScript1.2">
+  function checkform ( form ) {
+      if (form.text && form.text.value == "") {
+        window.alert( 'Please enter a comment to post' );
+        form.text.focus();
+        return false ;
+      }
+      if (form.author && form.author.value == "") {
+        window.alert( 'Please enter your name as author' );
+        form.author.focus();
+        return false ;
+      }
+      if (form.access && form.access.value == "") {
+        window.alert( 'Please enter the code number' );
+        form.access.focus();
+        return false ;
+      }
+      return true ;
+  }
+</script>
+<script type="text/javascript">
+function toggle(obj) {
+    var elstyle = document.getElementById(obj).style;
+    var text    = document.getElementById(obj + "tog");
+    if (elstyle.display == 'none') {
+        elstyle.display = 'block';
+        text.innerHTML = "hide";
+    } else {
+        elstyle.display = 'none';
+        text.innerHTML = "show";
+    }
+}
+</script>  <meta name="robots" content="index,follow"></head><body>
+<!--PageHeaderFmt-->
+  <div id="wikilogo"><a href="http://www.cs.wisc.edu/graphics/Courses/559-f2007"><img src="hw2_files/tiny-w.png" alt="CS559 Computer Graphics Fall 2007" border="0"></a>
+    <h1 style="position: absolute; top: 1px; left: 45px; font-size: 16px;">CS559 Computer Graphics Fall 2007</h1>
+  </div>
+  <div id="wikihead">
+  <form action="http://www.cs.wisc.edu/graphics/Courses/559-f2007">
+    <span class="headnav"><a href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/RecentChanges" accesskey="c">Recent Changes</a> -</span>
+    <input name="n" value="Main.P2-1" type="hidden">
+    <input name="action" value="search" type="hidden">
+    <a href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Site/Search">Search</a>:
+    <input name="q" value="" class="inputbox searchbox" type="text">
+    <input class="inputbutton searchbutton" value="Go" type="submit"></form></div>
+<!--/PageHeaderFmt-->
+  <table id="wikimid" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<!--PageLeftFmt-->
+      <td id="wikileft" valign="top">
+        <p class="sidehead"> <a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/Main">CS559-2007</a>
+</p><ul><li><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/Main">News</a>
+</li><li><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/Calendar">Calendar</a>
+</li><li><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/Readings">Readings</a>
+</li><li><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/BasicInfo">BasicInfo</a>
+</li><li><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/Policies">Policies</a>
+</li><li><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/P1">Project 1</a>
+</li><li><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/FAQ">FAQ</a>
+</li></ul><p class="vspace sidehead"> Resources
+</p><ul><li><a class="urllink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/wiki/pub/Lectures/" rel="nofollow">LectureNotes</a>
+</li><li><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/Tutorials">Tutorials</a>
+</li><li><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/SampleCode">SampleCode</a>
+</li><li><a class="urllink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2006/" rel="nofollow">Last Year's Web</a>
+</li></ul><div class="vspace"></div><div class="indent"><span style="font-size: 83%;"><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Site/AllPages">List of All Pages</a></span>
+</div><div class="indent"><span style="font-size: 83%;"><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/RecentChanges">RecentChanges</a></span>
+</div><p class="vspace"><a class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/P2-1?action=login">Staff Login</a>
+</p>
+</td>
+<!--/PageLeftFmt-->
+      <td id="wikibody" valign="top">
+<!--PageActionFmt-->
+        <div id="wikicmds"><ul><li class="browse"><a accesskey="" class="selflink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/P2-1">View</a>
+</li><li class="diff"><a accesskey="h" rel="nofollow" class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/P2-1?action=diff">History</a>
+</li><li class="print"><a accesskey="" rel="nofollow" class="wikilink" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/P2-1?action=print">Print</a>
+</li></ul>
+</div>
+<!--PageTitleFmt-->
+        <div id="wikititle">
+          <div class="pagegroup"><!--<a href='http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main'>Main</a> /--></div>
+          <h1 class="pagetitle" style="font-size: 20px;"><a style="font-size: 14px; text-decoration: none;" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main">Main</a> / P2-1</h1></div>
+<!--PageText-->
+<div id="wikitext">
+<h2><span class="wikiword">CS559</span> - Project 2, Phase 1</h2>
+<h2>Transformations Homework</h2>
+<p>Turn your answers in by placing a file in your handin directory under
+P2-Written. Please provide either a plain text file (.txt) or an
+acrobat file (.pdf).  We will use the AFS file modification date to
+determine when the assignment was turned in.
+</p>
+<p class="vspace">If you choose to work in pencil and paper, please either type your
+answers in (preferred), or scan your pages in.
+</p>
+<p class="vspace">This assignment is due on Monday, October 15th at 11:59pm, with late assignments accepted according to the class late policy.
+</p>
+<p class="vspace">Note: many of the questions here come from old exams
+and assignments, so you can find the answers on the web. Looking up old
+answers is OK, but you probably want to make sure you can do the
+problems yourself since you will most likely see similar things on the
+exam.
+</p>
+<div class="vspace"></div><hr>
+<p class="vspace">For questions 1-5, we consider a 2D graphics system that works like <span class="wikiword">OpenGL</span>. It uses 3x3 homogeneous matrices and a post-multiply convention. It has a matrix stack, and supports the following commands:
+</p><div class="indent">PUSH &#8211; makes a copy of the top element of the matrix stack
+</div><div class="indent">POP &#8211; removes the top element of the matrix stack
+</div><div class="indent">TRANS(x,y) - translates by x,y 
+</div><div class="indent">ROT(t) - rotates counter clockwise by t degrees 
+</div><div class="indent">SCALE(x,y) - scales by x,y 
+</div><div class="indent">SQUARE - draws a unit square between (0,0) and (1,1) 
+</div><p class="vspace">Here is an example program and its output:
+</p>
+<table><tbody><tr><td valign="top">
+<pre class="escaped">Draw Square
+PushMatrix
+Scale(2,2)
+Translate(2,1)
+Scale(-1,1)
+Draw Square
+PopMatrix
+Rotate 90
+Translate -3,0
+Draw Square</pre>
+</td><td valign="top">
+<div><img src="hw2_files/P2-1-1.png" alt="" title=""></div>
+</td></tr></tbody></table><!---->
+<h3>Question 1:</h3>
+<p>If we had left out the <span class="wikiword">PushMatrix/PopMatrix</span> commands in the example program, the last square would have appeared in a different place. Where would it have been?
+</p>
+<p class="vspace">(give the positions of its 4 corners)
+</p>
+<div class="vspace"></div><h3>Question 2:</h3>
+<p>Write a program that creates the following picture, without using <span class="wikiword">PushMatrix</span> or <span class="wikiword">PopMatrix</span>.
+</p>
+<div class="vspace"></div><div><img src="hw2_files/simple2.png" alt="" title=""></div>
+<div class="vspace"></div><h3>Question 3:</h3>
+<p>When dealing with images, we often like to measure the screen in
+pixels (with 0,0 being the upper left, and width-1, height-1 being the
+lower right). When dealing with geometry, we often like to have
+&#8220;Normalized Device Coorindates&#8221; where the center of the window is 0,0,
+and 1,1 is the upper right corner (and -1,-1 is the lower left).
+</p>
+<div class="vspace"></div><h4>Question 3A:</h4>
+<p>Using the 2D transform commands above, write a program that creates
+the transformation from normalized device coordinates to pixel
+coordinates for a screen that is 640x480 pixels on the top of the
+stack. (your answer should be a sequence of commands)
+</p>
+<div class="vspace"></div><h4>Question 3B:</h4>
+<p>If the screen is 640 by 480 pixels, what would the matrix be? (your answer should be a 3x3 matrix).
+</p>
+<p class="vspace">Hint: it is probably easier to figure out the answer directly than to multiply out the matrices.
+</p>
+<div class="vspace"></div><h3>Question 4:</h3>
+<p>Give the 3x3 matrix that would transform the unit square (with one
+of its corners at 0,0, and the opposite corner at 1,1) such that:
+The corner that was at the origin goes to 1,2.
+The corner that was at 0,1 goes to 3,4.
+The corner that was at 1,1 goes to 5,6.
+</p>
+<div class="vspace"></div><h3>Question 5:</h3>
+<p>Give the program that creates a rotation of 45 degrees around the point 3,4.
+</p>
+<div class="vspace"></div><h3>Question 6:</h3>
+<p>Consider the desk lamp in this picture:
+</p><div><img src="hw2_files/P2-1-6.png" alt="" title=""> </div>
+<p class="vspace">The lengths of the arms are 5, and the tip of the
+bulb is 1 unit from the joint. x,y, and theta 0-3 are all parameters to
+position the lamp. Write an expression that computes the position of
+the bulb (point B) in the coordinate system of the desk. Your
+expression should be the product of a set of Matrices T(x,y,z) (that
+translates by x,y,z) and Rx(theta) that rotates theta degrees around
+the x axis (or Ry or Rz). These matrices are post-multiply and the
+rotations are measured counter clockwise in right-handed coordinate
+systems. </p>
+<div class="vspace"></div><h3>Question 7:</h3>
+<p>Consider a 3D transformation M (a 4x4 homogeneous coordinate matrix)
+that is created by composing a rotation and a uniform scale.
+M maps the unit X vector to (0,1,1), and the unit Y vector to (0,1,-1).
+</p><h4>Question 7A: </h4>
+<p>Where does M map the unit Z vector to?
+</p><h4>Question 7B: </h4>
+<p>What is the amount of the scale used to make M?
+</p>
+<div class="vspace"></div>
+</div>
+
+      </td>
+    </tr></tbody></table>
+<!--PageFooterFmt-->
+  <div id="wikifoot">
+    <div class="footnav">
+      <!--<a rel="nofollow" href='http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/P2-1?action=edit'>Edit</a> - -->
+      <a rel="nofollow" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/P2-1?action=diff">History</a> -
+      <a rel="nofollow" href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/P2-1?action=print" target="_blank">Print</a> -
+      <a href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Main/RecentChanges">Recent Changes</a> -
+      <a href="http://www.cs.wisc.edu/graphics/Courses/559-f2007/Site/Search">Search</a></div>
+    <div class="lastmod">Page last modified on October 08, 2007, at 05:51 PM</div></div>
+<!--HTMLFooter-->
+
+</body></html>

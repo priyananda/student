@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="include\base">
+      <UniqueIdentifier>{0fb686d6-6364-4ea1-ae79-df9b90265b78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base\input">
+      <UniqueIdentifier>{515a4d7f-9c66-43d0-b404-487f79f3ee3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base\object">
+      <UniqueIdentifier>{340edc01-85df-4750-ba8f-4bebc14d5afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base\object\specific">
+      <UniqueIdentifier>{b2a7844f-fe03-4bcb-bcc9-55ef3cf96236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base\object\specific\props">
+      <UniqueIdentifier>{39b0299a-f93b-4411-a3a5-3ff162c40171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base\texture">
+      <UniqueIdentifier>{b62645d7-ee63-45fc-a47f-d44ce42fa23e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base\view">
+      <UniqueIdentifier>{2f186c15-4a47-4cc4-b8ed-3a14350d3d7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\base\window">
+      <UniqueIdentifier>{19a0cd84-05a5-41d1-8e65-ea3a4a9951f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\coaster">
+      <UniqueIdentifier>{0c04c817-61f0-42ae-a1e7-578003a7b82b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\coaster\object">
+      <UniqueIdentifier>{a5c6edc8-b260-4373-a809-6f14005683af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{61d1028e-5d89-4069-8525-70d3c1bfb16e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\base">
+      <UniqueIdentifier>{154ba8c7-f4a7-4cfe-b49a-8bd5d80b2b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base\input">
+      <UniqueIdentifier>{b87f86ba-ce22-4f99-bedc-e4da1e45af54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base\object">
+      <UniqueIdentifier>{af208fe1-4791-422e-a696-7a29075d6297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base\object\specific">
+      <UniqueIdentifier>{5eacad96-5b30-4857-bf1b-210ae69355dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base\object\specific\props">
+      <UniqueIdentifier>{9376376e-3aad-42b4-9744-7356ed0b6c63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base\texture">
+      <UniqueIdentifier>{69ff803a-b152-4aa7-b8a5-4332dc4f1804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base\view">
+      <UniqueIdentifier>{3c3602f8-b2b3-47b2-94e4-cfad5e4632d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base\window">
+      <UniqueIdentifier>{7342b144-b729-4c56-9467-16eadd7abcae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\coaster">
+      <UniqueIdentifier>{80003862-2541-4b7b-8daf-c92dbd048bdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\coaster\object">
+      <UniqueIdentifier>{b66e1c61-6e66-43d4-a8d8-d731c6c45265}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\QuantumCoaster.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\BaseObject.h">
+      <Filter>include\base\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Building.h">
+      <Filter>include\base\object\specific\props</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Camera.h">
+      <Filter>include\base\view</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Command.h">
+      <Filter>include\base\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ControlPoint.h">
+      <Filter>include\coaster\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Cube.h">
+      <Filter>include\base\object\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Director.h">
+      <Filter>include\coaster</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Flag.h">
+      <Filter>include\base\object\specific\props</Filter>
+    </ClInclude>
+    <ClInclude Include="include\God.h">
+      <Filter>include\base\object\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Hoarding.h">
+      <Filter>include\base\object\specific\props</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libtarga.h">
+      <Filter>include\base\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OrientableObject.h">
+      <Filter>include\base\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PickableObject.h">
+      <Filter>include\base\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Polygon.h">
+      <Filter>include\base\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PropObject.h">
+      <Filter>include\base\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rail.h">
+      <Filter>include\coaster\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer.h">
+      <Filter>include\coaster</Filter>
+    </ClInclude>
+    <ClInclude Include="include\resource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SkyBox.h">
+      <Filter>include\base\object\specific</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SolidObject.h">
+      <Filter>include\base\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TargaImage.h">
+      <Filter>include\base\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TextureManager.h">
+      <Filter>include\base\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Track.h">
+      <Filter>include\coaster\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Train.h">
+      <Filter>include\coaster\object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Tree.h">
+      <Filter>include\base\object\specific\props</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vector.h">
+      <Filter>include\base</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ViewPort.h">
+      <Filter>include\base\window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Win32Helper.h">
+      <Filter>include\base\window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Window.h">
+      <Filter>include\base\window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WindowEventHandler.h">
+      <Filter>include\base\window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\World.h">
+      <Filter>include\coaster</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Building.cpp">
+      <Filter>src\base\object\specific\props</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>src\base\view</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Command.cpp">
+      <Filter>src\base\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ControlPoint.cpp">
+      <Filter>src\coaster\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Cube.cpp">
+      <Filter>src\base\object\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Director.cpp">
+      <Filter>src\coaster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Flag.cpp">
+      <Filter>src\base\object\specific\props</Filter>
+    </ClCompile>
+    <ClCompile Include="src\God.cpp">
+      <Filter>src\base\object\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hoarding.cpp">
+      <Filter>src\base\object\specific\props</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libtarga.c">
+      <Filter>src\base\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PickableObject.cpp">
+      <Filter>src\base\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Polygon.cpp">
+      <Filter>src\base\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>src\coaster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SkyBox.cpp">
+      <Filter>src\base\object\specific</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SolidObject.cpp">
+      <Filter>src\base\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TargaImage.cpp">
+      <Filter>src\base\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextureManager.cpp">
+      <Filter>src\base\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Track.cpp">
+      <Filter>src\coaster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Train.cpp">
+      <Filter>src\coaster\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tree.cpp">
+      <Filter>src\base\object\specific\props</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vector.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ViewPort.cpp">
+      <Filter>src\base\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Win32Helper.cpp">
+      <Filter>src\base\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window.cpp">
+      <Filter>src\base\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\World.cpp">
+      <Filter>src\coaster</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

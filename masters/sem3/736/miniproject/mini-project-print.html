@@ -1,0 +1,320 @@
+<h2> Mini Project: The Art of Computer Science Measurement: File Systems</h2>
+
+<b>Due Date: Thursday, September 25th, at 5 pm </b>
+
+<br>
+<hr noshade>
+
+<h3> Overview</h3>
+
+In this assignment, you will get your feet just a little bit wet with
+a computer system. One of the most important parts of computer systems
+is <b>evaluation. </b>
+
+Hence, understanding what it takes to perform such an evaluation is a
+skill we wish to develop. <br>
+<p>
+
+<b>What you're going to do: </b>
+
+First, you have to pick a platform to study. Any Unix-based system
+(such as a PC running some version of Linux) is acceptable. For this
+assignment, please no Windows-based systems, unless you also do some
+Unix-based system in addition. Second, you're going to run some simple
+experiments, which you design to bring out various properties of the
+file system under test. Third, you are going to create some graphs to
+demonstrate those properties -- call them "empirical proofs". Finally,
+you will write up what you did. <br>
+<p>
+
+<b>You are to work alone on this project. </b>
+
+Talking to your friends at some level is OK, but this should primarily
+be an exercise for you. Part of the process is to develop some
+measurement skills now for later use in your final project, so do a
+good job here and it will pay off down the road. <br>
+<h3> More Detail</h3>
+
+In this assignment, we're going to explore the inner-workings of the
+file system. In a Unix-based file system, assume we have the following
+system calls to work with: <b>open(), close(), read(), write(),
+lseek(), </b> and <b>fsync(). </b>
+
+If you don't know what those system calls do, then use the 
+<b>man pages </b> to find out. <br>
+<p>
+
+Our main approach is going to be to write little code snippets that
+exercise the file system in different ways; then, by <b>measuring </b>
+how long various operations take, we are going to try to make some
+deductions about what the file system is doing. <br>
+
+<h4> Step 0: Platform</h4>
+
+Pick a platform you will work upon. Very likely it will be something
+like a PC running Linux, but please feel free to be adventurous -- it
+will keep my eyes open when reading your project on a system that is a
+bit different, e.g., FreeBSD, some ugly old Unix system like AIX, or
+even Mac OS X. However, please do use a Unix-based system. <br>
+<p>
+Do a little research on the file system. Some systems, such as MacOS
+HFS and Linux XFS, use extents in the inode instead of blocks, making
+it almost impossible to measure blocksize. The file system layout may
+determine some of your experiments.
+</p>
+
+<p>
+To measure information about the cache, you will need to be able to
+control what is in the cache and what is not. There are several ways
+of accomplishing this, both with and without root privilege.
+</p>
+
+<h4> Step 1: Timers</h4>
+
+The accuracy and granularity of the timer you use will often have a
+large affect on your measurements. Therefore, you should use the best
+timer available. Fortunately, on x86 platforms, a highly accurate
+<b>cycle counter </b> is available. The instruction to use it is known
+as <b>rdtsc</b>, (<a href="http://en.wikipedia.org/wiki/RDTSC">
+Wikipedia article </a>) and it returns a 64-bit cycle count. By
+knowing the cycle time, one can easily convert the result of rdtsc
+into a useful time. On Windows, the <b> QueryPerformanceCounter </b>
+API provides access to this feature. Other platforms have similar
+highly-accurate timers available - use them! However, there are a few
+issues to note:
+
+<ol>
+
+  <li> If the processor can automatically vary the clock speed, the
+timestamp counter will not reflect real time. </li>
+
+<li>  On  a  multicore  system,  different processor  cores  may  have
+different values for  the timestamp; you can only  compare values on a
+single core and not across cores. </li>
+
+</ol>
+
+<br> <p>
+
+Hence, the first thing you should do is: figure out how to use rdtsc
+or its analogue (you can use google to find out more about it). Once
+you know how to call it and get a cycle count, convert the result to
+seconds and measure how long something takes (e.g., a program that
+calls sleep(10) and exits should run for about 10 seconds. Confirm
+your results make sense by comparing it to a less accurate but
+reliable counter such as <b>gettimeofday. </b> <b> Note that
+confirmation of timer accuracy is hugely important! </b> If you don't
+trust your timer, how can you trust the results of your
+measurements? <br>
+
+<h4> Step 2: Measuring the File System</h4>
+
+After getting our timer in order, we will move on and measure some
+aspects of the file system proper. All measurements should be done on
+the <b>local disk </b> of some machine - do not measure the
+performance of a distributed file system such as AFS, where, for
+example, your CS account resides. If you aren't using your own
+machine, you might consider the
+<a href = "http://www.cs.wisc.edu/csl/doc/info/crash/"> Crash and Burn
+lab</a> or just one of the other computer labs in the building. <br>
+<p>
+
+Through experiments that you design, implement, run, and measure, you
+are to answer the following questions: <br>
+<blockquote>
+
+<b>What is the ideal buffer size for random file access? </b> Hint:
+use reads of varying sizes and plot the time it takes to do such
+reads. Also, be wary of prefetching effects that often kick in during
+sequential reads. <br>
+
+</blockquote>
+
+<blockquote>
+
+<b>During a sequential read of a large file, how much data is
+prefetched by the file system? </b> Hint: time each read and plot the
+time per read. <br>
+
+</blockquote>
+
+<blockquote>
+
+<b>How big is the file cache? </b> Hint: Repeated reads to a group
+blocks that fit in cache will be very fast; repeated reads to a group
+of blocks that don't fit in cache will be slow. Think about how big
+the cache is likely to be compared to the amount of physical memory in
+the system. <br>
+
+</blockquote>
+
+<blockquote> <b> For what file sizes does the file system add an
+additional layer of indirection? </b> Usually, an inode can only hold
+pointers to a few blocks, and after that additional blocks must be
+read off disk containing more pointers. Hint: think about using
+write() and fsync() to answer this question. Also think about what
+happens when you extend a file and suddenly an indirect pointer must
+be allocated -- how many more writes occur at that point? <br>
+
+</blockquote>
+
+Hence, in your write-up, <b>you should have one or more graphs which
+you use to directly answer the questions above. </b>
+
+Be critical of yourself -- are the conclusions you draw foolproof? Or
+are they mere hypotheses? <br>
+<p>
+
+A major issue with any data collection is: how convincing are your
+numbers? How do you make them more convincing? How do you deal with
+experimental noise? etc. Use your common sense and be critical of your
+numbers -- do they really convince you that you know the answer? <br>
+<p>
+
+One thing you will undoubtedly do is to use <b>repetition </b> to
+increase your confidence, i.e., you will take multiple measurements of
+an event, and compute (for example) an average over many runs instead
+of the result from just a single experiment. Be careful when computing
+averages over numbers -- make sure to always first <b>look at all the
+data. </b>
+
+If you don't, you might use an average where an average doesn't make
+sense. <br>
+
+<h4> Step 3: Writing It Up</h4>
+
+After you're done with experiments, you'll need to write up what
+you've done. What should go in your writeup? Here are some tips: <br>
+<blockquote>
+<b>Title: </b> The title should be descriptive and fit in one line
+across the page. <br>
+</blockquote>
+<blockquote>
+<b>Author: </b> Right under the title, this says who you are. <br>
+</blockquote>
+
+<blockquote>
+<b>Abstract: </b> This is the paper in brief and should state the
+basic contents and conclusions of the paper. The abstract is not the
+introduction to the paper (it should be shorter), but is a summary of
+everything. Read some of the abstracts of papers we've read for class
+to get a better idea. In general, the abstract is an advertisement
+that should draw the reader into your paper, without being
+misleading. It should be complete enough to understand what will be
+covered in the paper. This is a technical paper and not a mystery
+novel -- don't be afraid of giving away the ending! <br>
+</blockquote>
+<blockquote>
+<b>Intro: </b> A short overview of what you did, and what you
+learned. More motivation than the abstract, and more details. Again,
+make sure you include your main conclusions. <br>
+</blockquote>
+<blockquote>
+<b>Methodology: </b> How you measured what you measured. Include
+something about your timer accuracy here, as well as a description of
+the platform you are using to the level of detail such that someone
+else could reproduce the experiment elsewhere. <br>
+</blockquote>
+<blockquote>
+<b>Results: </b> This section should consist mainly of <b>graphs, </b>
+addressing each of the questions above. Make sure that graphs have
+axes labeled (including units). Also make sure to include the <b>code
+snippets </b> with each graph (or some rough description of them) so
+we have an idea what exactly you measured. Also, make sure to <b>draw
+appropriate conclusions </b> about each graph. <br>
+</blockquote>
+<blockquote>
+<b>Conclusions: </b> Summarize your conclusions here, and talk about
+what else you have learned in the process. <br>
+</blockquote>
+
+This paper should be at most 6 pages long (including everything), in
+10 point or larger font, in double column format. In your write-up,
+you should not re-describe the assignment. Your paper must be written
+using proper English grammar and should have no spelling
+mistakes. <br> 
+
+The paper will be graded as follows:<br>
+<ul>
+<li> <b> Presentation: 1/3 </b> How well written and structured is the
+paper? Are the figures and tables legible? </li>
+<li> <b> Methodology: 1/3 </b> Is the methodology sound? Will it
+accurately measure and return the correct results? Does the reader
+have confidence in your results?</li>
+<li> <b> Explanation: 1/3 </b> Do you explain your results completely?
+Are all features of your results graph explained?</li>
+</ul>
+<p> 
+Here are hints on the writeup:
+
+<ol>
+<li>When proposing experiments, describe your hypothesis: how does the
+system work, how do you expose that behavior. Make a prediction on
+what should happen if your hypothesis is correct. </li>
+<li> Don't use passive voice. E.g. the inode is read from disk. Say
+the FS reads the inode from disk. </li>
+<li> When describing experiments, discuss the relevant details of the
+platform, uch as processor type and speed, memory size, OS name and
+kernel version. </li>
+<li>When graphing, change the scale to highlight the useful stuff. If
+nothing happens at the top, chop it off. Log scale may be useful, but
+it tends to minimize large percentage differences.</li>
+<li> Perform multiple runs to make sure the data is good. Depending on
+the test, you might want best case, average case, median case, or
+worst case. Understand why. When looking for phenomena, best case may
+work well. If using randomness, you may want the median or average
+case. </li>
+<li> If you have data anomalies, explain why they occur. For example,
+if there is a sudden spike or downturn in graph, explain why </li>
+<li> Read your paper through completely before handing it in. Spell check
+it as well (aspell and ispell are good programs to use with LaTex). </li>
+<li> When including code fragments, only include the relevant code. For
+example, you can leave out most arithmetic or bookkeeping code that is
+not relevant to the computation. </li>
+</ol>
+</p>
+
+
+I also recommend/require the following two tools: <br>
+
+<blockquote>
+<b></b>
+
+<a href = "http://www.latex-project.org/">  LaTeX</a>
+
+Use this for typesetting your document. <br>
+</blockquote>
+<blockquote>
+<b></b>
+
+<a href = "http://www.gnuplot.info/">  gnuplot</a>
+
+Use this for making graphs. <br>
+</blockquote>
+Check out ~swift/public/latex-example/ for an example of how to use
+these tools (run "make pdf" to produce the file main.pdf from
+main.tex). LaTeX is an excellent system for writing
+academic/scientific papers with, and it is worth spending some amount
+of time learning how to use it. Using gnuplot or something like it
+(e.g.,
+<a href = "http://ploticus.sourceforge.net/doc/welcome.html">
+Ploticus</a> ) also makes a lot of sense as these tools produce nice
+encapsulated postscript (eps) files to use within LaTeX. epstopdf can
+convert these to pdf for generating pdf files from latex directly.<br>
+
+You can
+use Microsoft Excel as well, but you need to print the graph as pdf
+and then crop it to use in the paper.
+
+<h4> Step 4: Turn it in</h4>
+Please email me your paper by midnight on the project due date.<br>
+
+<h4> Step 5: Enjoying Yourself</h4>
+
+Computer systems are complicated, and careful and accurate measurement
+is a tricky business. Make sure to have fun! How should you do that?
+Probably by
+<b>starting early. </b>
+
+As always, feel free to ask me questions if you are having
+trouble. Good luck! <br>

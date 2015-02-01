@@ -1,0 +1,131 @@
+#!/s/std/bin/perl
+# CS 764 : Project CALF
+# author: satish@cs.wisc.edu,shenoy@cs.wisc.edu
+# date: 17 Nov 2008
+
+use lib 'SQL-Statement-1.15/lib';
+
+use SQL::Parser;
+use Data::Dumper;
+use SQL::Statement;
+
+my $dbname = shift @ARGV;
+
+open SCHEMA, ">$dbname.schema";
+open QUERY,  ">$dbname.query";
+
+my $parser = SQL::Parser->new();
+$parser->{RaiseError}=1;
+$parser->{PrintError}=0;
+
+sub get_type
+{
+	my ($sqltype) = @_;
+	return "int" if( $sqltype eq 'INT' || $sqltype eq 'INTEGER');
+	return "float" if( $sqltype eq 'FLOAT' || $sqltype eq 'DECIMAL');
+	return "char" if( $sqltype eq 'CHAR' || $sqltype eq 'VARCHAR' || $sqltype eq 'DATE');
+}
+
+sub handle_create
+{
+	my ($struct,$stmt) = @_;
+	my @ts = $struct->{table_names};
+	my ($tname) = $ts[0][0];
+	my @cols = $stmt->columns();
+	
+	print SCHEMA "table $tname 1\ngroup ". ( $#cols + 1) . "\n";
+	
+	my @h = $struct->{column_defs};
+	
+	for $c(@cols){
+		my $type = $h[0]->{$c->name}->{data_type};
+		my $len  = $h[0]->{$c->name}->{data_length};
+		$len = "4" if($len eq '');
+		print SCHEMA "column " . $c->name . " " . get_type($type) . " $len\n";
+	}
+	print SCHEMA "\n";
+}
+
+use Scalar::Util 'reftype';
+use Scalar::Util 'blessed';
+
+sub parse_where
+{
+	my ($wc) = @_;
+	return "" if (!defined $wc);
+	if(blessed($wc)){
+		if($wc->isa('SQL::Statement::Op')){
+			$ret = parse_where($wc->arg1());
+			if(blessed($wc->arg2()) && $wc->arg2()->isa('SQL::Statement::Op')){
+				$ret = $ret . " ".parse_where($wc->arg2())
+			}else{
+				$ret = $ret . "=".parse_where($wc->arg2())
+			}
+			return $ret;
+		}
+		return $wc->name();
+	}else{
+		return $wc;
+	}
+}
+
+sub handle_select
+{
+	my ($stmt) = @_;
+	my $tablename = $stmt->tables(0)->name();
+	print QUERY "select $tablename 1.0 ";
+
+	for $c($stmt->columns(0)){
+		print QUERY $c->name . " ";
+	}
+	if($stmt->where()){
+		for $w($stmt->where()){
+			print QUERY parse_where($w);
+		}
+	}
+	print QUERY "\n";
+}
+
+sub handle_update
+{
+	my ($stmt) = @_;
+	my $tablename = $stmt->tables(0)->name();
+	print QUERY "update $tablename 1.0 ";
+
+	$i = 0;
+	for $c($stmt->columns()){
+		print QUERY $c->name . ":1 ";
+	}
+	if($stmt->where()){
+		for $w($stmt->where()){
+			print QUERY $w->arg1()->name() . "=" . $w->arg2();
+		}
+	}
+	print QUERY "\n";
+}
+sub handle_insert
+{
+	#todo
+}
+sub handle_delete
+{
+	#todo
+}
+
+local($/) = ";";
+for $file(@ARGV){
+	open FP, "<$file";
+	while(<FP>){
+		chomp;
+		my $stmt = SQL::Statement->new($_,$parser);
+		handle_create($parser->structure,$stmt) if( $stmt->command eq 'CREATE');
+		handle_select($stmt) if( $stmt->command eq 'SELECT');
+		handle_update($stmt) if( $stmt->command eq 'UPDATE');
+		handle_insert($stmt) if( $stmt->command eq 'INSERT');
+		handle_delete($stmt) if( $stmt->command eq 'DELETE');
+	}
+	close FP;
+}
+
+close SCHEMA;
+close QUERY;
