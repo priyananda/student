@@ -5,8 +5,8 @@ void copy_gdt();
 void switch_prot();
 void put_string();
 
-void outString(char * str);
-void puts(char * str);
+void outString(const char * str);
+void puts(const char * str);
 void putch(char ch);
 int  getch();
 
@@ -22,6 +22,6 @@ void error_msg(const char * message);
 
 #define INT(x) ((unsigned int*)(x))
 #define CHAR(x) ((unsigned char*)(x))
-#define reboot() asm int 19h
+#define reboot() __asm__ __volatile__ ("int $0x19")
 
 #endif

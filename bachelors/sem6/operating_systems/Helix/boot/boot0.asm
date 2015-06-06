@@ -1,3 +1,11 @@
+;_____________________________________________________________________________
+; boot12.asm  FAT12 bootstrap for real mode image or loader
+; Version 1.0, Jul 5, 1999
+; Sample code
+; by John S. Fine  johnfine@erols.com
+; I do not place any restrictions on your use of this source code
+; I do not provide any warranty of the correctness of this source code
+;_____________________________________________________________________________
 %define ROOT_SEG	0x60
 %define FAT_SEG		0x800
 %define IMAGE_SEG	0xA00
@@ -64,6 +72,8 @@ begin:
 
 	mov	di, ROOT_SEG/32	;Buffer (paragraph / 32)
 	call	read_16		;Read root directory
+	mov si, smsg1
+	call    showmsg
 	push	ax			;Sector of cluster two
 %define sc_clu2 bp-2	;Later access to the word just pushed is via bp
 
@@ -74,7 +84,7 @@ begin:
 
 search:
 	dec	dx				;Any more directory entries?
-	js	error			;No
+	js	error1			;No
 	mov	si, filename	;Name we are searching for
 	mov	cx, 11			;11 characters long
 	lea	ax, [di+0x20]	;Precompute next entry address
@@ -89,6 +99,9 @@ search:
 	mov	si, [sc_p_fat]	;Length of FAT
 	mov	di, FAT_SEG/32	;Buffer (paragraph / 32)
 	call	read_16		;Read FAT
+
+	mov si, smsg2
+	call showmsg
 
 next:
 	pop	bx			;Cluster number
@@ -137,9 +150,14 @@ next:
 	jmp	short next	;Look for more
 
 eof:
+	mov si, smsg3
+	call showmsg
 	jmp	IMAGE_SEG:0
 
-error:	mov	si, errmsg	;Same message for all detected errors
+error1:	mov	si, errmsg1
+	jmp j2
+
+error2:	mov	si, errmsg2
 j2:
 	mov	ax, 0xE0D	;Start message with CR
 	mov	bx, 7
@@ -212,7 +230,7 @@ read_32:
 	mov	dl, [drive]		;DL = Drive number
 	mov	ah, 2			;AH = Read command
 	int	13h			;Do it
-	jc	error
+	jc	error2
 	pop	bx			;Length
 	pop	ax			;(low) relative sector
 	pop	dx			;(high) relative sector
@@ -223,6 +241,26 @@ read_32:
 	jnz	.1			;Read some more
 	ret
 
+showmsg:
+	push ax
+	push bx
+	mov	ax, 0xE0D	;Start message with CR
+	mov	bx, 7
+.1:	int	10h
+	lodsb
+	test al, al
+	jnz .1
+	xor	ah, ah
+	int	16h		;Wait for a key
+	pop bx
+	pop ax
+	ret
+
+errmsg1 db 10, "E1", 10, 0
+errmsg2 db 10, "E2", 10, 0
+smsg1 db 10, "S1", 10, 0
+smsg2 db 10, "Fat Read", 10, 0
+smsg3 db 10, "Boot1 jmp", 10, 0
 errmsg	db	10,"Error Executing FAT12 bootsector",13
 	db	10,"Press any key to reboot",13,10,0
 size	equ	$ - entry

@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <cstdlib>
 #include <sys/time.h>
+
 template <class T>
 int binSearch(T array[],int low,int high,T key){
 	if ( low > high || array == 0) return -1;
@@ -26,8 +27,8 @@ int main(){
 				binSearch(array,0,n-1,n);
 			}	
 			gettimeofday(&end,0);
-			cout << n << "\t\t:\t\t" 
-				<< (end.tv_usec - start.tv_usec)/10.00 <<endl;
+			std::cout << n << "\t\t:\t\t" 
+				<< (end.tv_usec - start.tv_usec)/10.00 << std::endl;
 	}		
 	return 0;
 }

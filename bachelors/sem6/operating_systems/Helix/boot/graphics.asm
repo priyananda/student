@@ -1,26 +1,26 @@
 %define VIDEO_SEG 0xb800
 [BITS 16]
-segment	_TEXT class=CODE
+segment	_TEXT
 
 ;;;;;;;;;;;;;;;;;;;;;
 ; void show_gfx();
 ;;;;;;;;;;;;;;;;;;;;;
-[GLOBAL  _show_gfx]
-[EXTERN _initk]
-[EXTERN _next]
+[GLOBAL show_gfx]
+[EXTERN initk]
+[EXTERN next]
 
-_show_gfx:
+show_gfx:
 	call _draw_screen_message
 	call _show_funky_message
 	call _show_loading
 	push es
-	call _initk
+	call initk
 	pop es 
 	mov [m_cluster] , ax
 .start:
 	call _play_with_progress
 	cmp word [m_cluster] , 0
-	jnz .start 
+	jnz .start
     mov ah,0
 	mov al,02
 	mov bh,0x20
@@ -42,7 +42,7 @@ _draw_screen_message:
 	inc bx
 	call _delay
 	jmp .start
-.end
+.end:
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;
@@ -205,7 +205,7 @@ _play_with_progress:
 	push cx
 
 	push word [m_cluster]
-	call _next
+	call next
 	pop word [m_cluster]
 	mov [m_cluster],ax
 
@@ -242,10 +242,9 @@ _draw_progress:
 	ret
 
 ; stores it in cpu_str
-;[EXTERN _cpu_str]
-[GLOBAL _get_cpu]
-_get_cpu:
-	mov si,_cpu_str
+[GLOBAL get_cpu]
+get_cpu:
+	mov si,cpu_str
 	xor eax,eax
 	cpuid
 	mov [si],ebx
@@ -266,8 +265,8 @@ _show_loading:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; out : AX-DX contains mem size
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[GLOBAL _get_mem_size]
-_get_mem_size:
+[GLOBAL get_mem_size]
+get_mem_size:
 	stc             ; I don't know why
     mov eax,0e801h  ; 'e' is just for fun
     xor ecx,ecx
@@ -337,8 +336,8 @@ _dispint:
 	call _proc_dispch
 	ret
 
-[GLOBAL _jmp_in_dry_well]
-_jmp_in_dry_well:
+[GLOBAL jmp_in_dry_well]
+jmp_in_dry_well:
 	jmp 0000:0x7c00
 
 blank_data: db ' ',0;
@@ -360,6 +359,6 @@ line5:
 loading_msg: db 'L' , 7 , 'o', 7 ,'a', 7 ,'d', 7 ,'i', 7 ,'n', 7 ,'g', 7
 			 db  ' ', 7 , '.', 7 ,'.', 7 ,'.', 7 ,'.', 7 ,'.', 7
 l_size  dw $ - loading_msg
-[global _cpu_str]
-_cpu_str: times 13 db 0
+[global cpu_str]
+cpu_str: times 13 db 0
 m_cluster dw 0

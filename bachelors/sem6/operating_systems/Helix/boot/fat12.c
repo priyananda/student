@@ -1,3 +1,4 @@
+asm(".code16gcc\n");
 #include "fat12.h"
 
 #define KERNEL_FILE "KERNEL  BIN"
@@ -13,17 +14,19 @@
 #define FAT_SEG 0xA00
 #define FAT_OFF ((uint)fat_buffer)
 
-static uint error;
-static uint curr_seg;
-static uint curr_off;
+static u16 error;
+static u16 curr_seg;
+static u16 curr_off;
 
 uint init(){
-	asm{
-		xor ax,ax
-		xor dl,dl
-		int 13h
-		mov error,ax
-	}
+	__asm__ __volatile__ (
+		"xor %%ax, %%ax\n"
+		"xor %%dl, %%dl\n"
+		"int $0x13\n"
+		"mov %%ax, %0\n"
+		: "=r"(error)
+		: 
+	);
 	error >>= 8;
 	return error;
 }
@@ -36,19 +39,21 @@ uint read(uint linear){
 	if(error)return error;
 
 	lin2hts(linear,h,t,s);
-	asm{
-		mov ax,curr_seg
-		mov es,ax
-		mov ah,2
-		mov al,1
-		mov bx,curr_off
-		mov dh,h
-		mov dl,0
-		mov ch,t
-		mov cl,s
-		int 13h
-		mov error,ax
-	}
+	__asm__ __volatile__ (
+		"mov %1  , %%ax\n"
+		"mov %%ax, %%es\n"
+		"mov $0x2, %%ah\n"
+		"mov $0x1, %%al\n"
+		"mov %2  , %%bx\n"
+		"mov %3  , %%dh\n"
+		"mov $0x0, %%dl\n"
+		"mov %4  , %%ch\n"
+		"mov %5  , %%cl\n"
+		"int $0x13\n"
+		"mov %%ax, %0\n"
+		: "=q"(error)
+		: "r"(curr_seg), "r" (curr_off), "r"(h), "q"(t), "q"(s)
+	);
 	error >>= 8;
 	return error;
 }

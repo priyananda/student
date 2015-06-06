@@ -9,10 +9,10 @@
 
 [SECTION .text text]
 [BITS 32]
-[EXTERN _main]
-[EXTERN _set_idtr]
-[GLOBAL _start]
-_start:
+[EXTERN main]
+[EXTERN set_idtr]
+[GLOBAL start]
+start:
 	cli
 	cld
 	xor eax,eax
@@ -24,15 +24,15 @@ _start:
 	mov ax, KERNEL_STACK_SEL
 	mov ss, ax
 	mov esp,KERNEL_STACK_START
-	call _main
+	call main
 	cli
 	clc
 lbl1:
 	jnc lbl1
 
 
-[GLOBAL _int13h]
-_int13h:
+[GLOBAL int13h]
+int13h:
 	lidt [ridtr]
 	mov ebx,[rjmp]
 	mov [real_jmp],bx
@@ -56,7 +56,7 @@ fin_i13h:
 	mov gs,bx
 	mov fs,bx
 	push eax
-	call _set_idtr
+	call set_idtr
 	pop eax
 	ret
 

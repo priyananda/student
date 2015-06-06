@@ -15,7 +15,7 @@ int biosdisk(u8 fnno,u8 dev,u8 head,u8 track,u8 sector,u8 count,u8 * address){
 	__asm__ __volatile__ ( "cli" );
 	InitPIC(0x8,0x70);
 	__asm__ __volatile__ (
-		"call _int13h"
+		"call int13h"
 		: "=a"(ret)
 		: "a"(ax),
 		  "d"(dx),

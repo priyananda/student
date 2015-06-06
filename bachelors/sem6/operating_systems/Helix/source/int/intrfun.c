@@ -7,7 +7,7 @@ u32	intr0(){
 	vd_puts("\n DivideByZero exception	: Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -17,7 +17,7 @@ u32	intr1(){
 	vd_puts("\n Single	step not allowed : Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -27,7 +27,7 @@ u32	intr2(){
 	vd_puts("\n Sorry restarting system : Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -38,7 +38,7 @@ u32	intr3(){
 	vd_puts("\n Software break	point  : Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -49,7 +49,7 @@ u32	intr4(){
 	vd_puts("\n Aritematic	overflow exception : Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -59,7 +59,7 @@ u32	intr5(){
 	vd_puts("\n Printscreen bounds	exceed exception : Process life	not	 spared");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -69,7 +69,7 @@ u32	intr6(){
 	vd_puts("\n InvalidOpcode :	Process	Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -79,7 +79,7 @@ u32	intr7(){
 	vd_puts("\n CoprocessorAbsent : Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -90,7 +90,7 @@ u32	intr8(){
 	vd_puts("\n DoubleFault exception : Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -100,7 +100,7 @@ u32	intr9(){
 	vd_puts("\n CoprocessorSegmentOverrun exception : Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -111,7 +111,7 @@ u32	intr10(){
 	vd_puts("\n InvalidTSS	exception :	Process	Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -121,7 +121,7 @@ u32	intr11(){
 	vd_puts("\n Segment exception : Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -132,7 +132,7 @@ u32	intr12(){
 	vd_puts("\n StackSegmentOverflow exception	: Process Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -142,7 +142,7 @@ u32	intr13(){
 	vd_puts("\n GeneralProtectionFault	exception :	Process	Killed");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -152,7 +152,7 @@ u32	intr14(){
 	vd_puts("\n Page Fault : Process killed ");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -162,7 +162,7 @@ u32	intr15(){
 	vd_puts("\nIntel has reserved this stupid interrupt");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -172,7 +172,7 @@ u32	intr16(){
 	vd_puts("\nFloating Point error ");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -182,7 +182,7 @@ u32	intr17(){
 	vd_puts("\nAlignment Check error");
 	__asm__	__volatile__(
 		"mov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }
@@ -194,7 +194,7 @@ u32 intr32(){
 	__asm__	__volatile__(
 		"sti\n"
 		"\tmov %ebp, %esp\n"
-		"\tpop %ebp\n"
+		"\tpopl %ebp\n"
 		"iret"
 	);
 }

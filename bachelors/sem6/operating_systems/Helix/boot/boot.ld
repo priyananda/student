@@ -2,7 +2,7 @@ OUTPUT_FORMAT("elf32-i386")
 ENTRY(start)
 SECTIONS
 {
-	.text 0x10000 :
+	.text 0xA000 :
 	{
 		*(.text)
 		etext = .; _etext = .;
