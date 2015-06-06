@@ -1,0 +1,145 @@
+	.globl main
+_true:	.asciiz "true"
+_false:	.asciiz "false"
+_a:	.word   0
+_b:	.word   0
+_c:	.word   0
+_d:	.word   0
+_e:	.float  0.0
+_f:	.float  0.0
+_s1:	.word   0
+_s2:	.word   0
+	.text
+main:
+	sw      $ra, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	sw      $fp, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	addu    $fp, $sp, 4
+	.data
+._L1:	.word   0
+	.text
+	lw      $t0, ._L1
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _a
+	
+	.data
+._L2:	.asciiz "\n"
+	.text
+	la      $t0, ._L2
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	.data
+._L3:	.word   at
+	.text
+	lw      $t0, ._L3
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _b
+	
+	.data
+._L4:	.asciiz "\n"
+	.text
+	la      $t0, ._L4
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	li      $t0, -1
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _c
+	
+	.data
+._L5:	.asciiz "\n"
+	.text
+	la      $t0, ._L5
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	li      $t0, 0
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _d
+	
+	.data
+._L6:	.asciiz "\n"
+	.text
+	la      $t0, ._L6
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	.data
+._L7:	.float  ._L7
+	.text
+	l.s     $f0, ._L7
+	s.s     $f0, 0($sp)	#FPUSH
+	subu    $sp, $sp, 4
+	l.s     $f0, 4($sp)	#FPOP
+	addu    $sp, $sp, 4
+	s.s     $f0, _e
+	
+	.data
+._L8:	.asciiz "\n"
+	.text
+	la      $t0, ._L8
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	.data
+._L9:	.float  ._L9
+	.text
+	l.s     $f0, ._L9
+	s.s     $f0, 0($sp)	#FPUSH
+	subu    $sp, $sp, 4
+	l.s     $f0, 4($sp)	#FPOP
+	addu    $sp, $sp, 4
+	s.s     $f0, _f
+	
+	.data
+._L10:	.asciiz "\n"
+	.text
+	la      $t0, ._L10
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	.data
+._L11:	.asciiz "Four score and seven"
+	.text
+	la      $t0, ._L11
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _s1
+	
+	.data
+._L12:	.asciiz "\n"
+	.text
+	la      $t0, ._L12
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	.data
+._L13:	.asciiz "years ago, our forefathers . . ."
+	.text
+	la      $t0, ._L13
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+	lw      $t0, 4($sp)	#POP
+	addu    $sp, $sp, 4
+	sw      $t0, _s1
+	
+	.data
+._L14:	.asciiz "\n"
+	.text
+	la      $t0, ._L14
+	sw      $t0, 0($sp)	#PUSH
+	subu    $sp, $sp, 4
+._L0:		#exit code for main
+	addu    $sp, $fp, 0
+	lw      $fp, 0($fp)
+	lw      $ra, 4($sp)	#POP
+	addu    $sp, $sp, 4

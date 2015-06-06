@@ -1,0 +1,58 @@
+<html>
+<head>
+	<style>
+	body{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+	}
+	table{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+		border-style:single;
+		border-width: 1px;
+		border-color:grey;
+	}
+</style>
+<head>
+<body>
+
+<b>
+Planetz<br/>
+CS 559 Fall 2007 - Project 2 Programming checkpoint<br />
+priyananda shenoy ( shenoy@cs.wisc.edu )<br />
+</b>
+<br />
+  This file describes the Planetz simulator from an "end-user"
+perspective. For details regarding the code and implementation, please
+refer to <a href="technical.html">technical.html</a>
+
+<p>
+	<b>Running the project</b><br />
+	Build and run the project. Initially you will only see the sun. You can
+	interact with the tool using the following commands:
+	<ul>
+		<li><b>A</b> - adds a new planet
+		<li><b>D</b> - deletes a planet
+		<li><b>SPACE</b> - toggles animation
+		<li><b>TAB</b> - switches between planets. selected planet is shown in dark blue.
+		<li><b>UP/DOWN</b> - moves selected planet further/closer to the Sun.
+		<li><b>T</b> - toggles trails.
+ 	</ul>
+
+<p>
+	<b>What does the project do?</b><br/>
+	The project demonstrates a simple hierarchy. The planets revolve around the sun and the 
+	moons around the planet. The speed and distance between objects is randomly chosen.
+
+<p>
+	<b>This program allows more than 8 planets. Isn't that wrong?</b><br/>
+	Yes, it is a bug and will be fixed soon.
+
+<p>
+	<b>This is boring. Show me something interesting.</b><br/>
+	When the rotation speed of the planet and the moon are aligned, the path tracted out by the moon 
+	is a shape called the cardiod. This can be seen by enabling trails.
+	<br /><br /><br />
+	<img src="card.jpg"/>
+</body>
+</html>

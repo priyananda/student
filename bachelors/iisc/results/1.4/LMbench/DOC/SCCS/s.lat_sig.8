@@ -1,0 +1,61 @@
+h29087
+s 00031/00000/00000
+d D 1.1 00/12/11 15:39:14 staelin 2 1
+cC
+cF1
+cK65327
+cO-rw-rw-r--
+e
+s 00000/00000/00000
+d D 1.0 00/12/11 15:39:14 staelin 1 0
+c BitKeeper file /tmp_mnt/usr/WebPaper/users/staelin/src/LMbench2/doc/lat_sig.8
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHhpli8.hpli.hpl.hp.com
+cK19254
+cPdoc/lat_sig.8
+cR6f02fd5833052ff2
+cV4
+cX0xa1
+cZ+02:00
+e
+u
+U
+f e 0
+f x 0xa1
+t
+T
+I 2
+.\" $Id$
+.TH LAT_SIG 8 "$Date$" "(c)1994 Larry McVoy" "LMBENCH"
+.SH NAME
+lat_sig \- measure signal handling latencies
+.SH SYNOPSIS
+.B lat_sig
+.I "install|catch|prot"
+.I <file>
+.SH DESCRIPTION
+.B lat_sig
+measures the time to install or catch signals.
+It can also measure the time to handle a memory protection fault.
+.B lat_sig
+only requires the 
+.I file
+argument when measuring protection fault latency.
+.SH OUTPUT
+Output formats are like so:
+.ft CB
+.br
+Signal handler installation: 9.564 microseconds
+.br
+Signal handler overhead: 33.484 microseconds
+.br
+Protection fault: 11.925 microseconds
+.ft
+.SH ACKNOWLEDGEMENT
+Funding for the development of
+this tool was provided by Sun Microsystems Computer Corporation.
+.SH "SEE ALSO"
+lmbench(8), sigaction(2), kill(2), mmap(2).
+E 2
+I 1
+E 1

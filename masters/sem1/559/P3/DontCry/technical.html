@@ -1,0 +1,232 @@
+<html>
+<head>
+	<style>
+	body{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+	}
+	table{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+		border-style:single;
+		border-width: 1px;
+		border-color:grey;
+	}
+</style>
+<head>
+<body>
+
+<b>
+Dont Cry<br />
+CS 559 Fall 2007 - Project 3<br />
+priyananda shenoy ( shenoy@cs.wisc.edu )<br />
+</b>
+<br />
+This file describes the graphics town project from the point of view of code and 
+implementation. For details regarding the user-interactions, 
+refer to <a href="readme.html" >readme</a>.
+
+<p>
+<b>How is the code organized</b><br/>
+  With a few exceptions, I have followed the one-file-one-class
+rule: Each class is coded in one .h and one .cpp file, with the
+file name same as the class name. Most of the classes have comments
+describing them. The comments in the .h file usually tell <I>what</I>
+the class/function does, and the comments in the .cpp file tell
+<I>how</I> it is done.
+<br />
+ The <b>resources</b> folder contains the win32 resource file.
+
+<p>
+<b>Things not written/created by me</b><br />
+  The following pieces of code were not written by me:
+<ul>
+	<li> libtarga.h/libtarga.c - complete - unmodified
+  from: Sample Solution for Project1 by Prof Gleicher
+	<li> TargaImage.h/.cpp - complete - unmodified
+  from: Sample Solution for Project1 by Prof Gleicher
+  <li> Command.cpp - function parse - modified
+  from: Sample Solution for Project1 by Prof Gleicher
+  <li> Hero.cpp - function turn - modified heavily
+  from: DigiBen's Tutorials www.GameTutorials.com
+  <li> Win32Helper.cpp - setFont - modified slightly
+  from: http://msdn2.microsoft.com/en-us/library/ms970775.aspx
+  <li> Window.cpp - complete - modified heavily. 
+  from: my old project http://pixelx.sourceforge.net which in turn
+  is based on DigiBen's Tutorials www.GameTutorials.com
+  <li> Renderer.cpp - shadowMatrix - modified slightly
+  from: http://www.opengl.org/resources/code/samples/glut_examples/advanced/projshadow.c
+  <li> Frustum.h/.cpp,Plane.h/.cpp - complete - heavily modified
+  from: http://www.lighthouse3d.com/opengl/viewfrustum/index.php (tutorial on frustum culling)
+  <li> MD3.h/.cpp - complete - slightly modified
+  from: DigiBen's Tutorials www.GameTutorials.com
+  <li> glext.h - complete - unmodified
+  from: OpenGL Library http://www.opengl.org/registry/
+  <li> bump.vsh/psh - complete - modified heavily
+  from: http://www.ozone3d.net/tutorials/bump_mapping_p4.php
+</ul>
+
+To make it explicit, <b>the Quake 3 Model(MD3) loading code was not written by me</b>.
+I found it on the web and made use of it as it is.<br/>
+
+I used ideas and techniques(not code) from these places:
+<ul>
+	<li>Picking -  http://jerome.jouvie.free.fr/OpenGl/Tutorials/Tutorial27.php
+	<li>GLSL Specification - http://www.opengl.org/documentation/glsl/
+	<li>Shader Tutorial - http://www.codesampler.com/oglsrc/oglsrc_9.htm
+	<li>GLSL Tutorial - http://www.clockworkcoders.com/oglsl/index.html
+	<li>Mathematics behind bump mapping - Cass Everitt,nVidia - http://developer.nvidia.com/object/mathematicsofperpixellighting.html
+	<li>Skydomes - http://www.flipcode.com/articles/article_skydomes.shtml
+	<li>Volumetric fog and terrain - HeightMap4 tutorial - www.GameTutorials.com
+</ul>
+
+Note: DigiBen of GameTutorials.com no longer has these tutorials on his site. That is why instead of
+specific links, the references just mention the name of the article.
+
+I took images,textures and models from these sources:
+<ul>
+	<li> signpost textures: bump,gyro,lara,portal,portalexit,volcano,welcome: all created by me.
+	<li> cloud: http://www.sourceforge.net/projects/shoot
+	<li> crate: http://cube.sourceforge.net
+	<li> terrain,detail: HeightMap4 tutorial - www.GameTutorials.com
+	<li> hmap: created by me
+	<li> rock: irrlicht.sourceforge.net/
+	<li> rockbump: created from rock using ATI Normal Map generator
+	<li> sun: created by me
+	<li> water,wateranim: http://www2.unil.ch/biomapper/opengl/Landscapes.html 
+	<li> Lara Croft model and images: nickelbag@nyc.com(readme included)
+</ul>
+
+<p>
+<b>Feature Summary</b><br />
+<ul>
+	<li>Multiple things which move
+			<ul>
+				<li>Gyroscope
+				<li>Lara Croft
+				<li>Clouds
+				<li>Water
+			</ul>
+	<li>Multiple objects/scenery
+			<ul>
+				<li>Gyroscope
+				<li>Terrain
+				<li>Sign Posts
+				<li>Lara Croft
+			</ul>
+	<li>Multiple Behaviors
+		<ul>
+				<li>Gyroscope(see below for details)
+				<li>Switching between Portal and island
+				<li>Sun moves across sky
+				<li>The Matrix Effect(see below for details)
+		</ul>
+	<li>Articulated Object - Gyroscope
+	<li>Hand Painted Textures - All the sign posts.
+	<li>Non-Flat Textures - clouds,terrain
+	<li>Something which is affected by time of the day - color of the sky, sun position
+	<li>Advanced Texture Mapping
+			<ul>
+				<li>Multitexturing - sky,terrain,water
+				<li>Bump Mapping
+			</ul>
+	<li>Technical Challenges
+			<ul>
+				<li>Skybox - renders a skydome(1)
+				<li>Using Programmable Hardware - shaders for per pixel bump mapping(3)
+				<li>Sweep Object(1)
+				<li>Level of Detail(1)
+			</ul>
+</ul>
+
+<p>
+<b>Detailed Explanation for each feature</b><br />
+<b>Terrain</b> The terrain is rendered using a height map. The height map is just an image
+where pixel values denote the y dimension of the terrain. From this a mesh of triangles is
+created. The terrain is rendered using multitexturing: one "base texture" for the gross
+features and a detail texture for finer details.
+
+<br />
+<b>Skydome</b> The skydome is like a skybox but is hemispherical in shape. It is rendered
+centered on the viewer's position, so it never "moves" relative to the viewer. The skydome
+also uses multitexturing: one base texture for clouds(which move across the sky) and a sun
+texture to render the sun. The position of the sun is determined by the time of the day.
+An attempt to model sunrise and sunset was made, but it didn't come out too realistic.
+Shaders are used, but nothing complicated happens( just some conditional multitexturing).
+
+<br />
+<b>Sea</b> The sea is just rendered as a flat polygon. It uses multitexturing to convey
+waves: one stationary texture to denote the underlying static sea and a moving texture
+to denote waves disturbances.
+
+<br />
+<b>Volcano</b> The volcano is mostly a painted picture. It also uses Volumetric fog, but
+the effect didn't come out as I wanted.
+
+<br />
+<b>Gyroscope</b> A gyroscope is a physical entity which maintains its alignment even under
+motion. Look at the <a href="http://en.wikipedia.org/wiki/Gyroscope">wikipedia entry</a> 
+for more details. The gyroscope in the project shows how a gyroscope would move, it doesn't
+actually simulate a gyroscope. Rendered as lines.
+
+<br />
+<b>Bump Mapping</b> A bumpmap is something which changes the way light reflects off a
+surface. The simplest way to do this is using a normal map, which is a texture which
+represents the normal at every points. Then the lighting value can be deduced using the
+dot product of the light vector and the (perturbed) normal. This is called <b>DOT3</b>
+bumpmapping. This is done using shaders per pixel.
+
+<br />
+<b>Matrix Effect</b> This useless but cool feature tries to emulate the very famous
+scene where Trinity fights off the bad guys in The Matrix. In the scene, she jumps in
+the air and freezes, the camera then revolves around her and then the action continues.
+I couldn't find a loadable Trinity model, so Lara Croft had to do.
+
+<br />
+<b>Shaders</b> I used OpenGL Shading Language(GLSL, pronounced GLS-lang) for writing
+shaders. Shaders are little programs which run on the GPU. You can write a shader for
+every vertex(vertex shader) or every pixel(pixel shader). GLSL is a high level language,
+somewhat akin to C, but with primitives more suited for graphical calculations.I learnt
+just enough GLSL to get by, so don't know much about it.
+
+<br />
+<b>Sweep Object</b> I read in the control points of a bspline from a file and get a
+2D curve. Then I generate the solid by rotating this curve around its center.
+
+<br />
+<b>Level of Detail</b> For the sweep object, I build multiple triangle meshes which
+use the same vertex set but at different resolutions.(in practice I have 3 resolutions:
+high,medium and low). Depending on distance from the user, the appropriate mesh is
+drawn.
+
+<p>
+<b>System requirements</b><br />
+OpenGL 2.0 with the following extensione enabled: GL_ARB_multitexture,GL_ARB_vertex_program,
+GL_ARB_fragment_program,GL_EXT_fog_coord. Unlikely to perform well on a card below Geforce
+6XXX or ATI X700.
+
+<p>
+<b>Why does the project use Win32? Why not FLTK/GLUT?</b><br />
+	I'm not a masochist, I don't <i>like</i> programming in Win32. FLTK/Glut are much easier
+to program against. But by the virtue of being simpler, they are also less powerful. I have
+a few specific features in mind which I want to implement which I know can be done in Win32.
+<br/>
+	The real reason I'm not using FLTK/Glut is because I'm lazy. Maybe the features I want can
+	be implemented using FLTK/Glut but I'm too lazy to explore. I already know Win32, so there
+	is nothing much to learn there. I'm better  off exploring things on the graphics side, than
+	in exploring windowing systems.
+<br/>
+	It isn't really a big deal. All windowing systems are wrappers over Win32 anyway, so all I'm
+	doing is creating my own minimalistic wrapper on top of it.
+	
+<p>
+<b>Why does the project not use the Sample Code? Why reinvent the wheel?</b><br />
+	Initially my plan was to create a urban environment( a la GTA ), in which case
+using the sample code would have made sense. But seeing the projects done in the 
+past few years, I saw there wasn't something spectacularly different I could do
+in such a setting. On the other hand outdoor terrains are a rage nowadays, so I
+decided to do the island thing. In this case, using the sample code wouldn't have
+made a lot of sense. And sometimes, reinventing the wheel can be a lot of fun.
+
+</body>
+</html>

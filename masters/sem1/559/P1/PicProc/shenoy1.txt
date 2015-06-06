@@ -1,0 +1,3 @@
+read  a chessboard.tga
+drops a 30 1 200
+write a shenoy1.tga

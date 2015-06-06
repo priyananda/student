@@ -1,0 +1,1952 @@
+H14942
+s 00014/00010/00559
+d D 1.21 01/05/02 11:51:46 staelin 22 21
+c - Fix a bug in getsummary with the reporting of file system latencies.
+c   We were reporting in 10microsecond units instead of 1microsecond
+c   units.  Thanks to Duc Vianney for the bug report.
+cC
+cHhpli69.hpli.hpl.hp.com
+cK13928
+cZ+03:00
+e
+s 00065/00057/00504
+d D 1.20 01/01/07 15:36:58 staelin 21 20
+c - scripts/getsummary: update 'num' subroutine so it is given the 
+c   number of available digits and it decides how to format the data
+c   given the available space and data magnitude.
+cC
+cK09260
+e
+s 00041/00025/00520
+d D 1.19 01/01/03 10:03:11 staelin 20 19
+c - Enhance script/getsummary's num() function to automatically switch
+c   reporting scales and format based on the data value.  It now ignores
+c   the data format argument passed to it.
+cK08097
+e
+s 00009/00012/00536
+d D 1.18 00/11/15 09:46:35 staelin 19 18
+c - Fixed bug in getsummary which resulted in incorrect main memory
+c   latencies being reported.  It used to choose the 8MB value as the
+c   main memory latency, it now uses the largest memsize as the main
+c   memory latency.
+cC
+cK41856
+e
+s 00008/00003/00540
+d D 1.17 00/10/25 12:33:26 staelin 18 17
+c - Enhance lat_select so it can select either on a file or on a TCP
+c   socket.
+c - Modify getsummary so the TCP socket select latency is used rather
+c   than the file latency (select() is more commonly used for networking
+c   than for files)
+cC
+cK46780
+cZ+02:00
+e
+s 00002/00002/00541
+d D 1.16 00/08/01 16:04:21 staelin 17 16
+c - Fix formatting for memory latency reports for more significant digits
+cC
+cK38573
+e
+s 00039/00020/00504
+d D 1.15 00/08/01 10:54:21 staelin 16 15
+c - Tweak formatting of summary statistics
+cC
+cK38516
+e
+s 00009/00009/00515
+d D 1.14 00/07/31 16:57:37 staelin 15 14
+c - Fix/improve the result reporting to increase the resolution
+cC
+cHhpli8.hpli.hpl.hp.com
+cK09046
+cZ+03:00
+e
+s 00000/00000/00524
+d D 1.13 00/01/31 15:29:42 lm 14 13
+c Change mode to -rwxrwxr-x
+cC
+cK06844
+cO-rwxrwxr-x
+cZ-08:00
+e
+s 00003/00002/00521
+d D 1.12 97/07/12 18:10:48 lm 13 12
+c naming et al
+cC
+cK08017
+e
+s 00059/00037/00464
+d D 1.11 97/06/14 21:11:24 lm 12 11
+c more formatting changes. I think this autosizes the numbers.
+cK04393
+cZ-07:00
+e
+s 00076/00035/00425
+d D 1.10 97/02/12 18:16:41 lm 11 10
+c 1.9 changes
+cK25817
+cZ-08:00
+e
+s 00067/00048/00393
+d D 1.9 96/06/11 12:58:48 lm 10 9
+c perl5; add af_unix.
+cK11437
+e
+s 00211/00114/00230
+d D 1.8 96/05/21 23:12:07 lm 9 8
+c Better output.
+cK32267
+cZ-07:00
+e
+s 00001/00000/00343
+d D 1.7 96/01/22 23:23:27 lm 8 7
+c clean off revision numbers.
+cK34766
+e
+s 00002/00002/00341
+d D 1.6 95/11/02 18:55:36 lm 7 6
+c cleaner numbers.
+cK33356
+e
+s 00028/00015/00315
+d D 1.5 95/10/31 14:11:32 lm 6 5
+c hpux stuff
+c get rid of TLB
+c check all array values.
+cK33361
+cZ-08:00
+e
+s 00044/00119/00286
+d D 1.4 95/10/25 14:56:09 lm 5 4
+c catching bad data formats
+cK01603
+e
+s 00010/00000/00395
+d D 1.3 95/08/22 15:28:07 lm 4 3
+c Better handling of ctx switch data.
+cK13262
+cZ-07:00
+e
+s 00060/00003/00335
+d D 1.2 95/03/10 18:55:07 lm 3 2
+c Check for legit values in stuff that can be smaller than 8MB.
+cK60328
+e
+s 00338/00000/00000
+d D 1.1 94/11/22 23:16:48 lm 2 1
+c Initial revision
+cK42165
+e
+s 00000/00000/00000
+d D 1.0 94/11/22 23:16:47 lm 1 0
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHlm.bitmover.com
+cK04502
+cPscripts/getsummary
+cR3ff841867aca8d12
+cV4
+cX0x21
+cZ-08:00
+e
+u
+U
+f e 0
+f x 0x21
+t
+lmbench1.0 release
+T
+I 2
+
+# Generate an ascii summary from lmbench result files.
+# Usage: getsummary file file file...
+#
+# Hacked into existence by Larry McVoy (lm@sun.com now lm@sgi.com).
+# Copyright (c) 1994 Larry McVoy.  GPLed software.
+# $Id$
+D 9
+eval "exec perl -Ss $0 $*"
+E 9
+I 9
+eval 'exec perl -Ssw $0 "$@"'
+E 9
+	if 0;
+
+I 22
+# Use these constants to same typo-induced bugs later!
+$M = 1000000.;
+$K = 1000.;
+
+E 22
+I 6
+$n = 0;
+E 6
+foreach $file (@ARGV) {
+D 10
+	push(@files, $file);
+E 10
+	open(FD, $file) || die "$0: can't open $file";
+I 16
+	$file =~ s/\.\d+$//;
+        @_ = split(/\//, $file);
+	push(@host, $_[$#_]);
+	$file = $_[$#_ - 1];
+E 16
+D 13
+	$file =~ s|.*/||;
+E 13
+I 13
+	$file =~ s|/|-|;
+E 13
+I 8
+D 16
+	$file =~ s/\.\d+//;
+E 16
+E 8
+	push(@file, $file);
+I 11
+	$mhz = 0;
+E 11
+	while (<FD>) {
+		chop;
+I 13
+		next if m|scripts/lmbench: /dev/tty|;
+E 13
+		if (/^\[lmbench/) {
+D 10
+			split;
+E 10
+I 10
+D 11
+			@_ = split;
+E 10
+			push(@uname, "@_");
+E 11
+I 11
+			push(@uname, $_);
+			if (/lmbench1\./) {
+				$version = 1;
+			} else {
+				$version = 2;
+			}
+E 11
+		}
+D 11
+		if (/Mhz/) {
+E 11
+I 11
+		if (/MHZ/ && !$mhz) {
+E 11
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+I 11
+			$_[1] =~ s/\]//;
+			push(@misc_mhz, $_[1]);
+			$mhz = 1;
+		} elsif (/Mhz/ && !$mhz) {
+			@_ = split;
+E 11
+E 10
+			push(@misc_mhz, $_[0]);
+I 11
+			$mhz = 1;
+E 11
+		}
+D 11
+		if (/^Null syscall:/) {
+E 11
+I 11
+		if (/^Select on 100 fd/) {
+E 11
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+D 11
+			push(@lat_nullsys, $_[2]);
+E 11
+I 11
+			push(@lat_select, $_[4]);
+E 11
+		}
+I 18
+		if (/^Select on 100 tcp fd/) {
+			@_ = split;
+			push(@lat_tcp_select, $_[5]);
+		}
+E 18
+I 11
+		if (/^Simple syscall:/) {
+			@_ = split;
+			push(@lat_syscall, $_[2]);
+		}
+		if (/^Simple read:/) {
+			@_ = split;
+			push(@lat_read, $_[2]);
+		}
+		if (/^Simple write:/) {
+			@_ = split;
+			push(@lat_write, $_[2]);
+		}
+		if (/^Simple stat:/) {
+			@_ = split;
+			push(@lat_stat, $_[2]);
+		}
+		if (/^Simple open.close:/) {
+			@_ = split;
+			push(@lat_openclose, $_[2]);
+		}
+		if (/^Null syscall:/) {	# Old format.
+			@_ = split;
+			push(@lat_write, $_[2]);
+		}
+E 11
+I 9
+		if (/^Signal handler installation:/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_siginstall, $_[3]);
+		}
+		if (/^Signal handler overhead:/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_sigcatch, $_[3]);
+		}
+		if (/^Protection fault:/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_protfault, $_[2]);
+		}
+E 9
+		if (/^Pipe latency:/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_pipe, $_[2]);
+		}
+I 10
+		if (/AF_UNIX sock stream latency:/) {
+			@_ = split;
+			push(@lat_unix, $_[4]);
+		}
+E 10
+		if (/UDP latency using localhost:/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_udp_local, $_[4]);
+		}
+		if (/TCP latency using localhost/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_tcp_local, $_[4]);
+		}
+		if (/RPC.udp latency using localhost/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_rpc_udp_local, $_[4]);
+		}
+		if (/RPC.tcp latency using localhost/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_rpc_tcp_local, $_[4]);
+		}
+I 9
+		if (/TCP.IP connection cost to localhost:/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_tcp_connect_local, $_[5]);
+		}
+D 10
+		if (/^Socket bandwidth using localhost/) {
+			split;
+E 10
+I 10
+		if (/^Socket bandwidth using localhost:/) {
+			@_ = split;
+E 10
+			push(@bw_tcp_local, $_[4]);
+		}
+I 10
+		if (/^AF_UNIX sock stream bandwidth:/) {
+			@_ = split;
+D 11
+			push(@bw_unix, $_[5]);
+E 11
+I 11
+			push(@bw_unix, $_[4]);
+E 11
+		}
+E 10
+E 9
+		if (/^Process fork.exit/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_nullproc, $_[2]);
+		}
+D 6
+		if (/^Process fork.execve/) {
+E 6
+I 6
+		if (/^Process fork.execve:/) {
+E 6
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_simpleproc, $_[2]);
+		}
+		if (/^Process fork..bin.sh/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_shproc, $_[3]);
+		}
+D 9
+		if (/size=0 ovr=/) {
+			while (<FD>) {
+I 4
+				# Make sure we break out if no data here.
+				if (!/^[1-9]+\s/) {
+					warn "$file: No ctx found\n";
+					push(@lat_ctx, -1);
+				}
+E 4
+				next unless /^2/;
+				split;
+				push(@lat_ctx, $_[1]);
+			    	last;
+			}
+			while (<FD>) {
+I 4
+				# Make sure we break out if no data here.
+				if (!/^[1-9]+\s/) {
+					warn "$file: No ctx found\n";
+					push(@lat_ctx, -1);
+				}
+E 4
+				next unless /^8/;
+				split;
+				push(@lat_ctx8, $_[1]);
+			    	last;
+			}
+		}
+E 9
+		if (/^Pipe bandwidth/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@bw_pipe, $_[2]);
+		}
+D 9
+		if (/^Socket bandwidth using localhost/) {
+			split;
+			push(@bw_tcp_local, $_[4]);
+		}
+E 9
+		if (/^File .* write bandwidth/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			$bw = sprintf("%.2f", $_[4] / 1024.);
+			push(@bw_file, $bw);
+		}
+I 9
+		if (/^Pagefaults on/) {
+D 10
+			split;
+E 10
+I 10
+			@_ = split;
+E 10
+			push(@lat_pagefault, $_[3]);
+		}
+E 9
+		if (/^"mappings/) {
+D 5
+			$done = 0;
+			while (<FD>) {
+				last if /^\s*$/;
+				$save = $_ if /^\d\./;
+				next unless /^8.00/;
+				split;
+				push(@lat_mappings, $_[1]);
+				$done++;
+			    	last;
+			}
+			unless ($done) {
+				$_ = $save;
+				split;
+				push(@lat_mappings, $_[1]);
+				warn "$file: No 8MB found for " .
+				    "memory mapping timing, using $_[0]\n";
+			}
+E 5
+I 5
+			$value = &getbiggest("memory mapping timing");
+			push(@lat_mappings, $value);
+E 5
+		}
+		if (/^"read bandwidth/) {
+D 5
+			$done = 0;
+			while (<FD>) {
+				last if /^\s*$/;
+				$save = $_ if /^\d\./;
+				next unless /^8.00/;
+				split;
+				push(@bw_reread, $_[1]);
+				$done++;
+			    	last;
+			}
+			unless ($done) {
+				$_ = $save;
+				split;
+				push(@bw_reread, $_[1]);
+				warn "$file: No 8MB found for " .
+				    "reread timing, using $_[0]\n";
+			}
+E 5
+I 5
+			$value = &getbiggest("reread timing");
+			push(@bw_reread, $value);
+E 5
+		}
+		if (/^"Mmap read bandwidth/) {
+D 5
+			$done = 0;
+			while (<FD>) {
+				last if /^\s*$/;
+				$save = $_ if /^\d\./;
+				next unless /^8.00/;
+				split;
+				push(@bw_mmap, $_[1]);
+				$done++;
+			    	last;
+			}
+			unless ($done) {
+				$_ = $save;
+				split;
+				push(@bw_mmap, $_[1]);
+				warn "$file: No 8MB found for " .
+				    "mmap reread timing, using $_[0]\n";
+			}
+E 5
+I 5
+			$value = &getbiggest("mmap reread timing");
+			push(@bw_mmap, $value);
+E 5
+		}
+		if (/^"libc bcopy unaligned/) {
+I 3
+D 5
+			$done = 0;
+E 3
+			while (<FD>) {
+I 3
+				last if /^\s*$/;
+				$save = $_ if /^\d\./;
+E 3
+				next unless /^8.00/;
+				split;
+				push(@bw_bcopy_libc, $_[1]);
+I 3
+				$done++;
+E 3
+			    	last;
+			}
+I 3
+			unless ($done) {
+				$_ = $save;
+				split;
+				push(@bw_bcopy_libc, $_[1]);
+				warn "$file: No 8MB found for " .
+				    "libc bcopy timing, using $_[0]\n";
+			}
+E 5
+I 5
+			$value = &getbiggest("libc bcopy timing");
+			push(@bw_bcopy_libc, $value);
+E 5
+E 3
+		}
+		if (/^"unrolled bcopy unaligned/) {
+I 3
+D 5
+			$done = 0;
+E 3
+			while (<FD>) {
+I 3
+				last if /^\s*$/;
+				$save = $_ if /^\d\./;
+E 3
+				next unless /^8.00/;
+				split;
+				push(@bw_bcopy_unrolled, $_[1]);
+I 3
+				$done++;
+E 3
+			    	last;
+			}
+I 3
+			unless ($done) {
+				$_ = $save;
+				split;
+				push(@bw_bcopy_unrolled, $_[1]);
+				warn "$file: No 8MB found for " .
+				    "unrolled bcopy timing, using $_[0]\n";
+			}
+E 5
+I 5
+			$value = &getbiggest("unrolled bcopy timing");
+			push(@bw_bcopy_unrolled, $value);
+E 5
+E 3
+		}
+		if (/^Memory read/) {
+I 3
+D 5
+			$done = 0;
+E 3
+			while (<FD>) {
+I 3
+				last if /^\s*$/;
+				$save = $_ if /^\d\./;
+E 3
+				next unless /^8.00/;
+				split;
+				push(@bw_mem_rdsum, $_[1]);
+I 3
+				$done++;
+E 3
+			    	last;
+			}
+I 3
+			unless ($done) {
+				$_ = $save;
+				split;
+				push(@bw_mem_rdsum, $_[1]);
+				warn "$file: No 8MB found for " .
+				    "memory read & sum timing, using $_[0]\n";
+			}
+E 5
+I 5
+			$value = &getbiggest("memory read & sum timing");
+			push(@bw_mem_rdsum, $value);
+E 5
+E 3
+		}
+		if (/^Memory write/) {
+I 3
+D 5
+			$done = 0;
+E 3
+			while (<FD>) {
+I 3
+				last if /^\s*$/;
+				$save = $_ if /^\d\./;
+E 3
+				next unless /^8.00/;
+				split;
+				push(@bw_mem_wr, $_[1]);
+I 3
+				$done++;
+E 3
+			    	last;
+			}
+I 3
+			unless ($done) {
+				$_ = $save;
+				split;
+				push(@bw_mem_wr, $_[1]);
+				warn "$file: No 8MB found for " .
+				    "memory write timing, using $_[0]\n";
+			}
+E 5
+I 5
+			$value = &getbiggest("memory write timing");
+			push(@bw_mem_wr, $value);
+E 5
+E 3
+		}
+I 9
+		if (/^"File system latency/) {
+			while (<FD>) {
+				next if /Id:/;
+				if (/^0k/) {
+D 10
+					split;
+E 10
+I 10
+					@_ = split;
+E 10
+					push(@fs_create_0k, $_[2]);
+					push(@fs_delete_0k, $_[3]);
+				} elsif (/^1k/) {
+D 10
+					split;
+E 10
+I 10
+					@_ = split;
+E 10
+					push(@fs_create_1k, $_[2]);
+					push(@fs_delete_1k, $_[3]);
+				} elsif (/^4k/) {
+D 10
+					split;
+E 10
+I 10
+					@_ = split;
+E 10
+					push(@fs_create_4k, $_[2]);
+					push(@fs_delete_4k, $_[3]);
+				} elsif (/^10k/) {
+D 10
+					split;
+E 10
+I 10
+					@_ = split;
+E 10
+					push(@fs_create_10k, $_[2]);
+					push(@fs_delete_10k, $_[3]);
+				} else {
+					last;
+				}
+			}
+		}
+D 11
+		if (/size=0 ovr=/) {
+E 11
+I 11
+		if (/size=0/) {
+E 11
+			while (<FD>) {
+				if (/^2 /) {
+D 10
+					split; push(@lat_ctx0_2, $_[1]);
+E 10
+I 10
+					@_ = split; push(@lat_ctx0_2, $_[1]);
+E 10
+				} elsif (/^8 /) {
+D 10
+					split; push(@lat_ctx0_8, $_[1]);
+E 10
+I 10
+					@_ = split; push(@lat_ctx0_8, $_[1]);
+E 10
+				} elsif (/^16 /) {
+D 10
+					split; push(@lat_ctx0_16, $_[1]);
+E 10
+I 10
+					@_ = split; push(@lat_ctx0_16, $_[1]);
+E 10
+				}
+D 11
+			    	last if /^\s*$/;
+E 11
+I 11
+			    	last if /^\s*$/ || /^Memory/;
+E 11
+			}
+		}
+D 11
+		if (/size=16 ovr=/) {
+E 11
+I 11
+		if (/size=16/) {
+E 11
+			while (<FD>) {
+				if (/^2 /) {
+D 10
+					split; push(@lat_ctx16_2, $_[1]);
+E 10
+I 10
+					@_ = split; push(@lat_ctx16_2, $_[1]);
+E 10
+				} elsif (/^8 /) {
+D 10
+					split; push(@lat_ctx16_8, $_[1]);
+E 10
+I 10
+					@_ = split; push(@lat_ctx16_8, $_[1]);
+E 10
+				} elsif (/^16 /) {
+D 10
+					split; push(@lat_ctx16_16, $_[1]);
+E 10
+I 10
+					@_ = split; push(@lat_ctx16_16, $_[1]);
+E 10
+				}
+			    	last if /^\s*$/;
+			}
+		}
+D 11
+		if (/size=64 ovr=/) {
+E 11
+I 11
+		if (/size=64/) {
+E 11
+			while (<FD>) {
+				if (/^2 /) {
+D 10
+					split; push(@lat_ctx64_2, $_[1]);
+E 10
+I 10
+					@_ = split; push(@lat_ctx64_2, $_[1]);
+E 10
+				} elsif (/^8 /) {
+D 10
+					split; push(@lat_ctx64_8, $_[1]);
+E 10
+I 10
+					@_ = split; push(@lat_ctx64_8, $_[1]);
+E 10
+				} elsif (/^16 /) {
+D 10
+					split; push(@lat_ctx64_16, $_[1]);
+E 10
+I 10
+					@_ = split; push(@lat_ctx64_16, $_[1]);
+E 10
+				}
+			    	last if /^\s*$/ || /^20/;
+			}
+		}
+E 9
+		if (/^"stride=128/) {
+I 3
+			$save = -1;
+E 3
+			while (<FD>) {
+D 19
+				if (/^0.00098\s/) {
+D 10
+					split;
+E 10
+I 10
+					@_ = split;
+E 19
+I 19
+				if (/^\s*$/) {
+					last;
+				}
+				@_ = split;
+				$size = $_[0];
+				$save = $_[1];
+				if ($size == 0.00098) {
+E 19
+E 10
+					push(@lat_l1, $_[1]);
+D 19
+				} elsif (/^0.12500\s/) {
+D 10
+					split;
+E 10
+I 10
+					@_ = split;
+E 19
+I 19
+				} elsif ($size == 0.12500) {
+E 19
+E 10
+					push(@lat_l2, $_[1]);
+D 3
+				} elsif (/^8.00000\s/) {
+E 3
+I 3
+D 19
+				} elsif (/^[45678].00000\s/) {
+E 3
+D 10
+					split;
+E 10
+I 10
+					@_ = split;
+E 10
+D 3
+					push(@lat_mem, $_[1]);
+E 3
+I 3
+					$size = $_[0];
+					$save = $_[1];
+					last if /^8.00000\s/;
+				} elsif (/^\s*$/) {
+E 3
+					last;
+E 19
+				}
+			}
+I 3
+D 19
+			if (!/^8/) {
+E 19
+I 19
+			if ($size < 8.0) {
+E 19
+				warn "$file: No 8MB memory latency, using $size\n";
+			}
+			push(@lat_mem, $save);
+E 3
+		}
+D 9
+		if (/^"stride=8192/) {	# XXX assumes <= 8K pagesize
+			$tbl = -1;
+			while (<FD>) {
+D 3
+				if (/^8.00000\s/) {
+E 3
+I 3
+				if (/^[45678].00000\s/) {
+E 3
+					split;
+					$tlb = $_[1];
+I 3
+					$size = $_[0];
+					last if /^8.00000\s/;
+E 3
+				}
+			}
+I 3
+			if (!/^8/) {
+				warn "$file: No 8MB tlb latency, using $size\n";
+			}
+E 3
+			push(@lat_tlb, $tlb);
+		}
+E 9
+	}
+I 10
+	@warn = ();
+E 10
+D 6
+	foreach $array ('lat_tlb', 'lat_mem', 'lat_l1', 'lat_l2') {
+		eval "if (\$#$array != $i) {
+			warn \"No data for $array in $file\n\";
+			push(\@$array, -1);
+		    }";
+E 6
+I 6
+	foreach $array (
+D 11
+		'misc_mhz', 'lat_nullsys', 'lat_pipe', 'lat_udp_local',
+		'lat_tcp_local', 'lat_rpc_udp_local',
+		'lat_rpc_tcp_local', 'lat_nullproc', 'lat_simpleproc',
+D 9
+		'lat_ctx', 'lat_ctx8', 'bw_pipe', 'bw_tcp_local',
+E 9
+I 9
+		'lat_ctx0_2', 'lat_ctx16_2', 'lat_ctx64_2',
+		'lat_ctx0_8', 'lat_ctx16_8', 'lat_ctx64_8',
+		'lat_ctx0_16', 'lat_ctx16_16', 'lat_ctx64_16',
+		'bw_pipe', 'bw_tcp_local',
+E 9
+		'bw_file', 'lat_mappings', 'bw_reread', 'bw_mmap',
+		'bw_bcopy_libc', 'bw_bcopy_unrolled', 'bw_mem_rdsum',
+D 9
+		'bw_mem_wr', 'lat_l1', 'lat_l2', 'lat_mem', 'lat_tlb',
+E 9
+I 9
+		'bw_mem_wr', 'lat_l1', 'lat_l2', 'lat_mem', 
+            	'lat_siginstall', 'lat_sigcatch', 'lat_protfault',
+		'lat_pagefault',
+		'fs_create_0k',
+		'fs_delete_0k',
+		'fs_create_10k',
+		'fs_delete_10k',
+		'lat_tcp_connect_local',
+I 10
+		'bw_unix',
+		'lat_unix',
+E 11
+I 11
+		'bw_bcopy_libc', 'bw_bcopy_unrolled', 'bw_file',
+		'bw_mem_rdsum', 'bw_mem_wr', 'bw_mmap', 'bw_pipe',
+		'bw_reread', 'bw_tcp_local', 'bw_unix', 'fs_create_0k',
+		'fs_create_10k', 'fs_delete_0k', 'fs_delete_10k',
+		'lat_ctx0_16', 'lat_ctx0_2', 'lat_ctx0_8',
+		'lat_ctx16_16', 'lat_ctx16_2', 'lat_ctx16_8',
+		'lat_ctx64_16', 'lat_ctx64_2', 'lat_ctx64_8', 'lat_l1',
+		'lat_l2', 'lat_mappings', 'lat_mem', 'lat_nullproc',
+		'lat_openclose', 'lat_pagefault', 'lat_pipe',
+		'lat_protfault', 'lat_read', 'lat_rpc_tcp_local',
+D 18
+		'lat_rpc_udp_local', 'lat_select', 'lat_shproc', 'lat_sigcatch',
+E 18
+I 18
+		'lat_rpc_udp_local', 'lat_select', 'lat_tcp_select',
+		'lat_shproc', 'lat_sigcatch',
+E 18
+		'lat_siginstall', 'lat_simpleproc', 'lat_stat',
+		'lat_syscall', 'lat_tcp_connect_local', 'lat_tcp_local',
+		'lat_udp_local', 'lat_unix', 'lat_write', 'misc_mhz',
+E 11
+E 10
+E 9
+	) {
+		$last = eval '$#' . $array;
+		if ($last != $n) {
+D 10
+			warn "No data for $array in $file\n";
+E 10
+I 10
+			#warn "No data for $array in $file\n";
+			push(@warn, $array);
+E 10
+			eval 'push(@' . $array . ', -1);';
+		}
+E 6
+	}
+I 10
+	if ($#warn != -1) {
+		warn "Missing data in $file: @warn\n";
+	}
+E 10
+D 6
+	$i++;
+E 6
+I 6
+	$n++;
+E 6
+}
+
+I 5
+D 9
+# Input looks like
+# "benchmark name
+# size value
+# ....
+# <blank line>
+#
+D 6
+# Return the biggest vvalue before the blank line.
+E 6
+I 6
+# Return the biggest value before the blank line.
+E 6
+sub getbiggest
+{
+	local($msg) = @_;
+I 6
+	local($line) = 0;
+E 6
+E 5
+
+I 5
+	undef $save;
+	$value = 0;
+	while (<FD>) {
+I 6
+		$line++;
+		#warn "$line $_";
+E 6
+		last if /^\s*$/;
+D 6
+		$save = $_ if /^\d\./;
+E 6
+I 6
+		$save = $_ if /^\d+\./;
+E 6
+	}
+	if (defined $save) {
+		$_ = $save;
+		@d = split;
+		$value = $d[1];
+		if (int($d[0]) < 8) {
+			warn "$file: using $d[0] size for $msg\n";
+		}
+	} else {
+		warn "$file: no data for $msg\n";
+	}
+	$value;
+}
+
+
+E 9
+E 5
+print<<EOF;
+
+D 9
+                    L M B E N C H  1 . 0   S U M M A R Y
+                    ------------------------------------
+E 9
+I 9
+D 10
+                 L M B E N C H  1 . 1   S U M M A R Y
+E 10
+I 10
+D 11
+                 L M B E N C H  1 . 2   S U M M A R Y
+E 11
+I 11
+D 16
+                 L M B E N C H  1 . 9   S U M M A R Y
+E 16
+I 16
+                 L M B E N C H  2 . 0   S U M M A R Y
+E 16
+E 11
+E 10
+                 ------------------------------------
+I 11
+		 (Alpha software, do not distribute)
+E 11
+E 9
+
+I 16
+Basic system parameters
+----------------------------------------------------
+Host                 OS Description              Mhz
+                                                    
+--------- ------------- ----------------------- ----
+EOF
+
+for ($i = 0; $i <= $#uname; $i++) {
+        printf "%-9.9s %13.13s %23.23s ", $host[$i], &getos($uname[$i]), $file[$i];
+            printf "%4.4s\n",
+            $misc_mhz[$i],
+	    0;
+}
+
+print<<EOF;
+
+E 16
+D 9
+            Processor, Processes - times in microseconds
+            --------------------------------------------
+Host                 OS  Mhz    Null    Null  Simple /bin/sh Mmap 2-proc 8-proc
+                             Syscall Process Process Process  lat  ctxsw  ctxsw
+--------- ------------- ---- ------- ------- ------- ------- ---- ------ ------
+EOF
+
+for ($i = 0; $i <= $#uname; $i++) {
+        printf "%-9.9s %13.13s ", $file[$i], &getos($uname[$i]);
+D 7
+            printf "%4.0f %7d %6.1fK %6.1fK %6.0fK %4d %6d %6d\n",
+E 7
+I 7
+            printf "%4.0f %7d %6.0fK %6.0fK %6.0fK %4d %6d %6d\n",
+E 7
+            $misc_mhz[$i],
+            $lat_nullsys[$i],
+            $lat_nullproc[$i]/1000.,
+            $lat_simpleproc[$i]/1000.,
+            $lat_shproc[$i]/1000.,
+            $lat_mappings[$i],
+E 9
+I 9
+Processor, Processes - times in microseconds - smaller is better
+----------------------------------------------------------------
+E 9
+D 9
+            $lat_ctx[$i],
+            $lat_ctx8[$i];
+E 9
+I 9
+D 11
+Host                 OS  Mhz Null sig  sig  fork exec sh  
+                             call inst hndl Proc Proc Proc
+--------- ------------- ---- ---- ---- ---- ---- ---- ----
+E 11
+I 11
+D 12
+Host                 OS  Mhz null null      open sele sig  sig  fork exec sh  
+                             call  I/O stat clos   ct inst hndl proc proc proc
+--------- ------------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+E 12
+I 12
+Host                 OS  Mhz null null      open selct sig  sig  fork exec sh  
+D 18
+                             call  I/O stat clos       inst hndl proc proc proc
+E 18
+I 18
+                             call  I/O stat clos TCP   inst hndl proc proc proc
+E 18
+--------- ------------- ---- ---- ---- ---- ---- ----- ---- ---- ---- ---- ----
+E 12
+E 11
+EOF
+E 9
+
+I 10
+@fs_delete_4k = @lat_ctx0_8 = @bw_file = @lat_ctx0_16 = @fs_delete_1k =
+@fs_create_4k = @fs_create_1k
+	if 0;	# lint
+
+E 10
+I 9
+for ($i = 0; $i <= $#uname; $i++) {
+I 11
+	# If they have no /dev/zero, use /dev/null, else average them.
+	if ($lat_read[$i] == -1) {
+		$tmp = $lat_write[$i];
+	} else {
+		$tmp = ($lat_read[$i] + $lat_write[$i]) / 2;
+	}
+E 11
+D 16
+        printf "%-9.9s %13.13s ", $file[$i], &getos($uname[$i]);
+D 11
+            printf "%4.0f %3d  %3d  %3d  %3.1fK %3.0fK %3.0fK\n",
+E 11
+I 11
+D 12
+            printf "%4.0f  %3d  %3d  %3d  %3d %3.2fK %3d  %3d %3.1fK %3.0fK %3.0fK\n",
+E 12
+I 12
+D 13
+            printf "%4.0f  %3s  %3s  %3s  %3s %5s %3s  %3s %4s %4s %4s\n",
+E 13
+I 13
+D 15
+            printf "%4.0f  %3s  %3.3s  %3s  %3s %5s %3s  %3s %4s %4s %4s\n",
+E 15
+I 15
+            printf "%4.0f %4.4s %4.4s %4.4s %4.4s %5.5s %4.4s %4.4s %4.4s %4.4s %4.4s\n",
+E 16
+I 16
+        printf "%-9.9s %13.13s ", $host[$i], &getos($uname[$i]);
+D 20
+            printf "%4.0f %4.4s %4.4s %4.4s %4.4s %5.5s %4.4s %4.4s %3.3sK %3.3sK %3.3sK\n",
+E 20
+I 20
+            printf "%4.0f %4.4s %4.4s %4.4s %4.4s %5.5s %4.4s %4.4s %4.4s %4.4s %4.4s\n",
+E 20
+E 16
+E 15
+E 13
+E 12
+E 11
+            $misc_mhz[$i],
+I 11
+D 12
+            $lat_syscall[$i],
+            $tmp,
+            $lat_stat[$i],
+            $lat_openclose[$i],
+            $lat_select[$i]/1000,
+E 11
+            $lat_siginstall[$i],
+            $lat_sigcatch[$i],
+D 11
+            $lat_nullsys[$i],
+E 11
+            $lat_nullproc[$i]/1000.,
+            $lat_simpleproc[$i]/1000.,
+            $lat_shproc[$i]/1000.,
+E 12
+I 12
+D 15
+            &num($lat_syscall[$i], "%3.1f"),
+            &num($tmp, "%3.1f"),
+            &num($lat_stat[$i], "%3d"),
+            &num($lat_openclose[$i], "%3d"),
+            &num($lat_select[$i]/1000, "%3.2fK"),
+E 15
+I 15
+D 16
+            &num($lat_syscall[$i], "%4.1f"),
+            &num($tmp, "%4.1f"),
+            &num($lat_stat[$i], "%4.1f"),
+            &num($lat_openclose[$i], "%4.1f"),
+            &num($lat_select[$i]/1000, "%4.2fK"),
+E 15
+            &num($lat_siginstall[$i], "%4.1f"),
+D 15
+            &num($lat_sigcatch[$i], "%3d"),
+E 15
+I 15
+            &num($lat_sigcatch[$i], "%4.1f"),
+E 15
+            &num($lat_nullproc[$i]/1000., "%3.1fK"),
+D 15
+            &num($lat_simpleproc[$i]/1000., "%3.0fK"),
+            &num($lat_shproc[$i]/1000., "%3.0fK"),
+E 15
+I 15
+            &num($lat_simpleproc[$i]/1000., "%3.1fK"),
+            &num($lat_shproc[$i]/1000., "%3.1fK"),
+E 16
+I 16
+D 21
+            &num($lat_syscall[$i], "%3.1f"),
+            &num($tmp, "%3.1f"),
+            &num($lat_stat[$i], "%3.1f"),
+            &num($lat_openclose[$i], "%3.1f"),
+D 18
+            &num($lat_select[$i], "%4d"),
+E 18
+I 18
+            &num($lat_tcp_select[$i], "%4d"),
+E 18
+            &num($lat_siginstall[$i], "%3.1f"),
+            &num($lat_sigcatch[$i], "%3.1f"),
+D 20
+            &num($lat_nullproc[$i]/1000., "%3.1f"),
+            &num($lat_simpleproc[$i]/1000., "%3.1f"),
+            &num($lat_shproc[$i]/1000., "%3.1f"),
+E 20
+I 20
+            &num($lat_nullproc[$i], "%3.1f"),
+            &num($lat_simpleproc[$i], "%3.1f"),
+            &num($lat_shproc[$i], "%3.1f"),
+E 21
+I 21
+            &num($lat_syscall[$i], 4),
+            &num($tmp, 4),
+            &num($lat_stat[$i], 4),
+            &num($lat_openclose[$i], 4),
+            &num($lat_tcp_select[$i], 5),
+            &num($lat_siginstall[$i], 4),
+            &num($lat_sigcatch[$i], 4),
+            &num($lat_nullproc[$i], 4),
+            &num($lat_simpleproc[$i], 4),
+            &num($lat_shproc[$i], 4),
+E 21
+E 20
+E 16
+E 15
+E 12
+	    0;
+E 9
+}
+
+print<<EOF;
+
+D 9
+            *Local* Communication latencies in microseconds
+            -----------------------------------------------
+Host                 OS  Pipe       UDP    RPC/     TCP    RPC/
+                                            UDP             TCP
+--------- ------------- ------- ------- ------- ------- -------
+E 9
+I 9
+Context switching - times in microseconds - smaller is better
+-------------------------------------------------------------
+Host                 OS 2p/0K 2p/16K 2p/64K 8p/16K 8p/64K 16p/16K 16p/64K
+                        ctxsw  ctxsw  ctxsw ctxsw  ctxsw   ctxsw   ctxsw
+--------- ------------- ----- ------ ------ ------ ------ ------- -------
+E 9
+EOF
+
+for ($i = 0; $i <= $#uname; $i++) {
+D 16
+        printf "%-9.9s %13.13s ", $file[$i], &getos($uname[$i]);
+D 9
+        printf "%7d %7d %7d %7d %7d\n",
+E 9
+I 9
+D 12
+            printf "%4d   %4d   %4d  %4d   %4d    %4d    %4d\n",
+            $lat_ctx0_2[$i],
+            $lat_ctx16_2[$i],
+            $lat_ctx64_2[$i],
+            $lat_ctx16_8[$i],
+            $lat_ctx64_8[$i],
+            $lat_ctx16_16[$i],
+            $lat_ctx64_16[$i],
+E 12
+I 12
+            printf "%4s   %4s   %4s  %4s   %4s    %4s    %4s\n",
+E 16
+I 16
+        printf "%-9.9s %13.13s ", $host[$i], &getos($uname[$i]);
+D 20
+            printf " %4s   %4s   %4s   %4s   %4s    %4s    %4s\n",
+E 16
+            &num($lat_ctx0_2[$i], "%4d"),
+            &num($lat_ctx16_2[$i], "%4d"),
+            &num($lat_ctx64_2[$i], "%4d"),
+            &num($lat_ctx16_8[$i], "%4d"),
+            &num($lat_ctx64_8[$i], "%4d"),
+            &num($lat_ctx16_16[$i], "%4d"),
+            &num($lat_ctx64_16[$i], "%4d"),
+E 20
+I 20
+            printf "%5.5s %6.6s %6.6s %6.6s %6.6s %7.7s %7.7s\n",
+D 21
+            &num($lat_ctx0_2[$i], "%4.2f"),
+            &num($lat_ctx16_2[$i], "%6.2f"),
+            &num($lat_ctx64_2[$i], "%6.2f"),
+            &num($lat_ctx16_8[$i], "%6.2f"),
+            &num($lat_ctx64_8[$i], "%6.2f"),
+            &num($lat_ctx16_16[$i], "%7.2f"),
+            &num($lat_ctx64_16[$i], "%7.2f"),
+E 21
+I 21
+            &num($lat_ctx0_2[$i], 5),
+            &num($lat_ctx16_2[$i], 6),
+            &num($lat_ctx64_2[$i], 6),
+            &num($lat_ctx16_8[$i], 6),
+            &num($lat_ctx64_8[$i], 6),
+            &num($lat_ctx16_16[$i], 7),
+            &num($lat_ctx64_16[$i], 7),
+E 21
+E 20
+E 12
+	    0;
+}
+
+print<<EOF;
+
+*Local* Communication latencies in microseconds - smaller is better
+-------------------------------------------------------------------
+D 10
+Host                 OS 2p/0K  Pipe   UDP  RPC/   TCP  RPC/ TCP
+                        ctxsw               UDP         TCP conn
+--------- ------------- ----- ----- ----- ----- ----- ----- ----
+E 10
+I 10
+Host                 OS 2p/0K  Pipe AF     UDP  RPC/   TCP  RPC/ TCP
+                        ctxsw       UNIX         UDP         TCP conn
+--------- ------------- ----- ----- ---- ----- ----- ----- ----- ----
+E 10
+EOF
+
+for ($i = 0; $i <= $#uname; $i++) {
+D 16
+        printf "%-9.9s %13.13s ", $file[$i], &getos($uname[$i]);
+E 16
+I 16
+        printf "%-9.9s %13.13s ", $host[$i], &getos($uname[$i]);
+E 16
+D 10
+        printf "%5d %5d %5d %5d %5d %5d %4d\n",
+E 10
+I 10
+D 12
+        printf "%5d %5d %4d %5d %5d %5d %5d %4d\n",
+E 10
+            $lat_ctx0_2[$i],
+E 9
+            $lat_pipe[$i],
+I 10
+            $lat_unix[$i],
+E 10
+            $lat_udp_local[$i],
+            $lat_rpc_udp_local[$i],
+            $lat_tcp_local[$i],
+D 9
+            $lat_rpc_tcp_local[$i];
+E 9
+I 9
+            $lat_rpc_tcp_local[$i],
+	    $lat_tcp_connect_local[$i],
+E 12
+I 12
+        printf "%5s %5s %4s %5s %5s %5s %5s %4s\n",
+D 21
+            &num($lat_ctx0_2[$i], "%5d"),
+            &num($lat_pipe[$i], "%5d"),
+            &num($lat_unix[$i], "%4d"),
+            &num($lat_udp_local[$i], "%5d"),
+            &num($lat_rpc_udp_local[$i], "%5d"),
+            &num($lat_tcp_local[$i], "%5d"),
+            &num($lat_rpc_tcp_local[$i], "%5d"),
+	    &num($lat_tcp_connect_local[$i], "%4d"),
+E 12
+	    -999;
+E 21
+I 21
+            &num($lat_ctx0_2[$i], 5),
+            &num($lat_pipe[$i], 5),
+            &num($lat_unix[$i], 4),
+            &num($lat_udp_local[$i], 5),
+            &num($lat_rpc_udp_local[$i], 5),
+            &num($lat_tcp_local[$i], 5),
+            &num($lat_rpc_tcp_local[$i], 5),
+	    &num($lat_tcp_connect_local[$i], 4),
+	    0;
+E 21
+E 9
+
+}
+
+print<<EOF;
+
+D 9
+            *Local* Communication bandwidths in megabytes/second
+            ----------------------------------------------------
+Host                 OS Pipe  TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
+E 9
+I 9
+File & VM system latencies in microseconds - smaller is better
+--------------------------------------------------------------
+Host                 OS   0K File      10K File      Mmap    Prot    Page	
+                        Create Delete Create Delete  Latency Fault   Fault 
+--------- ------------- ------ ------ ------ ------  ------- -----   ----- 
+EOF
+
+for ($i = 0; $i <= $#uname; $i++) {
+D 16
+        printf "%-9.9s %13.13s ", $file[$i], &getos($uname[$i]);
+E 16
+I 16
+        printf "%-9.9s %13.13s ", $host[$i], &getos($uname[$i]);
+E 16
+D 22
+	$c0k = $fs_create_0k[$i] <= 0 ? -1 : 100000 / $fs_create_0k[$i];
+	$c10k = $fs_create_10k[$i] <= 0 ? -1 : 100000 / $fs_create_10k[$i];
+	$d0k = $fs_delete_0k[$i] <= 0 ? -1 : 100000 / $fs_delete_0k[$i];
+	$d10k = $fs_delete_10k[$i] <= 0 ? -1 : 100000 / $fs_delete_10k[$i];
+E 22
+I 22
+	$c0k = $fs_create_0k[$i] <= 0 ? -1 : $M / $fs_create_0k[$i];
+	$c10k = $fs_create_10k[$i] <= 0 ? -1 : $M / $fs_create_10k[$i];
+	$d0k = $fs_delete_0k[$i] <= 0 ? -1 : $M / $fs_delete_0k[$i];
+	$d10k = $fs_delete_10k[$i] <= 0 ? -1 : $M / $fs_delete_10k[$i];
+E 22
+D 12
+	printf "%6d %6d %6d %6d %8d %5d %6.1fK\n",
+	    $c0k, $d0k, $c10k, $d10k,
+E 12
+I 12
+D 20
+	printf "%6s %6s %6s %6s %8d %5s %7s\n",
+E 20
+I 20
+	printf "%6.6s %6.6s %6.6s %6.6s %8.8s %5.5s %7.7s\n",
+E 20
+D 21
+	    &num($c0k, "%6d"),
+	    &num($d0k, "%6d"),
+	    &num($c10k, "%6d"),
+	    &num($d10k, "%6d"),
+E 12
+D 20
+	    $lat_mappings[$i],
+E 20
+I 20
+	    &num($lat_mappings[$i], "%8d"),
+E 20
+D 12
+	    $lat_protfault[$i],
+	    $lat_pagefault[$i]/1000;
+E 12
+I 12
+	    &num($lat_protfault[$i], "%5d"),
+D 20
+	    &num($lat_pagefault[$i]/1000, "%6.1fK");
+E 20
+I 20
+	    &num($lat_pagefault[$i], "%6.1f");
+E 21
+I 21
+	    &num($c0k, 6),
+	    &num($d0k, 6),
+	    &num($c10k, 6),
+	    &num($d10k, 6),
+	    &num($lat_mappings[$i], 8),
+	    &num($lat_protfault[$i], 5),
+	    &num($lat_pagefault[$i], 7),
+	    0;
+E 21
+E 20
+E 12
+}
+
+print<<EOF;
+
+*Local* Communication bandwidths in MB/s - bigger is better
+-----------------------------------------------------------
+D 10
+Host                OS  Pipe  TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
+E 9
+                                  reread reread (libc) (hand) read write
+--------- ------------- ---- ---- ------ ------ ------ ------ ---- -----
+E 10
+I 10
+Host                OS  Pipe AF    TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
+                             UNIX      reread reread (libc) (hand) read write
+--------- ------------- ---- ---- ---- ------ ------ ------ ------ ---- -----
+E 10
+EOF
+
+for ($i = 0; $i <= $#uname; $i++) {
+D 16
+        printf "%-9.9s %13.13s ", $file[$i], &getos($uname[$i]);
+E 16
+I 16
+        printf "%-9.9s %13.13s ", $host[$i], &getos($uname[$i]);
+E 16
+D 7
+        printf "%4.0f %4.1f %6.1f %6.1f %6.0f %6.0f %4.0f %5.0f\n",
+E 7
+I 7
+D 10
+        printf "%4.0f %4.0f %6.0f %6.0f %6.0f %6.0f %4.0f %5.0f\n",
+E 7
+            $bw_pipe[$i], $bw_tcp_local[$i], 
+E 10
+I 10
+D 12
+        printf "%4.0f %4.0f %4.0f %6.0f %6.0f %6.0f %6.0f %4.0f %5.0f\n",
+            $bw_pipe[$i], $bw_unix[$i], $bw_tcp_local[$i], 
+E 12
+I 12
+D 20
+        printf "%4.0f %4s %4.0f %6.0f %6.0f %6.0f %6.0f %4.0f %5.0f\n",
+            $bw_pipe[$i], &num($bw_unix[$i], "%4.0f"), $bw_tcp_local[$i], 
+E 12
+E 10
+            $bw_reread[$i], $bw_mmap[$i], $bw_bcopy_libc[$i],
+            $bw_bcopy_unrolled[$i],
+            $bw_mem_rdsum[$i],
+            $bw_mem_wr[$i];
+E 20
+I 20
+        printf "%4.4s %4.4s %4.4s %6.6s %6.6s %6.6s %6.6s %4.4s %5.5s\n",
+D 21
+            &num($bw_pipe[$i], "%4.0f"), 
+	    &num($bw_unix[$i], "%4.0f"), 
+	    &num($bw_tcp_local[$i], "%4.0f"), 
+            &num($bw_reread[$i], "%4.0f"), 
+	    &num($bw_mmap[$i], "%4.0f"), 
+	    &num($bw_bcopy_libc[$i], "%4.0f"),
+            &num($bw_bcopy_unrolled[$i], "%4.0f"),
+            &num($bw_mem_rdsum[$i], "%4.0f"),
+            &num($bw_mem_wr[$i], "%4.0f");
+E 21
+I 21
+            &num($bw_pipe[$i], 4), 
+	    &num($bw_unix[$i], 4), 
+	    &num($bw_tcp_local[$i], 4), 
+            &num($bw_reread[$i], 6), 
+	    &num($bw_mmap[$i], 6), 
+	    &num($bw_bcopy_libc[$i], 6),
+            &num($bw_bcopy_unrolled[$i], 6),
+            &num($bw_mem_rdsum[$i], 4),
+            &num($bw_mem_wr[$i], 5);
+E 21
+E 20
+}
+
+print<<EOF;
+
+D 9
+	    Memory latencies in nanoseconds
+            (WARNING - may not be correct, check graphs)
+            --------------------------------------------
+E 9
+I 9
+Memory latencies in nanoseconds - smaller is better
+    (WARNING - may not be correct, check graphs)
+---------------------------------------------------
+E 9
+D 6
+Host                 OS   Mhz  L1 \$   L2 \$    Main mem    TLB    Guesses
+--------- -------------   ---  ----   ----    --------    ---    -------
+E 6
+I 6
+Host                 OS   Mhz  L1 \$   L2 \$    Main mem    Guesses
+D 17
+--------- -------------   ---  ----   ----    --------    -------
+E 17
+I 17
+--------- -------------  ---- ----- ------    --------    -------
+E 17
+E 6
+EOF
+
+for ($i = 0; $i <= $#uname; $i++) {
+D 21
+        printf "%-9.9s %13.13s   %3d",
+E 21
+I 21
+        printf "%-9.9s %13.13s  %4d",
+E 21
+D 16
+	    $file[$i], &getos($uname[$i]), $misc_mhz[$i];
+E 16
+I 16
+	    $host[$i], &getos($uname[$i]), $misc_mhz[$i];
+E 16
+	$msg = &check_caches;
+D 6
+	if ($lat_l1[$i] <= 1) {
+        	printf "%6s %6s %11s %6s    %s",
+		    "-", "-", "-", "-",
+E 6
+I 6
+	if ($lat_l1[$i] < 0) {
+        	printf "%6s %6s %11s    %s",
+		    "-", "-", "-",
+E 6
+		    "Bad mhz?";
+	} else {
+D 6
+		printf "%6.0f %6.0f %11.0f %6.0f",
+E 6
+I 6
+D 17
+		printf "%6.0f %6.0f %11.0f",
+E 17
+I 17
+D 20
+		printf "%6.2f %6.2f %11.1f",
+E 17
+E 6
+		    $lat_l1[$i], $lat_l2[$i], 
+D 9
+		    $lat_mem[$i], $lat_tlb[$i];
+E 9
+I 9
+		    $lat_mem[$i];
+E 20
+I 20
+D 21
+		printf "%6.6s %6.6s %6.6s",
+		    &num($lat_l1[$i], "%6.2f"),
+		    &num($lat_l2[$i], "%6.2f"),
+		    &num($lat_mem[$i], "%6.2f");
+E 21
+I 21
+		printf " %5.5s %6.6s %6.6s",
+		    &num($lat_l1[$i], 5),
+		    &num($lat_l2[$i], 6),
+		    &num($lat_mem[$i], 6);
+E 21
+E 20
+E 9
+		print $msg if ($msg =~ /L/);
+	}
+	print "\n";
+}
+
+exit 0;
+
+
+I 12
+# (33, %3d)
+sub num
+{
+D 21
+	local($val, $fmt) = @_;
+E 21
+I 21
+	local($val, $len) = @_;
+E 21
+	local($str) = "";
+	local($i);
+
+	if ($val <= 0) {
+D 21
+		$fmt =~ s/^.//;
+		while (length($fmt) > 1) { chop($fmt); }
+		for ($i = 0; $i < $fmt; $i++) {
+E 21
+I 21
+		$str = "";
+		for ($i = 0; $i < $len; $i++) {
+E 21
+			$str .= " ";
+		}
+		return ($str);
+	}
+D 20
+	$str = sprintf($fmt, $val);
+E 20
+I 20
+D 21
+	#$str = sprintf($fmt, $val);
+E 21
+D 22
+	if ($val >= 10000000) {
+E 22
+I 22
+	if ($val >= 10 * $M) {
+E 22
+D 21
+		$str = sprintf("%3dM", $val / 1000000.);
+E 21
+I 21
+		$fmt = sprintf("%%%ddM", $len - 1);
+D 22
+		$str = sprintf($fmt, $val / 1000000.);
+E 21
+	} elsif ($val >= 1000000) {
+E 22
+I 22
+		$str = sprintf($fmt, $val / $M);
+	} elsif ($val >= $M) {
+E 22
+D 21
+		$str = sprintf("%3.1fM", $val / 1000000.);
+E 21
+I 21
+		$fmt = sprintf("%%%d.%dfM", $len - 1, $len - 3);
+D 22
+		$str = sprintf($fmt, $val / 1000000.);
+E 21
+	} elsif ($val >= 10000) {
+E 22
+I 22
+		$str = sprintf($fmt, $val / $M);
+	} elsif ($val >= 10 * $K) {
+E 22
+D 21
+		$str = sprintf("%3dK", $val / 1000.);
+E 21
+I 21
+		if ($len <= 4) {
+			$fmt = sprintf("%%%ddK", $len - 1);
+		} else {
+			$fmt = sprintf("%%%d.%dfK", $len - 1, $len - 3);
+		}
+D 22
+		$str = sprintf($fmt, $val / 1000.);
+E 22
+I 22
+		$str = sprintf($fmt, $val / $K);
+E 22
+E 21
+	} elsif ($val >= 10) {
+D 21
+		$str = sprintf("%4d", $val);
+E 21
+I 21
+		$fmt = sprintf("%%%dd", $len);
+		$str = sprintf($fmt, $val);
+E 21
+	} else {
+D 21
+		$str = sprintf("%4.2f", $val);
+E 21
+I 21
+		$fmt = sprintf("%%%d.%df", $len, $len - 2);
+		$str = sprintf($fmt, $val);
+E 21
+	}
+E 20
+	$str;
+}
+
+E 12
+I 9
+# Input looks like
+# "benchmark name
+# size value
+# ....
+# <blank line>
+#
+# Return the biggest value before the blank line.
+sub getbiggest
+{
+	local($msg) = @_;
+	local($line) = 0;
+
+	undef $save;
+	$value = 0;
+	while (<FD>) {
+		$line++;
+		#warn "$line $_";
+		last if /^\s*$/;
+		$save = $_ if /^\d+\./;
+	}
+	if (defined $save) {
+		$_ = $save;
+		@d = split;
+		$value = $d[1];
+		if (int($d[0]) < 4) {
+			warn "$file: using $d[0] size for $msg\n";
+		}
+	} else {
+		warn "$file: no data for $msg\n";
+	}
+	$value;
+}
+
+
+E 9
+# Try and create sensible names from uname -a output
+sub getos
+{
+        local(@info);
+
+        @info = split(/\s+/, $_[0]);
+        "$info[3] $info[5]";
+}
+
+# Return true if the values differe by less than 10%
+sub same
+{
+	local($a, $b) = @_;
+
+	if ($a > $b) {
+		$percent = (($a - $b) / $a) * 100;
+	} else {
+		$percent = (($b - $a) / $b) * 100;
+	}
+	return ($percent <= 20);
+}
+
+sub check_caches
+{
+	if (!&same($lat_l1[$i], $lat_l2[$i]) &&
+	    &same($lat_l2[$i], $lat_mem[$i])) {
+		"    No L2 cache?";
+	} elsif (&same($lat_l1[$i], $lat_l2[$i])) {
+		"    No L1 cache?";
+	}
+}
+E 2
+I 1
+E 1

@@ -1,0 +1,40 @@
+Section : YEFP/sched/1.1
+Objective : Measurement of critical kernel parameters .
+Rationale :
+	Performance of the Linux kernel mainly depends on certain critical system parameters . Identifying such parameters is essential to quantify the performance of the kernel. From the point-of-view of the project objectives, the parameters that are to be measured are mainly those to do with the scheduler. As the linux kernel is the main concenteration , only system-wide parameters are measured, as opposed to per-process measurement. The measurement is made cumulatively over a period of time to smoothen out local disturbances. This is done by periodically reading out certain variables.
+
+Implementation:
+	The various kernel parameters measured are :
+1> Number of running / total processes - this gives a measure of the system load and the nature of processes ( CPU-bound or IO-bound ) .
+2> The Number of ticks used by the processes in User/System mode , along with the total number of ticks elapsed.
+3> Number of context-switches that occured in the system. This is very important for the scheduling algorithm
+4> Number of heavy ( process-process ) and light ( thread-thread ) context-switches 
+5> Number of calls to the sceduler
+6> Number of scheduler calls which  result in recalculation of dynamic priorities
+
+The measurement is made  by inserting a timer with around 10 second delay . Every 10 seconds , the cumulative parameters are written to the kernel message buffer.
+The sched_init() ( kernel/sched.c ) calls the function pp_init() ( kernel/shenoy.c ) . The pp_init() fucntion initializes the timer
+
+void __init pp_init(){
+	// Turn off messages to console
+	do_syslog(6,NULL,0);
+	init_timer(& pp_timer);
+	pp_timer.data = 0;
+	// Register the timer callback
+	pp_timer.function = pp_show_stats;
+	// 1 tick = 10 ms 
+	pp_timer.expires = 100 + jiffies; // approx 10 to 11 secs
+	add_timer(& pp_timer );
+} 
+void pp_show_stats(void){
+	// show all the parameters using printk()	
+	// re-initialize timer
+	mod_timer( &pp_timer , jiffies + 1000 );
+}
+
+The deamon klogd is made to run . All printk()'s are captured to file /var/kernel.log . 
+
+Later on, a program is used to convert the raw data into a usefull form. The data is then tabulated and displayed as a graph
+
+Results :
+ The standard linux kernel ( 2.5.5-15 ) is used as the base-line system . A set of measurements were run on the system and the results are as shown below

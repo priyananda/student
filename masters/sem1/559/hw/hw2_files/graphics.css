@@ -1,0 +1,59 @@
+div.announce {
+	border: 1px solid ;
+	margin: 5px;
+	padding-bottom:5px;
+	background-color: rgb(238, 238, 238);
+}
+div.announce p {
+	padding: 0px 6pt;
+	margin-bottom:10px;
+	background-color: rgb(136, 0, 0); 
+	color: rgb(255, 255, 255);
+}
+div.announce p.vspace {
+	padding:0px 10px 5px 10px;
+
+	margin:0px;
+	background-color:transparent;
+	color:#000;
+}
+
+
+#wikitext {
+	width:700px;
+}
+
+.code {
+	background-color:#ffa;
+	border:1px solid #884;
+	margin:8pt;
+	padding:6pt;
+}
+
+.box {
+	background-color:#ffa;
+	border:1px solid #884;
+	margin:10pt;
+	padding:6pt;
+}
+
+.dimbox {
+	background-color:#ffd;
+	border:1px solid #bbd;
+	margin:10pt;
+	padding:6pt;
+}
+
+div#wikitext table.studentpictures {
+	border-collapse:collapse;
+}
+
+div#wikitext table.studentpictures td {
+	padding:5px;
+	border:1px solid #000;
+}
+
+div#wikitext table.studentpictures td a {
+	display:block;
+	margin-top:-20px;
+}

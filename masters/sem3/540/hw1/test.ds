@@ -1,0 +1,14 @@
+//--------------------------------------------------------
+//example data file
+//classification of mushrooms into edible=e or poisonous=p
+//input features are:
+//cap-shape: bell=b,conical=c,convex=x,flat=f,knobbed=k
+//odor: almond=a,anise=l,creosote=c,fishy=y,foul=f
+%%,e,p
+##,cap-shape,b,c,x,f,k
+##,odor,a,l,c,y,f
+e,b,a
+p,c,a
+p,k,y
+//etc.
+//--------------------------------------------------------

@@ -1,0 +1,18 @@
+Testcases:
+
+Testcase #0: No arguments are passed to the parser. Should report an error.
+
+Testcase #0: Invalid filename passed as input. Should report an error
+
+Testcase #1: Tests name analysis part
+	- use of undeclared variables
+	- redeclaration of variables in same scope
+	- redeclaration of formal parameter
+
+Testcase #2: Tests program with no main function
+
+Testcase #3: Tests type checking part. Instances of all the error types. Checks error cascading also.
+
+Testcase #4: example.simple
+
+Testcase #5: masking of function by local variable.

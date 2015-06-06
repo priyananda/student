@@ -1,0 +1,28 @@
+Test case #1:
+	The program is run without any arguments. The program should print an error message.
+
+Test case #2:
+	The program is run with a non-existent file as an arguments. The program should print an error message.
+
+Test case #3: maintest.txt
+	This is the main test case which tests the following cases:
+	a) Comments - should not produce any output, but subsequent line numbers should be proper.
+	b) tabs - should be counted as 1 character
+	c) valid integer literal - should be properly identified
+	d) integer literal large than integer range - should produce a warning
+	e) valid float literal - should be properly identified
+	f) float literal larger/smaller than range - should produce a warning
+	g) valid strings with escape characters
+	h) unterminated strings - should produce an error message
+	i) illegal characters - should produce an error message
+	j) identifiers starting with a digit - should be recognized as an integer and a identifier.
+	h) comment terminated by end-of-file - should be recognized correctly.
+
+Test case #4: ids.txt
+	This tests various valid identifiers.
+
+Test case #5: eofstring.txt
+	This file contains an unterminated string terminated by end-of-file, should produce an error message.
+
+Test case #6: keywords.txt
+	This file contains all the keywords and operators, all of which should be recognized correctly.

@@ -1,0 +1,33 @@
+#buckyland file
+
+#where is God?
+#format is god <x> <y> <z> <frontx> <fronty> <frontz> <upx> <upy> <upz>
+god -209 87 155 -180 77 129 0 1 0
+
+#track controls
+#format is control <x> <y> <z> <upx> <upy> <upz>
+control 0 1 60 0 1 0
+control 100 1 60 0 1 0
+control 130 1 0 0 1 0
+control 100 1 -60 0 1 0
+control 50 1 -60 0 1 0
+control 0 20 -60 0 1 0
+control 0 40 -60 0 1 0
+control 0 60 -60 0 1 0
+control 0 80 -60 0 1 0
+control 0 100 -60 0 1 0
+control -50 1 -60 0 1 0
+control -100 50 -60 0 1 0
+control -130 1 0 0 1 0
+control -100 25 60 0 1 0
+
+#objects
+building 90 0 70 20 10 10
+tree -50 0 -150
+tree 0 0 -150
+tree 50 0 -150
+tree 100 0 -150
+tree 150 0 -150
+guard 90 2 85
+guard 110 2 85
+hoarding 0 0 0 50 50 1

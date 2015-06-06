@@ -1,0 +1,73 @@
+h58351
+s 00001/00000/00005
+d D 1.6 01/01/30 20:37:46 lm 7 6
+c added BitKeeper/*
+cC
+cK06107
+cZ-08:00
+e
+s 00001/00000/00004
+d D 1.5 00/08/03 13:39:44 lm 6 5
+c added src/tags
+cC
+cK05117
+e
+s 00001/00000/00003
+d D 1.4 00/08/03 13:39:36 lm 5 4
+c added src/bk.ver
+cK04301
+e
+s 00001/00000/00002
+d D 1.3 00/08/03 13:39:26 lm 4 3
+c added results/*/*
+cK03332
+e
+s 00001/00000/00001
+d D 1.2 00/08/03 13:39:15 lm 3 2
+c added bin/*/*
+cK02358
+e
+s 00001/00000/00000
+d D 1.1 00/08/03 13:39:02 lm 2 1
+cF1
+cK01857
+cO-rw-rw-r--
+e
+s 00000/00000/00000
+d D 1.0 00/08/03 13:39:02 lm 1 0
+c BitKeeper file /home/lm/LMbench/BitKeeper/etc/ignore
+cBlm@lm.bitmover.com|ChangeSet|20000131225335|47351|--LMBENCH--
+cHwork.bitmover.com
+cK22403
+cPBitKeeper/etc/ignore
+cR45273e24173205ec
+cV4
+cX0xa1
+cZ-07:00
+e
+u
+U
+f e 0
+f x 0xa1
+t
+T
+I 2
+BitKeeper/etc/csets
+I 3
+bin/*/*
+I 4
+results/*/*
+I 5
+src/bk.ver
+I 6
+src/tags
+I 7
+BitKeeper/*
+E 7
+E 6
+E 5
+E 4
+E 3
+E 2
+I 1
+E 1

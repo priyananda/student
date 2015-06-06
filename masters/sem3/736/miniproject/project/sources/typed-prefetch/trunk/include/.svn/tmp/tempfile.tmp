@@ -1,0 +1,136 @@
+#ifndef EPF_CACHE_H
+#define EPF_CACHE_H
+
+#include <asm/div64.h>
+#include <linux/mm_types.h>
+typedef unsigned long long ull_t;
+
+static inline ull_t epf_rdtsc()
+{
+	uint32_t lo, hi;
+	__asm__ __volatile__ (
+		"xorl %%eax, %%eax\n"
+		"cpuid\n"
+		"rdtsc\n"
+		: "=a" (lo), "=d" (hi)
+		:
+		: "%ebx", "%ecx"
+	);
+<<<<<<< .mine
+	return (ull_t)hi << 32 | lo;
+=======
+	return (uint64_t)hi << 32 | lo;
+>>>>>>> .r11
+}
+
+//when was the last page evicted
+extern ull_t epf_last_page_evicted_ts;
+
+//global average
+extern ull_t epf_page_lifetime_longterm;
+
+//local average, for the past 5-10 pages
+extern ull_t epf_page_lifetime_shortterm;
+
+struct page;
+
+#define PAGE_HISTORY_SIZE 3
+
+extern int printdebugprftch;
+
+static inline void epf_on_page_evicted(struct page * evicted_page)
+{
+<<<<<<< .mine
+	static int epf_page_eviction_counter = 1;
+=======
+     static int epf_page_eviction_counter = 1;
+     ull_t life;
+     ull_t nvg;
+     ull_t lavg;
+>>>>>>> .r11
+<<<<<<< .mine
+	ull_t life, lavg, savg;
+=======
+        epf_last_page_evicted_ts = epf_rdtsc();
+	if ( epf_last_page_evicted_ts < evicted_page->start_ts ||
+	     evicted_page->start_ts == 0) {
+		printk( KERN_DEBUG
+			"PRFTCH_DBG:EC3:Error: lifetime = %llu - %llu\n",
+			epf_last_page_evicted_ts, evicted_page->start_ts);
+	} else {	
+	life = epf_last_page_evicted_ts - evicted_page->start_ts;
+	nvg  = epf_page_lifetime_longterm  * epf_page_eviction_counter + life;
+	lavg = epf_page_lifetime_shortterm * PAGE_HISTORY_SIZE         + life;
+>>>>>>> .r11
+	
+<<<<<<< .mine
+	life = epf_last_page_evicted_ts - epf_rdtsc();//evicted_page->start_ts;
+	epf_last_page_evicted_ts = epf_rdtsc();
+=======
+>>>>>>> .r11
+	
+	do_div(life,800000);
+
+	//if(life > 50000)
+	//	return;
+	
+	lavg = epf_page_lifetime_longterm  * epf_page_eviction_counter + life;
+	savg = epf_page_lifetime_shortterm * (PAGE_HISTORY_SIZE - 1)   + life;
+
+	do_div(lavg,epf_page_eviction_counter);
+	epf_page_lifetime_longterm = lavg;
+
+	do_div(savg,PAGE_HISTORY_SIZE);
+	epf_page_lifetime_shortterm = savg;
+	
+	++epf_page_eviction_counter;
+	
+	if(printdebugprftch){
+		printk( KERN_DEBUG
+<<<<<<< .mine
+			"PRFTCH_DBG:EC1: lifetime = %llu,lavg=%llu,savg=%llu\n",
+			life,epf_page_lifetime_longterm,epf_page_lifetime_shortterm
+=======
+			"PRFTCH_DBG:EC1:some page evicted(lifetime = %llu - %llu = %llu)\n",
+			epf_last_page_evicted_ts, evicted_page->start_ts, life
+>>>>>>> .r11
+		);
+<<<<<<< .mine
+	}
+=======
+      	}
+>>>>>>> .r11
+}
+
+//min of local and global
+static inline ull_t epf_page_lifetime()
+{
+<<<<<<< .mine
+	return epf_page_lifetime_longterm < epf_page_lifetime_shortterm ? epf_page_lifetime_longterm : epf_page_lifetime_shortterm;
+=======
+  return (epf_page_lifetime_longterm < epf_page_lifetime_shortterm) ?
+      epf_page_lifetime_longterm : epf_page_lifetime_shortterm;
+>>>>>>> .r11
+}
+
+static inline void epf_on_page_access(struct page * page)
+{
+<<<<<<< .mine
+	//printk(
+	//	KERN_DEBUG
+	//	"PRFTCH_DBG:EC2:some page accessed\n"
+	//);
+=======
+  if (page == NULL)
+    return;
+>>>>>>> .r11
+	page->start_ts = epf_rdtsc();
+	if(printdebugprftch)
+	  printk( KERN_DEBUG
+		  "PRFTCH_DBG:EC2:Page Accessed:%llu\n",
+		  page->start_ts
+		  );
+
+}
+#endif
+

@@ -1,0 +1,11 @@
+%%,  +,  -
+##,color,red,blue,green
+##,shape,square,round
+##,size,big,small
+//class	color	shape		size
+	+,		red,	square,	big
+	+,		blue,	square,	big
+	-,		red,	round,	small
+	-,		green,square,	small
+	+,		red,	round,	big
+	-,		green,round,	big

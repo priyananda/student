@@ -1,0 +1,28 @@
+#buckyland file
+#Priyananda Shenoy : CS559 : QuantumCoaster
+god 88.8778 147.674 -86.9053 67.2999 126.611 -60.3024 0 1 0
+
+#control points
+control -100 2 0 0 1 0
+control -100 2 20 0 1 0
+control -100 2 40 0 1 0
+control -100 2 60 0 1 0
+control -100 2 80 0 1 0
+
+qstart
+
+control -50 2 100 0 1 0
+control -50 2 120 0 1 0
+control -50 2 140 0 1 0
+
+controlq -150 2 100 0 1 0
+controlq -150 2 120 0 1 0
+controlq -150 2 140 0 1 0
+
+qend
+
+control -100 2 160 0 1 0
+control -100 2 180 0 1 0
+control -100 2 200 0 1 0
+control 0 2 150 0 1 0
+control 0 2 100 0 1 0

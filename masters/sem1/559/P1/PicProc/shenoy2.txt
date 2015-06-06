@@ -1,0 +1,3 @@
+read a flower.tga
+paint a
+write a shenoy2.tga

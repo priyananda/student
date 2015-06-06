@@ -1,0 +1,19 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}
+\BOOKMARK [1][-]{section.2}{Related Work}{}
+\BOOKMARK [1][-]{section.3}{Motivation}{}
+\BOOKMARK [2][-]{subsection.3.1}{Access Patterns}{section.3}
+\BOOKMARK [2][-]{subsection.3.2}{Existing Implementation}{section.3}
+\BOOKMARK [1][-]{section.4}{Methodology}{}
+\BOOKMARK [2][-]{subsection.4.1}{Effect of read-rate}{section.4}
+\BOOKMARK [2][-]{subsection.4.2}{Effect of cache-pressure}{section.4}
+\BOOKMARK [2][-]{subsection.4.3}{Prefetch window calculation}{section.4}
+\BOOKMARK [2][-]{subsection.4.4}{Filetype specific policies}{section.4}
+\BOOKMARK [1][-]{section.5}{Implementation}{}
+\BOOKMARK [2][-]{subsection.5.1}{Measuring read-rates}{section.5}
+\BOOKMARK [2][-]{subsection.5.2}{Measuring cache-pressure}{section.5}
+\BOOKMARK [2][-]{subsection.5.3}{Updating read-ahead window}{section.5}
+\BOOKMARK [1][-]{section.6}{Evaluation}{}
+\BOOKMARK [2][-]{subsection.6.1}{Workload}{section.6}
+\BOOKMARK [2][-]{subsection.6.2}{Results}{section.6}
+\BOOKMARK [1][-]{section.7}{Conclusion}{}
+\BOOKMARK [1][-]{section.8}{Future Work}{}

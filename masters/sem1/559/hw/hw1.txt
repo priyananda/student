@@ -1,0 +1,220 @@
+CS559 - Fall 2007 - Project 1 "Theoretical Background" Assignment
+
+Please answer the following 5 questions (each with multiple
+parts). You do not need to write down answers for the "food for
+thought" questions, but if you write down answers we will look at them.
+
+Turn your answers in by placing a file in your handin directory under
+P1-Stage3. Please provide either a plain text file (.txt) or an
+acrobat file (.pdf).  We will use the AFS file modification date to
+determine when the assignment was turned in.
+
+If you choose to work in pencil and paper, please either type your
+answers in (preferred), or scan your pages in.
+
+This assignment is due on October 1st, 2007 at 11:59pm. 
+
+Questions:
+
+1. Let f, g, and h  be the discrete signals:
+
+   f = [ 1 2 1 3 1 4 1 5 1 6 2 5 3 4 3 ]
+   g = 1/5 [1 1 1 1 1]
+   h = 1/6 [1 2 3]
+
+   For these first 3 parts, compute the ``whole sequence'' of the
+   convolution: 
+
+   1.A compute f*g
+   1.B compute f*h
+   1.C compute f*g*h
+
+   For these next 3 parts, assume that f has its ``zero'' at the first
+   entry, g and h are ``zero centered'', and compute the convolutions
+   to provide signals over the same domain as f (your answers should
+   be 15 samples long). 
+
+   (hint: most of these answers can be copied from 1.A and 1.B)
+
+   1.D compute f*g using zero-padding to handle the boundaries
+   1.E compute f*g using reflection to handle the boundaries
+   1.F compute f*g using kernel renormalization to handle the
+       boundaries
+
+2. Consider reconstructing the signal from the following samples (the
+   first sample was at t=0):
+
+   f = [ 1 2 1 3 1 2 2 ]
+
+   Compute the value of the reconstructed signal at t=1.5, t=2, and
+   t=3.25 with the following reconstruction filters (your answer for
+   each should be 3 numbers).
+
+   2.A The unit box (g(t) = 1 if -.5 < t <= .5, 0 otherwise)
+	Note: in the book, this is the continuous case and r=1/2
+   2.B The unit tent (g(t) = (1+t) if -1 < t <= 0, 1-t if 0 < t <= 1,
+       and 0 otherwise)
+       Note: in the book, this is the tent filter of r=1/2
+   2.C The box of r=1 (see the book)
+   2.D The tent of r=1 (again see the book)
+
+3. Consider resampling the following signal:
+   [ 0 0 4 4 0 0 4 0 4 0 4 0 0 0 4 0 0 0 ]
+   using the pre-filtering kernel 1/4 [1 2 1]
+
+   3.A If you resample the signal at half the sampling rate, what
+       result would you get?
+
+   3.B If you made a small change in how you sampled in 3.A (say,
+       chose even instead of odd values), would the results be very
+       much different? What does this say about the adequacy of the
+       kernel for doing this resampling?
+
+   3.C If you resample the signal at 1/3rd the samping rate (pick
+       every third sample), what result would you get? 
+
+   3.D If you made a small change in how you sampled in 2.C (say,
+       shifted the samples a little), could the results be very
+       much different? What does this say about the adequacy of the
+       kernel for doing this resampling?
+
+4. A seperable kernel is one where you can achieve a 2D convolution by
+   doing two seperate convolutions, one in each dimension. (or in
+   higher dimensions, an nD convolution by doing n seperate
+   convolutions).
+
+   What 2D convolution is achieved by doing the following 1D
+   convolutions in one dimension then the other? Your answer should be
+   a 2D ``matrix'' of numbers (the 2D convolution kernel).
+
+   4.A  1/5  [ 1 1 1 1 1 ]
+   4.B  1/16 [ 1 4 6 4 1 ]
+   4.C  1/2  [1 -1 2 -1 1]
+
+   Consider doing an NxN convolution that is seperable on an MxM
+   image. Assume that M >> N. What is the assymptotic complexity (big
+   O) of: 
+   4.D Doing the convolution as 2 1D convolutions (of kernel size N)?
+   4.E Doing the convolution as 1 2D convolution (kernel size of NxN)?
+
+   Your answer should be a function of M and N.
+
+   (hint 1: ignore the boundary conditions (since we're talking about
+   assymptotic complexity) - just assume that the kernel always
+   overlaps the image)
+
+5. Let pixel A have color 255,192,64 and alpha value of 127 (out of
+   255).
+   Let pixel B have color 0,255,255, and alpha value of 255.
+   Let pixel C have color 0,255,255, and alpha value of 192.
+   (it should be obvious that these values are not premultiplied)
+
+   Use the standard definitions of the over and atop operators (from
+   Porter and Duff, or from the lecture).
+
+   What is the value (R,G,B,A) of:
+   5.A   A over B
+   5.B   B over A
+   5.C   A over C
+   5.D   C over A
+   5.E   A atop B
+   5.F   A atop C
+   6.G   C atop A
+
+Food for thought Questions
+
+You don't have to answer these questions. But you should at least
+think about them to make sure you understand the concepts.
+
+1. Gamma
+
+Different computers have different default values for gamma. For
+example, on a Macintosh it used to be 1.8, and on Windows it used to
+be 2.2. There are all kinds of color management things (including
+putting information in the images) that try to get things to look
+right on different computers, but things often do go wrong. 
+
+Assuming no corrections are being done: Suppose an image was created
+to look right on a Macintosh (for a gamma of 1.8), but was displayed
+on a machine running windows (gamma 2.2). What would look wrong?  
+
+Try this... experiment with adjusting the value of gamma on your
+computer. See what happens to different images as you adjust gamma
+differently. 
+
+Gamma on Mac vs. Windows
+
+(excellent gamma page!)
+http://www.normankoren.com/makingfineprints1A.html
+(ok discussion of calibration) http://www.ephotozine.com/article/Monitor-calibration
+(decent details - maybe not correct) http://www.cgsd.com/papers/gamma.web.html
+(no details) http://www.photoshopsupport.com/tutorials/cb/gamma.html
+
+2. Sharpening
+
+While its easy to remove high frequencies (i.e. blur an image), it is
+not so easy to add them back (i.e. sharpen the image).
+
+One strategy for stategy for sharpening is to the results of a high
+pass filter to the image (i.e. add in more of the high frequencies
+already in the image). This usually doesn't give very good results.
+
+2A. If the image was truly sampled correctly, and you used an ideal
+    high-pass filter to do the sharpening, what would you expect to
+    happen?
+
+2B. Given that the the original image was probably sampled and
+    reconstructed with a non-ideal low-pass filter (e.g. it lets some
+    HF through), why does sampling theory suggest that Sharpening
+    by attenuating (scaling up) high frequencies may not be a good
+    idea.
+
+Another approach to image sharpening is De-Convolution. De-convolution
+is the inverse of convolution. If we assume our signal (h) was formed
+by taking the ``real'' (sharp) signal (f) and filtering it with a
+kernel (g), so:
+	h = f * g,
+(e.g. convolution), de-convolution would determine the original signal
+(f) given h and g.
+
+2A. De-convolution can be an ill-posed problem - there may be many
+    signals that when convolved with a given kernel give the same
+    result. Why does this get worse as your filter approaches an ideal
+    low-pass filter?
+
+2B. In practice, knowing the filter kernel (g) that caused the
+    blurring (which probably comes from bad optics, motion, sensor
+    problems, etc.) is hard. This blur kernel is sometimes called a
+    ``point spread function'' (PSF) since it describes how a single
+    point of light would get spread out. (that also gives a way of
+    measuring it). In some cases, you can actually measure the PSF,
+    but often you have to guess. What happens if you guess
+    incorrectly? 
+
+3. Filter Choices
+
+In practice, our choice of filters must consider many factors: result
+quality, efficiency, ease of working with sampled representations, ...
+
+Therefore, while we can get very close approximations to the ideal Low
+Pass Filter (LPF) for reconstruction and pre-filtering, we often
+choose very crude approximations.
+
+3A. For reconstruction, we often choose interpolating filters
+    (interpolating cubics, Lanczos's windowed sinc) for high quality
+    processing, yet for pre-filtering we almost always prefer
+    non-interpolating kernels such as the B-Spline or Gaussian.
+
+    Why?
+
+3B. If you could apply an ideal LPF for reconstruction for upsampling
+    (e.g. doubling the sample rate to make a bigger image), without
+    regard for efficiency, why might you choose not to? What types of
+    "artifacts" might you see that are "correct" in a signal
+    processing sense, but visually unappealing?
+
+3C. If you could apply and ideal LPF for pre-filtering before
+    downsampling (e.g. halving the sample rate to make a smaller
+    image) without regard to efficiency, why might you choose not to?
+    What kinds of effects are undesireable, yet "correct" from a
+    signal processing sense.

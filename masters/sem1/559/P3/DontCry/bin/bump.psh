@@ -1,0 +1,14 @@
+varying vec3 light_direction;
+uniform sampler2D tex1,tex2;
+
+void main (void)
+{
+	vec4 walltex = texture2D(tex1,gl_TexCoord[0].st);
+	vec3 bumptex = texture2D(tex2,gl_TexCoord[1].st).xyz;
+
+	//scale from (0,1) range to (-1,1) range
+	bumptex = (0.5f - bumptex) * 2;
+	//normalizing to be done per pixel because it is interpolated
+	light_direction = normalize(light_direction);
+	gl_FragColor.xyz = walltex * dot(bumptex, light_direction);
+}

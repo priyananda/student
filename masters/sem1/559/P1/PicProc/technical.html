@@ -1,0 +1,288 @@
+<html>
+<head>
+	<style>
+	body{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+	}
+	table{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+		border-style:single;
+		border-width: 1px;
+		border-color:grey;
+	}
+</style>
+<head>
+<body>
+
+<b>
+picproc<br />
+CS 559 Fall 2007 - Project 1<br />
+priyananda shenoy ( shenoy@cs.wisc.edu )<br />
+</b>
+<br />
+This file describes the picture processing tool code and 
+implementation. For details regarding the commands and
+what they do, refer to <a href="readme.html" >readme</a>.
+
+<p>
+<b>Code Organization</b><br/>
+  With a few exceptions, I have followed the one-file-one-class
+rule: Each class is coded in one .h and one .cpp file, with the
+file name same as the class name. Most of the classes have comments
+describing them. The comments in the .h file usually tell <I>what</I>
+the class/function does, and the comments in the .cpp file tell
+<I>how</I> it is done.
+<br />
+The cpp/h files are separated into the following logical folders:<br />
+<ul>
+  <li> command\ - classes which handle generic command processing
+  <li>command\impl - classes for specific commands
+  <li>tgalib\ - Targa-related code not written by me
+  <li>state\ - environment during the execution
+  <li>operations\ - code which does image operations like filters
+ </ul>
+
+<p>
+<b>Used Code ("honest plagiarism")</b><br />
+  The following specific pieces of code were not written by me:
+<ul>
+	<li> Command.cpp - function parse() - modified slightly
+  from: Sample Solution for Project1 by Prof Gleicher
+	<li> libtarga.h/libtarga.c - complete - unmodified
+  from: Sample Solution for Project1 by Prof Gleicher
+	<li> TargaImage.h/.cpp - complete - unmodified
+  from: Sample Solution for Project1 by Prof Gleicher
+	<li> Win32Helper.cpp - some portions - modified heavily
+	from: http://www.codeguru.com/cpp/w-d/console/article.php/c3957/
+	<li> ImageHelpers.cpp - function colorDistance - modified
+	from http://www.compuphase.com/cmetric.htm
+	<li> ImageHelpers.cpp - function pixelMultiply
+	from: Sample Solution for Project1 by Prof Gleicher
+
+</ul>
+  I took ideas( not code or implementation ) from these sources:
+<ul>
+	<li>http://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html - Luminance calculation
+	<li>http://en.wikipedia.org/wiki/Luminance_%28relative%29 - Luminance
+	<li>http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vblr7/html/vagrpDerivedMath.asp - inverse hyperbolic tangent
+	<li>http://www.cs.helsinki.fi/group/goa/mallinnus/curves/curves.html - basis matrix for bicubic interpolation
+	<li>http://www.compuphase.com/cmetric.htm - Color Distance
+</ul>
+
+<p>
+<b>Commands</b><br />
+The table shows the commands which are implemented and their difficulty level
+<table width="560" border=1 >
+	<col width="160" />
+	<col width="100" />
+	<col width="300" />
+<tr>
+		<th>Command</th>
+		<th>Difficulty</th>
+		<th>Details</th>
+</tr>
+<tr>
+		<td><a href="#read">read</a></td>
+		<td>basic</td>
+		<td></td>
+</tr>
+<tr> <td><a href="#write">write</a></td>
+		<td>basic</td>
+		<td></td>
+</tr>
+<tr> <td><a href="#blank">blank</a></td>
+		<td>basic</td>
+		<td></td>
+</tr>
+<tr> <td><a href="#fill">fill</a></td> 
+	<td>basic</td>
+	<td></td>
+</tr>
+<tr> <td><a href="#copy">copy</a></td>		
+	<td>basic</td>
+	<td></td>
+</tr>
+<tr> <td><a href="#crop">crop</a></td>		
+	<td>basic</td>
+	<td></td>
+</tr>
+<tr> <td><a href="#dissolve">dissolve</a></td>	
+	<td>basic</td>
+	<td></td>
+</tr>
+<tr> <td><a href="#opaque">opaque</a></td>	
+	<td>basic</td>
+	<td></td>
+</tr>
+<tr> <td><a href="#darken">darken</a></td>	
+	<td>basic</td>
+	<td></td>
+</tr>
+<tr> <td><a href="#desaturate">desaturate</a></td>	
+	<td>basic</td>
+	<td></td>
+</tr>
+<tr> <td><a href="#blur">blur</a></td>
+	<td>advanced</td>
+	<td>arbitrary bspline/gaussian</td>
+</tr>
+<tr> <td><a href="#sharpen">sharpen</a></td>	
+	<td>optional</td>
+	<td>unsharp mask</td>
+</tr>
+<tr> <td><a href="#resize">resize </a></td>	
+	<td> advanced</td>
+	<td>arbitrary rationals with reconstruction and prefiltering</td>
+</tr>
+<tr> <td><a href="#stretch">stretch</a></td>	
+	<td>advanced</td>
+	<td>arbitrary rationals with reconstruction and prefiltering</td>
+</tr>
+<tr> <td><a href="#rotate">rotate</a></td>	
+	<td>advanced</td>
+	<td>arbitrary angles with reconstruction</td>
+</tr>
+<tr> <td><a href="#drops">drops</a></td>
+	<td>optional</td>
+	<td>water drop effect. nonlinear, fixed interpolation</td>
+</tr>
+<tr> <td><a href="#swirl">swirl</a></td>
+	<td>optional</td>
+	<td>swirl effect. nonlinear, fixed interpolation</td>
+</tr>
+<tr> <td><a href="#escher">escher</a></td>
+	<td>optional</td>
+	<td>fish-eye type effect. nonlinear, fixed interpolation</td>
+</tr>
+<tr> <td><a href="#painter">painter</a></td>
+	<td>optional</td>
+	<td>randomized shaped splats</td>
+</tr>
+<tr> <td><a href="#composite">composite</a></td>
+	<td>advanced</td>
+	<td>all Porter and Duff operators</td>
+</tr>
+<tr> <td><a href="#chromakey">chromakey</a></td>
+	<td>optional</td>
+	<td>matching with color tolerance</td>
+</tr>
+<tr> <td><a href="#matte">matte</a></td>
+	<td>basic</td>
+	<td>luma matte</td>
+</tr>
+<table>
+
+The details for each command is mentioned below:<br />
+
+<p>
+<b><a name="blur">blur</a></b>(<a href="readme.html#blur">format</a>)<br />
+Blurs the image using a BSpline or Gaussian kernel of specified width.
+If Gaussian blur is chosen, then the standard deviation is chosen as
+(width/6).
+
+<p>
+<b><a name="desaturate">desaturate</a></b>(<a href="readme.html#desaturate">format</a>)<br />
+The luminance formula used is: (.213,.715,.72)
+
+<p>
+<b><a name="sharpen">sharpen</a></b>(<a href="readme.html#sharpen">format</a>)<br />
+Sharpens the image using an unsharp mask. First, a gaussian blur kernel
+is applied on the image. Then the blurred image is compared to the original
+image. If the difference between the pixels exceeds the user specified
+threshold, then the pixel is sharpened by a user specified amount.
+
+<p>
+<b><a name="resize">resize</a></b>(<a href="readme.html#resize">format</a>)<br />
+Resizes an image in both x and y directions by the same rational ratio.
+To resize an image by (a/b), the steps taken are:
+<ol>
+	<li> upsample the image by a
+	<li> downsample the image by b
+</ol>
+The logic of upsampling an image is
+<ol>
+	<li> insert blank pixels between original samples
+	<li> Use a low pass filter to interpolate values for the blank pixels
+</ol>
+The interpolation filter used is the Lanczos Windowed Sinc filter.
+The specific one I used is the Lanczos2 function defined as:
+<pre>
+L(x)  = sin(pi * x) * sin( pi * x / 2) / ( x * x / 2) if x <= 2
+      = 0 otherwise
+</pre>
+<br />
+The logic of downsampling an image is
+<ol>
+	<li> prefilter the image to remove high frequencies
+	<li> drop pixels to reduce size
+</ol>
+The prefiltering kernel used is the BSpline kernel.
+
+<p>
+<b><a name="stretch">stretch</a></b>(<a href="readme.html#stretch">format</a>)<br />
+Stretch is similar to resize, but with the scaling ratios independently specified
+for the x and y directions.
+
+<p>
+<b><a name="rotate">rotate</a></b>(<a href="readme.html#rotate">format</a>)<br />
+Rotates the image by the specified degree in the anti-clockwise direction.
+
+<p>
+<b><a name="drops">drops</a></b>(<a href="readme.html#drops">format</a>)<br />
+This non-linear warp creates a water-drop effect on the image. From the centre
+of the drop, circular ripples are created. The waves are sinusoidal. the user
+specifies the radius of effect, the amplitude and the wavelength of the wave.
+
+<p>
+<b><a name="swirl">swirl</a></b>(<a href="readme.html#swirl">format</a>)<br />
+This non-linear warp creates a swirling pattern on the image. A swirl is obtained
+by rotating pixels by an amount which depends on the distance of that pixel from
+the centre.
+
+<p>
+<b><a name="escher">escher</a></b>(<a href="readme.html#escher">format</a>)<br />
+This non-linear warp maps the picture onto a hyperbolic plane. The resultant image
+is a projection of the hyperbolic surface back onto normal 2D plane. The idea was
+to emulate MC Escher's Circle Limit series of sketches, but couldn't get the
+right parameters to do so. Looks more like fisheye warp now.
+
+
+<br /><br />
+All the warp operations(rotate,drops,swirl) are non-adaptive, fixed interpolation
+operations. The warping is done by reverse mapping from destination to source.
+The interpolation used is bicubic interpolation. Pixels which fall outside the
+image boundry are marked (0,0,0,0) (blank, transparent)
+<br />
+Bicubic interpolation uses the 4x4 neighbourhood of a point to determine its value.
+
+<p>
+<b><a name="painter">painter</a></b>(<a href="readme.html#painter">format</a>)<br />
+Creates an impressionist painting out of an image. Used randomized splats of different
+shapes to mimic impressionist paintings. The brush selection is completely random,
+doesn't use any information from the image(i.e. non adaptive). The image is divided into
+10x10 blocks and each stroke samples the middle pixel of each block and draws a brush
+using that color on to the image. 
+
+<p>
+<b><a name="composite">composite</a></b>(<a href="readme.html#composite">format</a>)<br />
+Composites two images using their alpha values. All the 12 Porter and Duff operators
+are implemented. The naming convention is from 
+<a href="http://www.cs.wisc.edu/graphics/Courses/559-f2001/Project1/index.htm">here</a>.
+
+<p>
+<b><a name="chromakey">chromakey</a></b>(<a href="readme.html#chromakey">format</a>)<br />
+Makes all pixels with a specified color transparent. The user can specify a threshold
+which is the maximum "distance" between the specified color and the pixel's color below
+which the pixel is made transparent. The "distance" calculation takes into consideration
+that the human eye is more perceptive towards color differences in the blue range.
+
+<p>
+<b><a name="matte">matte</a></b>(<a href="readme.html#matte">format</a>)<br />
+Tries to seprate the foreground from the background using brightness information.
+the user need to specify whether the background is bright or not, and a threshold
+value for the cutoff.
+
+</body>
+</html>

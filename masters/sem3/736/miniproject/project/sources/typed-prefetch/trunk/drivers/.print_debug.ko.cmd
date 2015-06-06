@@ -1,0 +1,1 @@
+cmd_/project/typed-prefetch/trunk/drivers/print_debug.ko := ld -r -m elf_i386  --build-id -o /project/typed-prefetch/trunk/drivers/print_debug.ko /project/typed-prefetch/trunk/drivers/print_debug.o /project/typed-prefetch/trunk/drivers/print_debug.mod.o

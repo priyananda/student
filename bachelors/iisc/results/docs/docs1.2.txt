@@ -1,0 +1,38 @@
+Section : YEFP/sched/1.2
+Objective : Measurement of context switch times
+Rationale : 
+	A context-switch happens when the scheduler changes the task which is running . Every task is said to have a current Execution Context which defines the state of the process. It includes the current set of registers , the memory maps, the current execution pointer etc. Context-switches can be of two types :
+1.> Heavy context-swicthes - the memory maps of the tasks are different . This happens when the tasks are independent processes . This is very expensive because the processor cache and TLB ( Translation LookAside Buffer ) are to be flushed and re-created.
+2.> Light context-switches - the memory maps of the tasks are different. This happens when the tasks are threads sharing a common memory space. This is faster than the heavy switches because the cache and TLB's dont have to be flushed. 
+	Measurement of context-switch times is very important. The time measured is a combination of actual context-switch time and the time taken by the scheduler to process the task list . Since the second part is fairly constant over a period of time , the measured time gives a fairly accurate measure of the context-switch time.
+
+Implementation:
+1.> Measurement of light context-switch time 
+The method used here is based on IBM Linux Performance Team's measurement and Richard Gooch's method. The idea is to create two threads and then pass fixed data back-and-forth between the threads . To do this we can use pipes. Because pipes block when they are full, the writing thread sleeps . The control then passes to the other thread.This is a reliable method of forcing switches between the threads. This is done fixed number of times ( 1000000 ) and the time is measured . This method is inaccurate if there are many other tasks on the run-queue .
+
+// cspipe.cpp ; psuedo code for timing context-switches 
+int main()
+{
+ 	do_threads( num_times );
+}
+void do_threads ( int num_times )
+{
+	creat_pipes()
+	create_thread(thread_func);
+	create_thread(thread_func);
+}
+void thread_func(void * dat){
+	gettimeofday(&start);
+	for( i = 0 ; i < num_times ; ++i ){
+		GetData( read_pipe );
+		PutData( write_pipe );
+	}
+	gettimeofday(&end);
+	time = end - start;
+}
+Actually the above code is highly simplified. The data transfer time has to be measured and then the actual time has to be corrected for the data-tranfer-time. The data-tranfer-time is assuemed to be constant because the size of dat is fixed.
+
+Results :
+The context-switch time is measured for a period of time and the results are tabulated and displayed as a graph.
+Also the context-switch time as measured by IBM LPM and R Gooches result is compared with the measurement done.
+

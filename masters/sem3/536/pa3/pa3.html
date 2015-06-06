@@ -1,0 +1,385 @@
+
+<!-- saved from url=(0073)http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html -->
+<HTML><HEAD><META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<TITLE>Programming Assignment 3</TITLE>
+
+</HEAD><BODY>
+
+<H1>CS 536 Assignment 3: Parsing</H1>
+<H3>(Due Date: 11:59 PM, Monday, October 27, 2008)</H3>
+
+<HR>
+
+<A name="contents">
+<H2>Contents</H2>
+</A>
+
+<UL>
+<LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#news"> News</A>
+</LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#introduction">Introduction</A>
+</LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#changes">Changes from Previous Programs</A>
+</LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#operator precedences">Operator Precedences and Associativities</A>
+</LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#syntax errors">Reporting Syntax Errors</A>
+</LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#building ast">Building an Abstract-Syntax Tree</A>
+</LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#unparsing">Unparsing</A>
+</LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#files">Finding/Using the Files for the Assignment</A>
+</LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#testing">Testing</A>
+</LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#turning in">What to Turn In</A>
+</LI></UL>
+
+<HR>
+
+<A name="news">
+<H2>News</H2>
+</A>
+
+<I> Watch this space for corrections, clarifications, and hints.</I> <BR>
+<P>
+<I> Last updated:
+Sat Oct 11 21:32:24 CDT 2008
+</I>
+
+<!--
+  <p>
+  The archive of postings to the CS 536 class mailing list can be found
+  <A HREF="http://www.cs.wisc.edu/lists/classes/cs536-1list/">here</A>.
+-->
+
+</P><P>
+[<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#contents">Back to the Table of Contents</A>]
+
+<A name="introduction">
+<H2>Introduction</H2>
+</A>
+
+For this assignment you will use the parser-generator <SAMP>bison</SAMP>
+to write a parser for the <SAMP>Simple</SAMP> language.
+Skeleton versions of the files you will need to write are provided in
+the directory
+<SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSkeleton">~cs536-1/public/html/Programs/PROG3/CodeSkeleton</A></SAMP>.
+The (incomplete) <SAMP>bison</SAMP> specification is in the file
+<SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSkeleton/simple.y">simple.y</A></SAMP>.
+The complete context-free grammar for the <SAMP>Simple</SAMP> language is in
+the file <SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSkeleton/simple.grammar">simple.grammar</A></SAMP>.
+You will need to extend <SAMP>simple.y</SAMP> by adding grammar productions
+and associated actions so that the generated parser
+builds an abstract-syntax tree representation of the parsed program.
+The classes you will need to use to build the abstract-syntax tree
+are defined in the files
+<SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSkeleton/ast.h">ast.h</A></SAMP> and
+<SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSkeleton/ast.cc">ast.cc</A></SAMP>.
+You will also write <SAMP>Unparse</SAMP> operations as member functions of
+the various abstract-syntax tree node classes.
+The <SAMP>Unparse</SAMP> operation will be used to print (to <SAMP>cout</SAMP>)
+a nicely formatted version of the program represented by the tree.
+Writing the <SAMP>Unparse</SAMP> operations will involve adding code to the
+file <SAMP>unparse.cc</SAMP>.
+</P><P>
+<A name="bison documentation">For your convenience,
+here are links to documentation on <SAMP>bison</SAMP></A>:
+</P><UL>
+  <LI> <A href="http://www.cs.princeton.edu/~appel/modern/c/software/bison/bison_toc.html">Bison Reference Manual</A>
+  </LI><LI> <A href="http://www.cs.wisc.edu/~horwitz/yacc/yacc.ps">Yacc Reference Manual</A>
+  </LI><LI> <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/Supplementary/bison.ps">Bison man page (in PostScript)</A>
+</LI></UL>
+(<SAMP>Bison</SAMP> is a re-implementation of the earlier <SAMP>yacc</SAMP>
+system.)
+<P>
+As usual, ten percent of your grade will be based on how well you
+test your code (your parser and your <SAMP>Unparse</SAMP> operations).
+Therefore, you must provide one or more <SAMP>Simple</SAMP> programs that
+thoroughly tests your code, and you must set up your <SAMP>Makefile</SAMP>
+so that ``<SAMP>make test</SAMP>&#39;&#39;
+creates the executable <SAMP>parse</SAMP>
+and runs it on your test input.
+</P><P>
+You are encouraged to use the scanner you wrote for
+<A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG2/Description/assign2.html">Programming Assignment 2</A>
+(with some modifications, see below).
+However, if you were unable to complete a correct scanner, a working
+version is supplied in the directory
+<SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG2/CodeSolution">~cs536-1/public/html/Programs/PROG2/CodeSolution</A></SAMP>.
+(You will still need to make the modifications described
+<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#changes">below</A>.)
+</P><P>
+[<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#contents">Back to the Table of Contents</A>]
+
+<A name="changes">
+<H2>Changes from Previous Programs</H2>
+</A>
+
+</P><H3>Scanner Changes</H3>
+For parsing, the type of <SAMP>yylval</SAMP> will include the types of
+nonterminal symbols as well as tokens.
+Thus, the type of <SAMP>yylval</SAMP> becomes a <SAMP>union</SAMP> type,
+one alternative of which is of type <SAMP>TokenType</SAMP>.
+(You don&#39;t have to worry about defining <SAMP>yylval</SAMP> directly;
+that is done by <SAMP>bison</SAMP> when it processes the
+``<SAMP>&percnt;union</SAMP>&#39;&#39; in the definitions part of your specification.)
+However, three changes to <SAMP>simple.l</SAMP> are necessary:
+<UL>
+  <LI>
+    In the definition given in the skeleton version of <SAMP>simple.y</SAMP>,
+    the <SAMP>TokenType</SAMP> field is named <SAMP>TOKENval</SAMP>.
+    To be consistent with this definition, you must replace all instances of
+    ``<SAMP>yylval.xxx</SAMP>&#39;&#39; in your scanner actions with
+    ``<SAMP>yylval.TOKENval.xxx</SAMP>&#39;&#39;.
+  </LI><LI>
+    Your <SAMP>simple.l</SAMP> file must also include the file <SAMP>ast.h</SAMP>
+    <EM>before</EM> including <SAMP>gram.tab.h</SAMP>.
+</LI></UL>
+
+<A name="operator precedences">
+<H2>Operator Precedences and Associativities</H2>
+</A>
+
+The <SAMP>Simple</SAMP> grammar in the file <SAMP>simple.grammar</SAMP>
+is ambiguous;
+it does not uniquely define the precedences and associativities of
+the arithmetic, relational, equality, and logical operators.
+You will need to change the <SAMP>bison</SAMP> specification
+to give the various operators the correct precedences and associativities.
+You can do this either by rewriting the grammar (just to give the operators
+the correct precedences and associativities --- do <EM>not</EM>
+make the grammar LL(1)), or by providing appropriate precedence
+and associativity declarations.
+My recommendation is that you use precedence and associativity declarations.
+(See the
+<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#bison documentation"><SAMP>bison</SAMP> documentation</A>
+for information about how to provide appropriate precedence
+and associativity declarations.)
+<UL>
+  <LI> All of the binary operators are left associative, except the relational
+       and equality operators (<SAMP>&lt;</SAMP>, <SAMP>&gt;</SAMP>,
+       <SAMP>&lt;=</SAMP>, <SAMP>&gt;=</SAMP>, <SAMP>==</SAMP>,
+       and <SAMP>!=</SAMP>), which are non-associative (i.e., expressions
+       like ``<SAMP>a &lt; b &lt; c</SAMP>&#39;&#39;
+       are not allowed and should cause a syntax error).
+  </LI><LI> The <EM>unary minus</EM> and <EM>not</EM> (<SAMP>!</SAMP>)
+       operators have the highest precedence, then <EM>multiplication</EM>
+       and <EM>division</EM>, then <EM>addition</EM> and <EM>subtraction</EM>,
+       then the relational and equality operators, and finally,
+       the logical operators (<EM>and</EM> (<SAMP>&amp;&amp;</SAMP>) and <EM>or</EM>
+       (<SAMP>||</SAMP>)).
+</LI></UL>
+If you get a message like
+<PRE>  <SAMP>simple.y contains 48 shift/reduce conflicts</SAMP>
+</PRE>
+when you process your <SAMP>bison</SAMP> specification, it means
+that your grammar is still ambiguous, and the parser is unlikely
+to work correctly.  <B>Do not ignore this message!</B>
+Go back and fix your specification.
+<P>
+[<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#contents">Back to the Table of Contents</A>]
+
+<A name="syntax errors">
+<H2>Reporting Syntax Errors</H2>
+</A>
+
+The parser generated by <SAMP>bison</SAMP> will call the function
+<SAMP>yyerror</SAMP> when it finds a syntax error;
+it will then return the value 1.
+You should modify <SAMP>yyerror</SAMP> (in the file <SAMP>parser.cc</SAMP>)
+so that it calls your special error-handling function rather than just printing
+the error message directly.
+</P><P>
+[<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#contents">Back to the Table of Contents</A>]
+
+<A name="building ast">
+<H2>Building an Abstract-Syntax Tree</H2>
+</A>
+
+To make your parser build an abstract-syntax tree, you must add new
+productions, declarations, and actions to <SAMP>simple.y</SAMP>.
+You will need to decide, for each nonterminal that you add, what
+type its associated value should have.
+Then you must add the appropriate ``<SAMP>&percnt;type</SAMP>&#39;&#39;
+declaration to the grammar.
+For most nonterminals, the value will either be a pointer to some
+subclass of <SAMP>ASTnode</SAMP>, or a pointer to a <SAMP>List</SAMP>
+of pointers to some subclass of <SAMP>ASTnode</SAMP>
+(use the information in <SAMP>ast.h</SAMP> to guide
+your decision).
+You must also add actions to each new grammar production to assign the
+appropriate value to the left-hand-side nonterminal.
+</P><P>
+[<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#contents">Back to the Table of Contents</A>]
+
+<A name="unparsing">
+<H2>Unparsing</H2>
+</A>
+
+To test your parser, you must finish writing the <SAMP>Unparse</SAMP>
+operations for the subclasses of <SAMP>ASTnode</SAMP>.
+When the <SAMP>Unparse</SAMP> operation of the root node of the program&#39;s
+abstract-syntax tree is called, it should print a nicely formatted
+version of the program (this is called <SAMP>unparsing</SAMP>
+the abstract-syntax tree).
+The output produced by calling <SAMP>Unparse</SAMP> should be the
+same as the input to the parser except that:
+</P><OL>
+  <LI> There will be no comments in the output.
+  </LI><LI> The output will be ``pretty printed&#39;&#39; (newlines and indentation
+       will be used to make the program readable); and
+  </LI><LI> Expressions will be fully parenthesized to reflect the order of
+       evaluation.
+</LI></OL>
+For example, if the input program includes:
+<PRE>  <SAMP>if (b == -1) { x = 4+3*5-y; while (c) { y = y*2+x; } }</SAMP>
+</PRE>
+the output of <SAMP>Unparse</SAMP> should be something like the following:
+<PRE>  <SAMP>if ((b == -1)) {
+      x = ((4 + (3 * 5)) - y);
+      while (c) {
+          y = ((y * 2) + x);
+      }
+  }</SAMP>
+</PRE>
+(Put one space around each binary operator, such as
+<SAMP>+</SAMP>, <SAMP>=</SAMP>, <SAMP>==</SAMP>, etc., and
+use four spaces for indentation.)
+<P>
+To help you with producing the correct output format, one test
+has been provided:
+When your parser is supplied the input file
+<SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSkeleton/example.simple">example.simple</A></SAMP>
+it should produce output that (roughly) matches
+<SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSkeleton/example.simple.expected">example.simple.expected</A></SAMP>.
+I say ``roughly&#39;&#39;, since the number of blank lines produced by
+your version may not be exactly the same.
+(<EM>Note: <SAMP>example.simple</SAMP> is not intended as an exhaustive test
+of your parser, but simply as an example for you to see that your
+<SAMP>Unparse</SAMP> function is producing the desired result.</EM>)
+</P><P>
+Note: Trying to unparse a tree will help you determine whether you have
+built the tree correctly in the first place.
+It is a good idea to add a few grammar productions at a time to
+<SAMP>simple.y</SAMP>,
+and to write the corresponding <SAMP>Unparse</SAMP> operations,
+rather than trying to complete <SAMP>simple.y</SAMP> before working on
+the <SAMP>Unparse</SAMP> operations.
+</P><P>
+[<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#contents">Back to the Table of Contents</A>]
+
+<A name="files">
+<H2>Finding/Using the Files for the Assignment</H2>
+</A>
+
+The files for this assignment are in the directory
+<SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG3/CodeSkeleton">~cs536-1/public/html/Programs/PROG3/CodeSkeleton</A></SAMP>.
+You should make a subdirectory called <SAMP>PROG3</SAMP>
+in your <SAMP>private</SAMP> directory, and place in that directory
+the files that you will be using and modifying.
+To set things up initially, you should issue the following commands:
+</P><PRE><SAMP>cd ~/private
+mkdir PROG3
+cd PROG3
+ln -s ~cs536-1/public/html/Supplementary/List/list_T.h .
+ln -s ~cs536-1/public/html/Supplementary/ref_ptr/ref_ptr_T.h .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/example.simple .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/example.simple.expected .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/Makefile .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/ast.cc .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/ast.h .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/main.cc .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/parser.cc .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/parser.h .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/simple.grammar .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/simple.y .
+cp ~cs536-1/public/html/Programs/PROG3/CodeSkeleton/unparse.cc .</SAMP>
+</PRE>
+<P>
+<B>NOTE</B>: At this point, issuing the command
+</P><PRE>  <SAMP>make parse</SAMP>
+</PRE>
+will <B>fail</B>.
+You need to provide appropriate versions of <SAMP>scanner.h</SAMP>,
+<SAMP>simple.l</SAMP>, <SAMP>message.h</SAMP>, and <SAMP>message.cc</SAMP>
+before you can build the parser initially.
+<P>
+As mentioned earlier, you are encouraged to use the scanner you wrote for
+<A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG2/Description/assign2.html">Programming Assignment 2</A>
+(with some modifications, see below).
+However, if you were unable to complete a correct scanner, a working
+version is supplied in the directory
+<SAMP><A href="http://www.cs.wisc.edu/~cs536-1/Programs/PROG2/CodeSolution">~cs536-1/public/html/Programs/PROG2/CodeSolution</A></SAMP>.
+(You will still need to make the modifications described
+in the section titled ``<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#changes">Changes from Previous Programs</A>&#39;&#39;.)
+To use this version, you should issue the following commands
+(and make appropriate changes to the <SAMP>Makefile</SAMP>):
+</P><PRE><SAMP>cp ~cs536-1/public/html/Programs/PROG2/CodeSolution/scanner.h .
+cp ~cs536-1/public/html/Programs/PROG2/CodeSolution/simple.l .
+cp ~cs536-1/public/html/Programs/PROG2/CodeSolution/message.h .
+cp ~cs536-1/public/html/Programs/PROG2/CodeSolution/message.cc .</SAMP>
+</PRE>
+
+
+<P>
+[<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#contents">Back to the Table of Contents</A>]
+
+<A name="testing">
+<H2>Testing</H2>
+</A>
+
+Part of your task will be to figure out a strategy for testing
+your implementation.
+As mentioned in the <A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#introduction">Introduction</A>,
+part of your grade will be determined by the testing scheme
+that you implement; i.e., how thoroughly your main program and the test
+files that you turn in test your parser.
+</P><P>
+As usual, put a brief description of each of your tests (e.g., what
+it tests for and how it goes about doing so) in a file named
+README.testing, <EM>which is to be turned in, along with your source
+code and test files</EM>.
+
+</P><H3>Storage Leaks</H3>
+
+For this assignment, do not worry about storage leaks.
+<SAMP>Purify</SAMP> may still be useful for detecting
+illegal pointer references and array out-of-bounds errors.
+
+<P>
+[<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#contents">Back to the Table of Contents</A>]
+
+<A name="turning in">
+<H2>What To Turn In</H2>
+</A>
+
+To hand in your program, copy all of the files that are needed to
+create and run the <SAMP>parse</SAMP> executable (including your
+Makefile and your test program or programs) to
+</P><PRE>  <SAMP>~cs536-1/public/Handin3/&lt;<I>your login name</I>&gt;</SAMP>
+</PRE>
+using your actual login name in place of &lt;<I>your login name</I>&gt;.
+Please do <EM>not</EM> create any subdirectories in your handin directory,
+and be sure <EM>not</EM> to copy any object files or executable files
+(they take up a lot of space and may cause the directory to exceed its
+quota).
+<P>
+After you have copied over your files, you can check that they
+are there by issuing the command
+</P><PRE>  <SAMP>ls -l ~cs536-1/public/Handin3/&lt;<I>your login name</I>&gt;</SAMP>
+</PRE>
+<P>
+REMEMBER: <EM>No late assignments will be accepted without prior
+permission!</EM>
+Thus, it is important that you get to work soon.
+</P><P>
+As always, remember that partially finished programs are better than
+no programs at all, so be sure to turn in whatever you&#39;ve done -- even
+if you don&#39;t finish the assignment.
+If you do turn in only a partially finished program, it is a good
+idea to provide a description (say in a file called <SAMP>README</SAMP>)
+of what works, what doesn&#39;t work, and sketch out how you would have gone
+about changing things to finish up.
+</P><P>
+<EM>GOOD LUCK!!</EM>
+</P><P>
+[<A href="http://pages.cs.wisc.edu/~cs536-1/Programs/PROG3/Description/assign3.html#contents">Back to the Table of Contents</A>]
+
+
+
+
+</P></BODY></HTML>

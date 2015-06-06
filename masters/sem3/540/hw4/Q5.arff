@@ -1,0 +1,9 @@
+@RELATION toy-problem
+
+@ATTRIBUTE feat1 INTEGER
+@ATTRIBUTE feat2 INTEGER
+@ATTRIBUTE class {0,1}
+
+@DATA
+0,1,0
+0,2,1

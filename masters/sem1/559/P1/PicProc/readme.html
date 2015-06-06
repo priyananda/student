@@ -1,0 +1,294 @@
+<html>
+<head>
+	<style>
+	body{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+	}
+	table{
+		font-family:Tahoma,Verdana;
+		font-size: 10pt;
+		border-style:single;
+		border-width: 1px;
+		border-color:grey;
+	}
+</style>
+<head>
+<body>
+
+<b>
+picproc<br />
+CS 559 Fall 2007 - Project 1<br />
+priyananda shenoy ( shenoy@cs.wisc.edu )<br />
+</b>
+<br />
+  This file describes the picture processing tool from an "end-user"
+perspective. For details regarding the code and implementation, please
+refer to <a href="technical.html">technical.html</a>
+
+<p>
+<b>Running the tool</b><br />
+  There are two ways you can run this tool:
+  <ul>
+  <li><i>Batch mode</i>: You can specify a filename as a commandline argument.<br/>
+    <code>picproc FILENAME</code>
+  <li><i>Interactive mode</i>: run the tool with no arguments<br/>
+    <code>picproc</code>
+  </ul>
+
+<p>
+<b>Using the tool</b><br />
+  Irrespective of how you run the tool, the way the tool works is the
+same. The tool works on the input line-by-line, treating each line as a
+single command. Where the two modes differ is in the control you have
+on the execution. In batch mode, you specify a file, which the tool
+will process completely with no user interaction, stopping at the first
+error or the end of the file. In interactive mode, the user can run
+commands step-by-step, insert arbitrary commands on the fly and see
+the contents of the variables.</br>
+
+<p>
+<b>Structure of the input file</b><br/>
+  The input file is a text file in which each line represents a command.
+# is the comment symbol. Anything after a # in a line is ignored. Blank
+lines are also ignored.
+
+<p>
+<b>Command Reference</b><br/>
+	This section describes all the commands that are available, their format
+and behavior.<br/>
+
+<u>Data Types</u><br />
+Each command can take arguments, which of which has a specific datatype.
+The available datatypes are mentioned below:
+<ul>
+	<li>string - ascii string with no spaces
+	<li>int - integer
+	<li>int(+) - positive integer >= 0
+	<li>int(a,b) - an integer within an inclusive range (a,b)
+	<li>float - floating point number
+	<li>float(a,b) - floating point number within an inclusive range (a,b)
+	<li>variable - a single character 'a'->'z' or 'A'->'Z'. case insensitive.
+	<li>byte - same as int(0,255) - used mostly for r/g/b/a values.
+</ul>
+
+<u>Interactive mode commands</u><br />
+These are commands which are only accessible in the interactive mode.<br />
+
+<a href="#help">help</a> 
+<a href="#quit">quit</a> 
+<a href="#load">load</a> 
+<a href="#run">run</a> 
+<a href="#step">step</a> 
+<a href="#show">show</a> 
+<a href="#images">images</a> 
+
+<br /><br />
+<u>picture processing commands</u><br />
+These commands do the actual image processing and are availiable both in batch
+and interactive mode
+<br />
+<a href="#read">read</a>
+<a href="#write">write</a>
+<a href="#blank">blank</a>
+<a href="#fill">fill</a>
+<a href="#copy">copy</a>
+<a href="#crop">crop</a>
+<a href="#dissolve">dissolve</a>
+<a href="#opaque">opaque</a>
+<a href="#darken">darken</a>
+<a href="#desaturate">desaturate</a>
+<a href="#blur">blur</a>
+<a href="#sharpen">sharpen</a>
+<a href="#resize">resize</a>
+<a href="#stretch">stretch</a>
+<a href="#rotate">rotate</a>
+<a href="#drops">drops</a>
+<a href="#escher">escher</a>
+<a href="#swirl">swirl</a>
+<a href="#escher">escher</a>
+<a href="#painter">painter</a>
+<a href="#composite">composite</a>
+<a href="#chromakey">chromakey</a>
+<a href="#matte">matte</a>
+<br /><br />
+
+<p>
+<b><a name="help">help</a></b><br />
+format: <code>help [command]</code><br />
+behavior: if no command is specified, then it shows a list of all possible commands.
+If a specific command is specified, then the format of that command is shown.
+
+<p>
+<b><a name="quit">quit</a></b><br />
+format: <code>quit</code><br />
+behavior: stops the tool.
+
+<p>
+<b><a name="load">load</a></b><br />
+format: <code>load FILENAME</code><br />
+behavior: loads the contents of a file into the execution buffer. The file should
+be a valid picproc input file.
+
+<p>
+<b><a name="step">step</a></b><br />
+format: <code>step</code>step<br />
+behavior:executes the next command in the execution buffer
+
+<p>
+<b><a name="run">run</a></b><br />
+format: <code>run</code><br />
+behavior:executes all the commands in the execution buffer until there is an error
+or the buffer is empty.
+
+<p>
+<b><a name="show">show</a></b><br />
+format: <code>show VARIABLE</code><br />
+behavior:shows the contents of the variable in a window. This doesn't show the alpha channel.
+
+<p>
+<b><a name="images">images</a></b><br />
+format: <code>images</code><br />
+behavior:shows list of all images held in variables
+
+<p>
+<b><a name="read">read</a></b><br />
+format: <code>read VARIABLE FILENAME</code><br />
+behavior: Reads the image specified by FILENAME into the variable.
+
+<p>
+<b><a name="write">write</a></b><br />
+format: <code>write VARIABLE FILENAME</code><br />
+behavior: Writes the image held in VARIABLE into the file.
+
+<p>
+<b><a name="blank">blank</a></b><br />
+format: <code>blank VARIABLE WIDTH HEIGHT</code><br />
+behavior: Creates a new imge of given dimensions with each pixel set to (0,0,0,255)
+
+<p>
+<b><a name="fill">fill</a></b><br />
+format: <code>fill V X1 Y1 X2 Y2 R G B A</code><br />
+behavior: Fills the rectange specified by [(X1,Y1),(X2,Y2)] with the given color.
+
+<p>
+<b><a name="copy">copy</a></b><br />
+format: <code>copy SOURCE DESTINATION</code><br />
+behavior: copies the image specified in SOURCE variable to DESTINATION variable.
+
+<p>
+<b><a name="crop">crop</a></b><br />
+format: <code>crop VARIABLE X1 X2 Y1 Y2</code><br />
+behavior: cuts out the rectangular area specified by [(X1,Y1),(X2,Y2)] from the image.
+
+<p>
+<b><a name="dissolve">dissolve</a></b><br />
+format: <code>dissolve VARIABLE FACTOR</code><br />
+behavior: scales the alpha value of all pixels by the FACTOR. FACTOR is in between 0 and 1.
+If FACTOR = 0 then image is completely transparent. 
+
+<p>
+<b><a name="opaque">opaque</a></b><br />
+format: <code>opaque VARIABLE</code><br />
+behavior: sets the alpha values of all pixels to maximum.
+
+<p>
+<b><a name="darken">darken</a></b><br />
+format: <code>darken VARIABLE FACTOR</code><br />
+behavior: makes all the pixels darker by a specified amount. FACTOR is between 0 and 1.
+If FaCTOR = 0 then image is completely black.
+
+<p>
+<b><a name="desaturate">desaturate</a></b><br />
+format: <code>desaturate VARIABLE FACTOR</code><br />
+behavior: coverts image to greyscale. FACTOR is between 0 and 1, abd controls the amount
+of greying( if FACTOR = 1, image is completely greyscaled )
+
+<p>
+<b><a name="blur">blur</a></b><br />
+format: <code>blur VARIABLE WIDTH [STDDEV]</code><br />
+behavior: Blurs the image using a BSpline or a Gaussian kernel. WIDTH is size of the
+kernel. If the third argument STDDEV is specified, then gaussian blur is applied else
+bspline kernel is used. STDDEV is a floating point number specifying the standard
+deviation of the kernel.
+
+<p>
+<b><a name="sharpen">sharpen</a></b><br />
+format: <code>sharpen VARIABLE RADIUS AMOUNT THRESHOLD</code><br />
+behavior: Uses an unsharp mask to sharpen the image.<br />
+RADIUS: specifies the size of the detail which is to be sharpened.<br/>
+AMOUNT: specifies the amount by which edges are sharpened. A value of .5 to 1 is normal.<br/>
+THRESHOLD: specifies the tolerance range of pixel differences where the sharpening
+is to be done.
+
+<p>
+<b><a name="resize">resize</a></b><br />
+format: <code>resize VARIABLE NUMERATOR DENOMINATOR</code><br />
+behavior: changes the size of an image by a rational fraction in both horizontal
+and vertical direction
+
+<p>
+<b><a name="stretch">stretch</a></b><br />
+format: <code>stretch VARIABLE XA XB YA YB</code><br />
+behavior: changes the size of an image by (XA/XB) horizontally and (YA/YB) vertically.
+
+<p>
+<b><a name="rotate">rotate</a></b><br />
+format: <code>rotate VARIABLE THETA</code><br />
+behavior: rotates an image around the centre by THETA degrees in anticlockwise direction.
+Doesn't change image dimensions.
+
+<p>
+<b><a name="drops">drops</a></b><br />
+format: <code>drops VARIABLE WAVELENGTH AMPLITUDE RADIUS</code><br />
+behavior: Creates a water-drop effect.
+WAVELENGTH: is thw width of the wave pattern<br />
+AMPLITUDE: controls the displacement. higher the amplitude, more pronounced the waves become.
+AMPLITUDE should not be more than 1.<br />
+RADIUS: distance from centre after which the wave pattern stops<br />
+
+<p>
+<b><a name="swirl">swirl</a></b><br />
+format: <code>swirl VARIABLE RADIUS ANGLE</code><br />
+behavior: creates a swirl pattern in the image
+RADIUS: distance from centre until which the warp is done.<br />
+ANGLE:  angle in degrees which each pixel is rotated by.<br />
+
+<p>
+<b><a name="swirl">escher</a></b><br />
+format: <code>escher VARIABLE RADIUS</code><br />
+behavior: Warps a 2D image onto a circle using hyperbolic projection.<br />
+RADIUS: radius of the circle<br />
+
+<p>
+<b><a name="painter">painter</a></b><br />
+format: <code>painter VARIABLE [ITERATIONS] [BLURFACTOR]</code><br />
+behavior: Creates an impressionist painting from the given image.<br />
+ITERATIONS control the number of painting cycles the image goes through. Default is 3.<br />
+BLURFACTOR specifies the width of the blur kernel. Default is 7. If 0, the image is not blurred<br />
+
+
+<p>
+<b><a name="composite">composite</a></b><br />
+format: <code>composite SOURCE OPERATOR DESTINATION X Y</code><br />
+behavior: Composites SOURCE image into DESTINATION image as per the OPERATOR.<br />
+OPERATOR can be clear,first,second,over,under,in,heldin,out,heldout,atop,below,xor<br />
+
+<p>
+<b><a name="chromakey">chromakey</a></b><br />
+format: <code>chromakey VARIABLE R G B [THRESHOLD]</code><br />
+behavior: If the color of a pixel is "close to" the specified value then the pixel<br />
+is made transparent. the THRESHOLD parameter controls how much tolerence is given'to<br />
+color differences. THRESHOLD can vary from 0(exact color) to 100(all colors)<br />
+
+<p>
+<b><a name="matte">matte</a></b><br />
+format: <code>matte VARIABLE THRESHOLD ISBGLIGHT</code><br />
+behavior: Uses the brightness value of pixel to find out if it is a foreground or a 
+background pixel. If it is a background pixel, then it is made transparent. <br />
+THRESHOLD specifies what range of brightness constitutes background/foregroud.<br />
+ISBGLIGHT specifies if the background is lighter than the foreground. If this is
+true, then ligher pixels will be made transparent.<br />
+
+</body>
+</html>

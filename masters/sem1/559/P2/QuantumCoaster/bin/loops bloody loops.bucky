@@ -1,0 +1,45 @@
+#buckyland file
+#map to show off loops
+
+#where is God?
+#format is god <x> <y> <z> <frontx> <fronty> <frontz> <upx> <upy> <upz>
+god -209 87 155 -180 77 129 0 1 0
+
+#track controls
+control 120 2 0 0 1 0
+control 90 2 25 0 1 0
+control 60 2 50 0 1 0
+control 30 2 50 0 1 0
+control 0 100 50 0 1 0
+control -30 2 50 0 1 0
+control -60 2 50 0 1 0
+control -90 2 25 0 1 0
+control -120 2 0 0 1 0
+control -90 2 -25 0 1 0
+
+control -60 2 -50 0 1 0
+control -30 20 -50 0 1 0
+control -30 40 -50 0 1 0
+control -60 60 -50 0 1 0
+control -90 40 -50 0 1 0
+control -90 20 -50 0 1 0
+control -60 2 -50 0 1 0
+
+control 0 2  -50 0 1 0
+control 20 12 -50 0 1 0
+control 20 25 -50 0 1 0
+control 0  40 -50 0 1 0
+control -20 25 -50 0 1 0
+control -20 12 -50 0 1 0
+control 0 2 -50 0 1 0
+
+control 45 2  -50 0 1 0
+control 60 10 -50 0 1 0
+control 60 20 -50 0 1 0
+control 45 30 -50 0 1 0
+control 30 20 -50 0 1 0
+control 30 10 -50 0 1 0
+control 45 2 -50 0 1 0
+
+control 60 2 -50 0 1 0
+control 90 2 -25 0 1 0

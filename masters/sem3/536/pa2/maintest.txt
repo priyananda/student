@@ -1,0 +1,41 @@
+int main()
+{
+	//this is a comment
+	int yy = 100;
+	
+	//the next line has a tab before the i, so the column number should be 2
+	i
+	
+	//integers
+	int proper          = 2147483647;
+	int proper_plus_1   = 2147483648;
+	int larger_than_max = 9999999999;
+	int ridiculously_large = 21474836472147483647214748364721474836472147483647214748364721474836472147483647;
+	
+	//floats
+	float proper_float = 100.20;
+	proper_float = .45;
+	
+	too_big_float = 21474836472147483647214748364721474836472147483647214748364721474836472147483647.0;
+	too_small_float = 0.0000000000000000000000000000000000000000000000000000000000000000000000000000001;
+	
+	//strings
+	String dagaar = "proper string";
+	String ru3 = "proper \" string with \"";
+	
+	"// comment inside a string = no comment"
+	
+	"another proper string \a \b \\\\c \\ \ "
+	
+	"improper \a\b string \
+	
+	String dhshda = "improper string
+	String ding = "improper string with \"
+
+	//illegal characters
+	?`'
+	
+	//9 and cows are taken as different tokens
+	int 9cows = 10;
+}
+//last line comment

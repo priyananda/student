@@ -1,0 +1,31 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}
+\BOOKMARK [2][-]{subsection.1.1}{Organization of the paper}{section.1}
+\BOOKMARK [1][-]{section.2}{Methodology}{}
+\BOOKMARK [2][-]{subsection.2.1}{Timers}{section.2}
+\BOOKMARK [2][-]{subsection.2.2}{Ideal buffer size for random access}{section.2}
+\BOOKMARK [2][-]{subsection.2.3}{Prefetch}{section.2}
+\BOOKMARK [2][-]{subsection.2.4}{File cache size}{section.2}
+\BOOKMARK [2][-]{subsection.2.5}{Levels of indirection}{section.2}
+\BOOKMARK [1][-]{section.3}{System Details}{}
+\BOOKMARK [1][-]{section.4}{Implementation and Results}{}
+\BOOKMARK [2][-]{subsection.4.1}{Ideal buffer size for random access}{section.4}
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Choosing the test parameters}{subsection.4.1}
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Source code}{subsection.4.1}
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Result}{subsection.4.1}
+\BOOKMARK [3][-]{subsubsection.4.1.4}{Explanation}{subsection.4.1}
+\BOOKMARK [2][-]{subsection.4.2}{Prefetch}{section.4}
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Choosing the test parameters}{subsection.4.2}
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Source code}{subsection.4.2}
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Result}{subsection.4.2}
+\BOOKMARK [3][-]{subsubsection.4.2.4}{Explanation}{subsection.4.2}
+\BOOKMARK [2][-]{subsection.4.3}{File cache size}{section.4}
+\BOOKMARK [3][-]{subsubsection.4.3.1}{Choosing the test parameters}{subsection.4.3}
+\BOOKMARK [3][-]{subsubsection.4.3.2}{Source code}{subsection.4.3}
+\BOOKMARK [3][-]{subsubsection.4.3.3}{Result}{subsection.4.3}
+\BOOKMARK [3][-]{subsubsection.4.3.4}{Explanation}{subsection.4.3}
+\BOOKMARK [2][-]{subsection.4.4}{Levels of indirection}{section.4}
+\BOOKMARK [3][-]{subsubsection.4.4.1}{Choosing the test parameters}{subsection.4.4}
+\BOOKMARK [3][-]{subsubsection.4.4.2}{Source code}{subsection.4.4}
+\BOOKMARK [3][-]{subsubsection.4.4.3}{Result}{subsection.4.4}
+\BOOKMARK [3][-]{subsubsection.4.4.4}{Explanation}{subsection.4.4}
+\BOOKMARK [1][-]{section.5}{Conclusions}{}

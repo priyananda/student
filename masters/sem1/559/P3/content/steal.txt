@@ -1,0 +1,9 @@
+http://www.opengl.org/registry/ - glext and the rest
+http://www.flipcode.com/articles/article_skydomes.shtml
+http://www.codesampler.com/oglsrc/oglsrc_9.htm#ogl_arb_shader_simple_vs2ps
+http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=41
+http://www.walterreid.com/opengl/
+http://pages.pomona.edu/~nrr02004/opengl.html
+http://www.clockworkcoders.com/oglsl/index.html
+http://www.lighthouse3d.com/opengl/viewfrustum/index.php?gimp
+http://www.ozone3d.net/tutorials/bump_mapping_p4.php
