@@ -1,0 +1,5 @@
+*.[oa]
+*.bin
+*.elf
+build/*
+output/*

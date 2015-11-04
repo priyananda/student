@@ -1,6 +1,6 @@
 LDSCRIPT=kernel.ld
 CFLAGS=-nostdinc -fno-builtin -m32 -fno-stack-protector
-LDFLAGS=-T$(LDSCRIPT) -m elf_i386
+LDFLAGS=-T$(LDSCRIPT) -m elf_i386 --verbose 
 INCDIR=include
 AFLAGS=-f coff -i$(INCDIR) -isource/asm/
 DEL=rm -f
@@ -14,7 +14,7 @@ all: output/kernel.bin output/boot0.bin output/boot1.bin
 output/kernel.bin : $(BUILDDIR)/kernel.out
 	objcopy --output-target=binary $(BUILDDIR)/kernel.out output/kernel.bin
 
-$(BUILDDIR)/kernel.out : $(BUILDDIR)/main.o $(BUILDDIR)/startup.o $(BUILDDIR)/keyb.o $(BUILDDIR)/int.a $(BUILDDIR)/io.a $(BUILDDIR)/klib.a $(BUILDDIR)/fs.a
+$(BUILDDIR)/kernel.out : $(BUILDDIR)/main.o $(BUILDDIR)/startup.o $(BUILDDIR)/keyb.o $(BUILDDIR)/fs.a $(BUILDDIR)/io.a $(BUILDDIR)/int.a $(BUILDDIR)/klib.a
 	ld $(LDFLAGS) -o $@ $?
 
 $(BUILDDIR)/klib.a : $(BUILDDIRKLIB)/atoi.o $(BUILDDIRKLIB)/ctype.o $(BUILDDIRKLIB)/key.o $(BUILDDIRKLIB)/printf.o $(BUILDDIRKLIB)/string.o

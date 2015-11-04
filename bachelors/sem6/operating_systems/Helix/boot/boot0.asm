@@ -152,7 +152,7 @@ next:
 eof:
 	mov si, smsg3
 	call showmsg
-	jmp	IMAGE_SEG:0
+	jmp	IMAGE_SEG:0x0000
 
 error1:	mov	si, errmsg1
 	jmp j2
