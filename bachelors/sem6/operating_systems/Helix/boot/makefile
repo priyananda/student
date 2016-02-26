@@ -1,4 +1,4 @@
-LDSCRIPT=boot.ld
+LDSCRIPT=boot1.ld
 CFLAGS=-nostdinc -fno-builtin -fno-stack-protector -fno-builtin -fno-unit-at-a-time -fno-toplevel-reorder -m16
 LDFLAGS=-T$(LDSCRIPT) -m elf_i386
 DEL=rm
@@ -12,7 +12,7 @@ $(OUTDIR)/boot0.bin : boot0.asm
 	
 $(OUTDIR)/boot1.bin : $(BUILDDIR)/boot1.elf
 #	objcopy -O binary $< $@
-	
+	cp -f $< $@
 	
 $(BUILDDIR)/boot1.elf : $(BUILDDIR)/boot_startup.o $(BUILDDIR)/boot_main.o $(BUILDDIR)/fat12.o $(BUILDDIR)/graphics.o $(BUILDDIR)/boot1.o
 	ld $(LDFLAGS) -o$@ $?

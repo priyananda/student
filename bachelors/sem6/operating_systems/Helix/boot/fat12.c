@@ -1,4 +1,4 @@
-asm(".code16gcc\n");
+asm(".code16\n");
 #include "fat12.h"
 
 #define KERNEL_FILE "KERNEL  BIN"

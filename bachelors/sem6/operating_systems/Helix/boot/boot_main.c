@@ -1,4 +1,4 @@
-asm(".code16gcc\n");
+asm(".code16\n");
 #include "boot1.h"
 
 int main(){

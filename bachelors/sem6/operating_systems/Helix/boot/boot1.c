@@ -1,4 +1,4 @@
-asm(".code16gcc\n");
+asm(".code16\n");
 #include "boot1.h"
 unsigned char * convertString(int number,int base);
 void boot_prompt();
